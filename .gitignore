@@ -36,3 +36,6 @@ data/
 token_estimator_test.go
 skills-lock.json
 .playwright-mcp
+
+# TanStack Router auto-generated
+web/default/src/routeTree.gen.ts
