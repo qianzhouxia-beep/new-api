@@ -26,5 +26,61 @@ import { type TopNavLink } from '../types'
  *
  * This is intentionally empty to encourage backend configuration.
  * If you need fallback links, add them here.
+ *
+ * TokenMaster: Add Pricing link
  */
-export const defaultTopNavLinks: TopNavLink[] = []
+export const defaultTopNavLinks: TopNavLink[] = [
+  {
+    title: '首页',
+    href: '/',
+    disabled: false,
+    external: false,
+    requiresAuth: false,
+  },
+  {
+    title: '控制台',
+    href: '/dashboard',
+    disabled: false,
+    external: false,
+    requiresAuth: true,
+  },
+  {
+    title: '模型广场',
+    href: '/models',
+    disabled: false,
+    external: false,
+    requiresAuth: false,
+  },
+  {
+    title: '排行榜',
+    href: '/ranking',
+    disabled: false,
+    external: false,
+    requiresAuth: false,
+  },
+  {
+    title: '文档',
+    href: '/docs',
+    disabled: false,
+    external: false,
+    requiresAuth: false,
+  },
+  {
+    title: '关于',
+    href: '/about',
+    disabled: false,
+    external: false,
+    requiresAuth: false,
+  },
+  /**
+   * TokenMaster: Add Pricing link
+   * This links to the pricing page where users can see plans and pay
+   */
+  {
+    title: '价格',
+    href: '/pricing',
+    disabled: false,
+    external: false,
+    requiresAuth: false,
+  },
+]
