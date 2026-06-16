@@ -72,15 +72,4 @@ export const defaultTopNavLinks: TopNavLink[] = [
     external: false,
     requiresAuth: false,
   },
-  /**
-   * TokenMaster: Add Pricing link
-   * This links to the pricing page where users can see plans and pay
-   */
-  {
-    title: '价格',
-    href: '/pricing',
-    disabled: false,
-    external: false,
-    requiresAuth: false,
-  },
 ]
