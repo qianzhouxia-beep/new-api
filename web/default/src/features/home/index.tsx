@@ -169,47 +169,72 @@ export function Home() {
       <main className='overflow-x-hidden'>
 
         {/* ===== Hero ===== */}
-        <section className='relative overflow-hidden px-6 pt-24 pb-20 md:pt-32 md:pb-28 lg:pt-36 lg:pb-32'>
-          <div aria-hidden className='pointer-events-none absolute inset-0 -z-10 opacity-25 dark:opacity-[0.12]'
+        <section className='relative overflow-hidden px-6 min-h-[100dvh] flex items-center'>
+          <div aria-hidden className='pointer-events-none absolute inset-0 -z-10 opacity-30 dark:opacity-[0.15]'
             style={{
               background: [
-                'radial-gradient(ellipse 70% 55% at 25% 20%, oklch(0.55 0.20 25 / 80%) 0%, transparent 70%)',
-                'radial-gradient(ellipse 50% 40% at 75% 15%, oklch(0.50 0.18 250 / 60%) 0%, transparent 70%)',
-                'radial-gradient(ellipse 40% 35% at 50% 85%, oklch(0.60 0.15 180 / 40%) 0%, transparent 70%)',
+                'radial-gradient(ellipse 60% 50% at 20% 30%, oklch(0.55 0.20 25 / 80%) 0%, transparent 70%)',
+                'radial-gradient(ellipse 45% 35% at 80% 20%, oklch(0.50 0.18 250 / 60%) 0%, transparent 70%)',
+                'radial-gradient(ellipse 35% 30% at 50% 80%, oklch(0.60 0.15 180 / 40%) 0%, transparent 70%)',
               ].join(', '),
             }}
           />
-          <div aria-hidden className='absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,black_20%,transparent_100%)] bg-[size:4rem_4rem] opacity-[0.06]' />
+          <div aria-hidden className='absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_40%_at_50%_40%,black_15%,transparent_100%)] bg-[size:3.5rem_3.5rem] opacity-[0.05]' />
 
-          <div className='mx-auto max-w-5xl text-center'>
-            <div className='mb-6 inline-flex items-center gap-2 rounded-full border bg-white/50 px-4 py-1.5 text-sm backdrop-blur-sm shadow-xs'>
-              <Sparkles className='text-primary size-4' />
-              <span className='text-muted-foreground'>
-                {isZh ? '已接入 12+ 主流 AI 模型' : '12+ AI Models Available'}
-              </span>
+          {/* floating particles */}
+          <div aria-hidden className='pointer-events-none absolute inset-0 -z-10 overflow-hidden'>
+            <div className='absolute top-[15%] left-[10%] size-3 rounded-full bg-orange-400/20 blur-sm animate-pulse' />
+            <div className='absolute top-[25%] right-[15%] size-2.5 rounded-full bg-purple-500/20 blur-sm animate-pulse delay-300' />
+            <div className='absolute bottom-[35%] left-[20%] size-2 rounded-full bg-blue-400/20 blur-sm animate-pulse delay-700' />
+            <div className='absolute bottom-[20%] right-[25%] size-3.5 rounded-full bg-emerald-400/15 blur-sm animate-pulse delay-1000' />
+          </div>
+
+          <div className='mx-auto max-w-7xl w-full grid items-center gap-10 lg:gap-16 lg:grid-cols-2'>
+            {/* ---- text column ---- */}
+            <div className='text-center lg:text-left'>
+              <div className='mb-5 inline-flex items-center gap-2 rounded-full border bg-white/60 px-4 py-1.5 text-sm backdrop-blur-sm shadow-xs'>
+                <Sparkles className='text-primary size-4' />
+                <span className='text-muted-foreground'>
+                  {isZh ? '已接入 12+ 主流 AI 模型' : '12+ AI Models Available'}
+                </span>
+              </div>
+
+              <h1 className='text-foreground text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.08]'>
+                {isZh ? '一个 API，畅用' : 'One API for '}
+                <span className='bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 bg-clip-text text-transparent'>
+                  {isZh ? '三大国产模型' : 'All Major Models'}
+                </span>
+              </h1>
+
+              <p className='text-muted-foreground mx-auto mt-6 max-w-xl text-base sm:text-lg leading-relaxed lg:mx-0'>
+                {isZh
+                  ? 'TokenMaster 统一 DeepSeek、智谱 GLM、通义千问 API 接入。一个 Key，全部模型。无需分别注册、无需管理多个平台。'
+                  : 'TokenMaster unifies DeepSeek, GLM, and Qwen APIs. One key for all models — no separate signups, no multi-platform management.'}
+              </p>
+
+              <div className='mt-9 flex flex-wrap items-center gap-4 lg:justify-start'>
+                <Button size='lg' className='rounded-full px-8' render={<Link to='/sign-up' />}>
+                  {isZh ? '免费注册' : 'Get Started'}
+                  <ArrowRight className='ml-1.5 size-4' />
+                </Button>
+                <Button size='lg' variant='outline' className='rounded-full px-8' render={<Link to='/pricing' />}>
+                  {isZh ? '模型价格' : 'View Pricing'}
+                </Button>
+              </div>
             </div>
 
-            <h1 className='text-foreground text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl'>
-              {isZh ? '一个 API，畅用' : 'One API for '}
-              <span className='bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 bg-clip-text text-transparent'>
-                {isZh ? '三大国产模型' : 'All Major Models'}
-              </span>
-            </h1>
-
-            <p className='text-muted-foreground mx-auto mt-6 max-w-2xl text-lg leading-relaxed'>
-              {isZh
-                ? 'TokenMaster 统一 DeepSeek、智谱 GLM、通义千问 API 接入。一个 Key，全部模型。无需分别注册、无需管理多个平台。'
-                : 'TokenMaster unifies DeepSeek, GLM, and Qwen APIs. One key for all models — no separate signups, no multi-platform management.'}
-            </p>
-
-            <div className='mt-10 flex items-center justify-center gap-4'>
-              <Button size='lg' className='rounded-full px-8' render={<Link to='/sign-up' />}>
-                {isZh ? '免费注册' : 'Get Started'}
-                <ArrowRight className='ml-1.5 size-4' />
-              </Button>
-              <Button size='lg' variant='outline' className='rounded-full px-8' render={<Link to='/pricing' />}>
-                {isZh ? '模型价格' : 'View Pricing'}
-              </Button>
+            {/* ---- image column ---- */}
+            <div className='relative flex justify-center lg:justify-end'>
+              <div className='relative max-w-md xl:max-w-lg'>
+                {/* glow behind image */}
+                <div aria-hidden className='absolute -inset-4 rounded-2xl bg-gradient-to-br from-orange-200/30 via-purple-200/20 to-blue-200/30 blur-2xl dark:from-orange-900/20 dark:via-purple-900/15 dark:to-blue-900/20' />
+                <img
+                  src='/hero-ai-chip.png'
+                  alt='AI Model Hub Visualization'
+                  className='relative w-full drop-shadow-2xl landing-animate-fade-up'
+                  loading='eager'
+                />
+              </div>
             </div>
           </div>
         </section>
