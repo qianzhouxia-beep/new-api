@@ -21,56 +21,145 @@ import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Sparkles, Cpu, Globe, Zap, Shield, Database, Code2 } from 'lucide-react'
+import { ArrowRight, Sparkles, Zap, Shield, Database, Code2, Globe } from 'lucide-react'
 
-const models = [
-  { name: 'DeepSeek V4 Flash', tag: '极速推理', color: 'from-blue-500 to-blue-600' },
-  { name: 'DeepSeek V4 Pro',  tag: '旗舰推理', color: 'from-blue-600 to-indigo-600' },
-  { name: 'DeepSeek Chat',    tag: '通用对话', color: 'from-blue-400 to-blue-500' },
-  { name: 'DeepSeek R1',      tag: '复杂推理', color: 'from-indigo-500 to-purple-600' },
-  { name: 'GLM 4.7-Flash',    tag: '轻量高效', color: 'from-emerald-500 to-teal-600' },
-  { name: 'GLM 4.5-Air',      tag: '高性价比', color: 'from-teal-400 to-emerald-500' },
-  { name: 'GLM 4-Vision',     tag: '多模态',   color: 'from-green-500 to-emerald-600' },
-  { name: 'Qwen 3.7-Max',     tag: '旗舰模型', color: 'from-violet-500 to-purple-600' },
-  { name: 'Qwen 3.7-Plus',    tag: '均衡全能', color: 'from-purple-400 to-violet-500' },
-  { name: 'Qwen 3.5-Plus',    tag: '经典优选', color: 'from-fuchsia-500 to-pink-600' },
-  { name: 'Qwen Plus',        tag: '通用模型', color: 'from-pink-400 to-rose-500' },
-  { name: 'Qwen Turbo',       tag: '快速响应', color: 'from-rose-500 to-orange-500' },
+/* ---------- brand icon SVGs ---------- */
+function DeepSeekIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox='0 0 48 48' fill='none'>
+      <rect x='0' y='0' width='48' height='48' rx='10' className='fill-blue-500' />
+      <text x='24' y='31' textAnchor='middle' className='fill-white text-xl font-bold' style={{ fontFamily: 'system-ui' }}>D</text>
+    </svg>
+  )
+}
+function ZhipuIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox='0 0 48 48' fill='none'>
+      <rect x='0' y='0' width='48' height='48' rx='10' className='fill-emerald-500' />
+      <text x='24' y='31' textAnchor='middle' className='fill-white text-xl font-bold' style={{ fontFamily: 'system-ui' }}>G</text>
+    </svg>
+  )
+}
+function QwenIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox='0 0 48 48' fill='none'>
+      <rect x='0' y='0' width='48' height='48' rx='10' className='fill-violet-500' />
+      <text x='24' y='31' textAnchor='middle' className='fill-white text-xl font-bold' style={{ fontFamily: 'system-ui' }}>Q</text>
+    </svg>
+  )
+}
+/* -------- model data with bilingual labels + brand -------- */
+interface ModelDef { nameZh: string; nameEn: string; tagZh: string; tagEn: string; brand: 'deepseek' | 'zhipu' | 'qwen' }
+
+const models: ModelDef[] = [
+  { nameZh: 'DeepSeek V4 Flash', nameEn: 'DeepSeek V4 Flash', tagZh: '极速推理', tagEn: 'Fast Inference', brand: 'deepseek' },
+  { nameZh: 'DeepSeek V4 Pro',   nameEn: 'DeepSeek V4 Pro',   tagZh: '旗舰推理', tagEn: 'Flagship Reasoning', brand: 'deepseek' },
+  { nameZh: 'DeepSeek Chat',     nameEn: 'DeepSeek Chat',     tagZh: '通用对话', tagEn: 'General Chat', brand: 'deepseek' },
+  { nameZh: 'DeepSeek Reasoner', nameEn: 'DeepSeek Reasoner', tagZh: '复杂推理', tagEn: 'Advanced Reasoning', brand: 'deepseek' },
+  { nameZh: 'GLM 4.7-Flash',     nameEn: 'GLM 4.7-Flash',    tagZh: '轻量高效', tagEn: 'Lightweight', brand: 'zhipu' },
+  { nameZh: 'GLM 4.5-Air',       nameEn: 'GLM 4.5-Air',      tagZh: '高性价比', tagEn: 'High Value', brand: 'zhipu' },
+  { nameZh: 'GLM 4-Vision',      nameEn: 'GLM 4-Vision',     tagZh: '多模态',   tagEn: 'Multimodal', brand: 'zhipu' },
+  { nameZh: 'Qwen 3.7-Max',      nameEn: 'Qwen 3.7-Max',     tagZh: '旗舰模型', tagEn: 'Flagship', brand: 'qwen' },
+  { nameZh: 'Qwen 3.7-Plus',     nameEn: 'Qwen 3.7-Plus',    tagZh: '均衡全能', tagEn: 'All-round', brand: 'qwen' },
+  { nameZh: 'Qwen 3.5-Plus',     nameEn: 'Qwen 3.5-Plus',    tagZh: '经典优选', tagEn: 'Best Value', brand: 'qwen' },
+  { nameZh: 'Qwen Plus',         nameEn: 'Qwen Plus',        tagZh: '通用模型', tagEn: 'General', brand: 'qwen' },
+  { nameZh: 'Qwen Turbo',        nameEn: 'Qwen Turbo',       tagZh: '快速响应', tagEn: 'Fast Response', brand: 'qwen' },
 ]
 
-const features = [
-  {
-    icon: Zap,
-    title: '一 Key 通用',
-    desc: '一个 API Key 调用 DeepSeek、GLM、Qwen 多个模型。换模型只需改 model 参数，代码零改动。',
-  },
-  {
-    icon: Code2,
-    title: 'OpenAI 兼容',
-    desc: '完全兼容 OpenAI API 格式。改一行 base_url 即可接入，现有 SDK 无需修改。',
-  },
-  {
-    icon: Cpu,
-    title: '国内模型深度优化',
-    desc: 'DeepSeek、智谱 GLM、通义千问国内直连，低延迟、高可用。',
-  },
-  {
-    icon: Database,
-    title: '即充即用',
-    desc: '美金充值，按量扣费。无月费无订阅，充多少用多少。',
-  },
-  {
-    icon: Shield,
-    title: '用量透明',
-    desc: '后台实时查看用量、余额、调用记录。每笔扣费清晰可查。',
-  },
-  {
-    icon: Globe,
-    title: '持续扩展',
-    desc: '更多模型持续接入中。一个平台，管理所有 AI 模型接入。',
-  },
+function BrandIcon({ brand, className }: { brand: string; className?: string }) {
+  switch (brand) {
+    case 'deepseek': return <DeepSeekIcon className={className} />
+    case 'zhipu':    return <ZhipuIcon className={className} />
+    case 'qwen':     return <QwenIcon className={className} />
+    default:         return null
+  }
+}
+
+const brandColors: Record<string, string> = {
+  deepseek: 'from-blue-500 to-indigo-600',
+  zhipu:    'from-emerald-500 to-teal-600',
+  qwen:     'from-violet-500 to-purple-600',
+}
+
+const brandGradients: Record<string, `oklch${string}`> = {
+  deepseek: 'oklch(0.60 0.22 250 / 80%)',
+  zhipu:    'oklch(0.65 0.18 170 / 80%)',
+  qwen:     'oklch(0.60 0.20 280 / 80%)',
+}
+
+/* -------- features (bilingual) -------- */
+const features = (isZh: boolean) => [
+  { icon: Zap, title: isZh ? '一 Key 通用' : 'One Key for All', desc: isZh
+    ? '一个 API Key 调用 DeepSeek、GLM、Qwen 多个模型。换模型只需改 model 参数，代码零改动。'
+    : 'One API key for DeepSeek, GLM, Qwen. Switch models by changing the model parameter only.' },
+  { icon: Code2, title: isZh ? 'OpenAI 兼容' : 'OpenAI Compatible', desc: isZh
+    ? '完全兼容 OpenAI API 格式。改一行 base_url 即可接入，现有 SDK 无需修改。'
+    : 'Fully OpenAI-compatible. Just change your base_url, no SDK changes needed.' },
+  { icon: Globe, title: isZh ? '国内模型深度优化' : 'Optimized for CN Models', desc: isZh
+    ? 'DeepSeek、智谱 GLM、通义千问国内直连，低延迟、高可用。'
+    : 'DeepSeek, GLM, Qwen direct connections in China — low latency, high availability.' },
+  { icon: Database, title: isZh ? '即充即用' : 'Prepay & Use', desc: isZh
+    ? '美金充值，按量扣费。无月费无订阅，充多少用多少。'
+    : 'USD prepaid balance, pay per usage. No monthly fees, no subscriptions.' },
+  { icon: Shield, title: isZh ? '用量透明' : 'Transparent Usage', desc: isZh
+    ? '后台实时查看用量、余额、调用记录。每笔扣费清晰可查。'
+    : 'Real-time usage dashboard with clear billing records for every API call.' },
+  { icon: Zap, title: isZh ? '持续扩展' : 'Expanding', desc: isZh
+    ? '更多模型持续接入中。一个平台，管理所有 AI 模型接入。'
+    : 'New models added regularly. One platform to manage all your AI access.' },
 ]
 
+/* -------- footer -------- */
+function HomeFooter({ isZh }: { isZh: boolean }) {
+  const year = new Date().getFullYear()
+  return (
+    <footer className='border-t border-border/40 bg-gradient-to-r from-orange-50/80 via-red-50/60 to-purple-50/80'>
+      <div className='mx-auto max-w-7xl px-6 py-12 md:py-16'>
+        <div className='flex flex-col justify-between gap-10 md:flex-row md:gap-16'>
+          <div className='shrink-0'>
+            <span className='text-foreground text-lg font-bold tracking-tight'>TokenMaster</span>
+            <p className='text-muted-foreground/60 mt-2 max-w-[220px] text-sm leading-relaxed'>
+              {isZh
+                ? '面向开发者的一站式 AI 模型 API 网关。一个 Key，全部模型。'
+                : 'A one-stop AI model API gateway for developers. One key, all models.'}
+            </p>
+          </div>
+          <div className='grid grid-cols-2 gap-10 md:gap-16'>
+            <div>
+              <p className='text-muted-foreground/50 mb-3 text-xs font-medium tracking-wider uppercase'>
+                {isZh ? '产品' : 'Product'}
+              </p>
+              <ul className='space-y-2.5'>
+                <li><a href='#models' className='hover:text-primary text-muted-foreground text-sm transition-colors'>{isZh ? '模型' : 'Models'}</a></li>
+                <li><a href='#features' className='hover:text-primary text-muted-foreground text-sm transition-colors'>{isZh ? '优势' : 'Features'}</a></li>
+                <li><Link to='/pricing' className='hover:text-primary text-muted-foreground text-sm transition-colors'>{isZh ? '价格' : 'Pricing'}</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className='text-muted-foreground/50 mb-3 text-xs font-medium tracking-wider uppercase'>
+                {isZh ? '支持' : 'Support'}
+              </p>
+              <ul className='space-y-2.5'>
+                <li><Link to='/sign-up' className='hover:text-primary text-muted-foreground text-sm transition-colors'>{isZh ? '注册' : 'Sign Up'}</Link></li>
+                <li><Link to='/sign-in' className='hover:text-primary text-muted-foreground text-sm transition-colors'>{isZh ? '登录' : 'Sign In'}</Link></li>
+                <li><a href='#faq' className='hover:text-primary text-muted-foreground text-sm transition-colors'>FAQ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className='border-border/30 mt-10 flex flex-col items-center justify-between gap-2 border-t pt-6 sm:flex-row'>
+          <p className='text-muted-foreground/40 text-xs'>&copy; {year} TokenMaster. {isZh ? '保留所有权利。' : 'All rights reserved.'}</p>
+          <div className='flex items-center gap-2'>
+            <span className='inline-block size-1.5 rounded-full bg-green-500' />
+            <span className='text-muted-foreground/40 text-xs'>{isZh ? '服务运行正常' : 'Service Operational'}</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+/* ================================================================== */
 export function Home() {
   const { t, i18n } = useTranslation()
   const isZh = i18n.language.startsWith('zh')
@@ -78,7 +167,7 @@ export function Home() {
   return (
     <PublicLayout showMainContainer={false}>
       <main className='overflow-x-hidden'>
-        
+
         {/* ===== Hero ===== */}
         <section className='relative overflow-hidden px-6 pt-24 pb-20 md:pt-32 md:pb-28 lg:pt-36 lg:pb-32'>
           <div aria-hidden className='pointer-events-none absolute inset-0 -z-10 opacity-25 dark:opacity-[0.12]'
@@ -96,12 +185,12 @@ export function Home() {
             <div className='mb-6 inline-flex items-center gap-2 rounded-full border bg-white/50 px-4 py-1.5 text-sm backdrop-blur-sm shadow-xs'>
               <Sparkles className='text-primary size-4' />
               <span className='text-muted-foreground'>
-                {isZh ? '已接入 12+ 主流 AI 模型' : '12+ AI models available'}
+                {isZh ? '已接入 12+ 主流 AI 模型' : '12+ AI Models Available'}
               </span>
             </div>
 
             <h1 className='text-foreground text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl'>
-              {isZh ? '一个 API，畅用' : 'One API to Use '}
+              {isZh ? '一个 API，畅用' : 'One API for '}
               <span className='bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 bg-clip-text text-transparent'>
                 {isZh ? '三大国产模型' : 'All Major Models'}
               </span>
@@ -110,7 +199,7 @@ export function Home() {
             <p className='text-muted-foreground mx-auto mt-6 max-w-2xl text-lg leading-relaxed'>
               {isZh
                 ? 'TokenMaster 统一 DeepSeek、智谱 GLM、通义千问 API 接入。一个 Key，全部模型。无需分别注册、无需管理多个平台。'
-                : 'TokenMaster unifies DeepSeek, GLM, Qwen API access. One key for all models. No separate signups, no multi-platform management.'}
+                : 'TokenMaster unifies DeepSeek, GLM, and Qwen APIs. One key for all models — no separate signups, no multi-platform management.'}
             </p>
 
             <div className='mt-10 flex items-center justify-center gap-4'>
@@ -125,41 +214,40 @@ export function Home() {
           </div>
         </section>
 
-        {/* ===== 模型展示 ===== */}
-        <section className='bg-muted/30 px-6 py-20'>
+        {/* ===== Model Showcase ===== */}
+        <section className='bg-muted/30 px-6 py-20' id='models'>
           <div className='mx-auto max-w-7xl'>
             <div className='mb-10 text-center'>
               <h2 className='text-foreground text-3xl font-bold'>
                 {isZh ? '已接入模型' : 'Available Models'}
               </h2>
               <p className='text-muted-foreground mt-2'>
-                {isZh ? '全系 OpenAI 兼容，按需选用' : 'All OpenAI-compatible, choose as needed'}
+                {isZh ? '全系 OpenAI 兼容，按需选用' : 'All OpenAI-compatible, pick what you need'}
               </p>
             </div>
 
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {models.map((model, i) => (
-                <div
-                  key={i}
-                  className='group relative overflow-hidden rounded-xl border bg-white/50 p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
-                >
-                  <div
-                    aria-hidden
-                    className='absolute -top-6 -right-6 size-20 rounded-full opacity-[0.07] transition-all duration-500 group-hover:scale-150 group-hover:opacity-[0.12]'
-                    style={{ background: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
-                      '--tw-gradient-from': model.color.split(' ')[0].split('-')[1] ? `oklch(0.6 0.2 250)` : '#3b82f6',
-                      '--tw-gradient-to': model.color.split(' ')[1]?.split('-')[1] ? `oklch(0.5 0.2 280)` : '#6366f1',
-                    } as React.CSSProperties}
+              {models.map((m, i) => (
+                <div key={i} className='group relative overflow-hidden rounded-xl border bg-white/50 p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'>
+                  <div aria-hidden className='absolute -top-6 -right-6 size-20 rounded-full opacity-[0.07] transition-all duration-500 group-hover:scale-150 group-hover:opacity-[0.12]'
+                    style={{ background: `radial-gradient(circle, ${brandGradients[m.brand]}, transparent)` }}
                   />
-                  <div className='relative'>
-                    <div className='flex items-center justify-between'>
-                      <span className='text-foreground text-sm font-semibold'>{model.name}</span>
-                      <span className='text-muted-foreground/60 text-[10px] font-medium uppercase tracking-wider'>{model.tag}</span>
-                    </div>
-                    <div className='mt-2 flex flex-wrap gap-1.5'>
-                      <span className='inline-block rounded-md bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400'>
-                        OpenAI 兼容
-                      </span>
+                  <div className='relative flex items-start gap-3'>
+                    <BrandIcon brand={m.brand} className='mt-0.5 size-9 shrink-0' />
+                    <div className='min-w-0 flex-1'>
+                      <div className='flex items-center justify-between gap-1'>
+                        <span className='text-foreground text-sm font-semibold truncate'>
+                          {isZh ? m.nameZh : m.nameEn}
+                        </span>
+                        <span className='text-muted-foreground/60 shrink-0 text-[10px] font-medium uppercase tracking-wider'>
+                          {isZh ? m.tagZh : m.tagEn}
+                        </span>
+                      </div>
+                      <div className='mt-1.5 flex flex-wrap gap-1.5'>
+                        <span className='inline-block rounded-md bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400'>
+                          OpenAI 兼容
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -168,28 +256,27 @@ export function Home() {
           </div>
         </section>
 
-        {/* ===== 核心优势 ===== */}
-        <section className='px-6 py-20'>
+        {/* ===== Features ===== */}
+        <section className='px-6 py-20' id='features'>
           <div className='mx-auto max-w-7xl'>
             <div className='mb-12 text-center'>
               <h2 className='text-foreground text-3xl font-bold'>
                 {isZh ? '为什么选择 TokenMaster？' : 'Why TokenMaster?'}
               </h2>
               <p className='text-muted-foreground mt-2'>
-                {isZh ? '为你省去多平台管理的麻烦' : 'Eliminate the hassle of multi-platform management'}
+                {isZh ? '为你省去多平台管理的麻烦' : 'No more juggling multiple platforms'}
               </p>
             </div>
-
             <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-              {features.map((feature, i) => {
-                const Icon = feature.icon
+              {features(isZh).map((f, i) => {
+                const Icon = f.icon
                 return (
                   <div key={i} className='group rounded-xl border bg-white/50 p-6 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5'>
                     <div className='bg-primary/10 text-primary mb-4 inline-flex size-11 items-center justify-center rounded-lg transition-colors group-hover:bg-primary group-hover:text-white'>
                       <Icon className='size-5' />
                     </div>
-                    <h3 className='text-foreground mb-2 text-lg font-semibold'>{feature.title}</h3>
-                    <p className='text-muted-foreground text-sm leading-relaxed'>{feature.desc}</p>
+                    <h3 className='text-foreground mb-2 text-lg font-semibold'>{f.title}</h3>
+                    <p className='text-muted-foreground text-sm leading-relaxed'>{f.desc}</p>
                   </div>
                 )
               })}
@@ -208,12 +295,11 @@ export function Home() {
                 {isZh ? '三步接入，一行代码' : 'Three steps, one line of code'}
               </p>
             </div>
-
             <div className='grid gap-6 md:grid-cols-3'>
               {[
-                { step: '01', title: isZh ? '注册账号' : 'Register', desc: isZh ? '免费注册 TokenMaster，获取专属 API Key' : 'Sign up for free and get your API Key' },
-                { step: '02', title: isZh ? '充值余额' : 'Top Up', desc: isZh ? '后台充入美金余额，按需付费' : 'Deposit USD balance, pay-as-you-go' },
-                { step: '03', title: isZh ? '调用 API' : 'Call API', desc: isZh ? '改一行 base_url，用你的 Key 直接调用' : 'Change base_url, use your key to call models' },
+                { step: '01', title: isZh ? '注册账号' : 'Register', desc: isZh ? '免费注册，获取专属 API Key' : 'Sign up free, get your API Key' },
+                { step: '02', title: isZh ? '充值余额' : 'Top Up',   desc: isZh ? '后台充入美金余额，按需付费' : 'Deposit USD balance, pay-as-you-go' },
+                { step: '03', title: isZh ? '调用 API' : 'Call API', desc: isZh ? '改一行 base_url，用 Key 直接调用' : 'Change base_url, start calling' },
               ].map((item, i) => (
                 <div key={i} className='relative rounded-xl border bg-white/50 p-6'>
                   <span className='text-5xl font-black opacity-[0.04] absolute -top-2 -right-2 select-none leading-none'>{item.step}</span>
@@ -223,69 +309,46 @@ export function Home() {
                 </div>
               ))}
             </div>
-
             <div className='mt-10 rounded-xl border bg-white/50 p-6'>
               <p className='text-muted-foreground/70 mb-2 text-xs font-bold tracking-widest uppercase'>PYTHON</p>
               <pre className='bg-muted/50 text-sm overflow-x-auto rounded-lg p-4'>
-                <code>
-                  <span className='text-muted-foreground'>import</span>{' '}
-                  <span className='text-blue-600'>openai</span>
-                  {'\n'}
-                  client ={' '}
-                  <span className='text-blue-600'>openai</span>.
-                  <span className='text-blue-600'>OpenAI</span>({'\n'}
-                  {'    '}api_key=<span className='text-emerald-600'>"tm_your_key"</span>,{'\n'}
-                  {'    '}base_url=<span className='text-emerald-600'>"https://api-tokenmaster.com/v1"</span>,{'\n'}
-                  ){'\n\n'}
-                  response = client.chat.completions.
-                  <span className='text-blue-600'>create</span>({'\n'}
-                  {'    '}model=<span className='text-emerald-600'>"deepseek-v4-flash"</span>,{'\n'}
-                  {'    '}messages=[{'{'}"role": <span className='text-emerald-600'>"user"</span>, "content": <span className='text-emerald-600'>"你好"</span>{'}'}]{'\n'}
-                  )
-                </code>
+                <code>{`import openai
+client = openai.OpenAI(
+    api_key="tm_your_key",
+    base_url="https://api-tokenmaster.com/v1",
+)
+resp = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+print(resp.choices[0].message.content)`}</code>
               </pre>
             </div>
           </div>
         </section>
 
         {/* ===== FAQ ===== */}
-        <section className='px-6 py-20'>
+        <section className='px-6 py-20' id='faq'>
           <div className='mx-auto max-w-3xl'>
             <h2 className='text-foreground mb-12 text-center text-3xl font-bold'>
               {isZh ? '常见问题' : 'FAQ'}
             </h2>
             <div className='space-y-4'>
               {[
-                {
-                  q: isZh ? 'TokenMaster 支持哪些模型？' : 'What models does TokenMaster support?',
-                  a: isZh
-                    ? '目前已接入 DeepSeek（V4 Flash/Pro/Chat/Reasoner）、智谱 GLM（4.7-Flash/4.5-Air/4-Vision 等）、通义千问 Qwen（3.7-Max/3.7-Plus/3.5 系列等），更多模型持续接入中。'
-                    : 'Currently supports DeepSeek (V4 Flash/Pro/Chat/Reasoner), GLM (4.7-Flash/4.5-Air/4-Vision etc.), Qwen (3.7-Max/3.7-Plus/3.5 series etc.). More models coming soon.',
-                },
-                {
-                  q: isZh ? '需要准备自己的 API Key 吗？' : 'Do I need my own API keys?',
-                  a: isZh
-                    ? '不需要。注册 TokenMaster 后即可获取专属 API Key，一个 Key 调用全部模型，无需另外准备任何平台的 Key。'
-                    : 'No. Register on TokenMaster and get one API key for all models. No need to get separate keys from each platform.',
-                },
-                {
-                  q: isZh ? '怎么收费？价格如何？' : 'How does pricing work?',
-                  a: isZh
-                    ? '采用美金充值制，按实际使用量扣费。每个模型明码标价，可在后台模型广场查看。无月费、无订阅、无最低消费。'
-                    : 'USD prepaid credit system, pay per actual usage. Each model has transparent pricing visible in the dashboard. No monthly fees, no subscriptions, no minimums.',
-                },
-                {
-                  q: isZh ? '和 OpenAI 兼容吗？' : 'Is it OpenAI compatible?',
-                  a: isZh
-                    ? '完全兼容。改一行 base_url 为 https://api-tokenmaster.com/v1 即可，现有 OpenAI SDK 代码无需任何修改。'
-                    : 'Fully compatible. Just change base_url to https://api-tokenmaster.com/v1. Your existing OpenAI SDK code works without any changes.',
-                },
-                {
-                  q: isZh ? '余额会过期吗？' : 'Do credits expire?',
-                  a: isZh
-                    ? '不设有效期，充多少用多少。余额长期有效。'
-                    : 'No expiration. Your balance is valid indefinitely.',
-                },
+                { q: isZh ? 'TokenMaster 支持哪些模型？' : 'What models does TokenMaster support?',
+                  a: isZh ? '目前已接入 DeepSeek（V4 Flash/Pro/Chat/Reasoner）、智谱 GLM（4.7-Flash/4.5-Air/4-Vision 等）、通义千问 Qwen（3.7-Max/3.7-Plus/3.5 系列等），更多模型持续接入中。'
+                    : 'Currently: DeepSeek (V4 Flash/Pro/Chat/Reasoner), GLM (4.7-Flash/4.5-Air/4-Vision etc.), Qwen (3.7-Max/3.7-Plus/3.5 series etc.). More coming soon.' },
+                { q: isZh ? '需要准备自己的 API Key 吗？' : 'Do I need my own API keys?',
+                  a: isZh ? '不需要。注册后获取专属 Key，一个 Key 调用全部模型。'
+                    : 'No. Get one TokenMaster key that works for all models.' },
+                { q: isZh ? '怎么收费？' : 'How does pricing work?',
+                  a: isZh ? '美金充值，按量扣费。明码标价，无月费无订阅无最低消费。'
+                    : 'USD prepaid credits, pay per usage. Transparent prices, no monthly fees.' },
+                { q: isZh ? '和 OpenAI 兼容吗？' : 'Is it OpenAI compatible?',
+                  a: isZh ? '完全兼容。改一行 base_url 到 https://api-tokenmaster.com/v1 即可。'
+                    : 'Fully compatible. Just set base_url to https://api-tokenmaster.com/v1.' },
+                { q: isZh ? '余额会过期吗？' : 'Do credits expire?',
+                  a: isZh ? '不设有效期，充多少用多少。' : 'No expiration. Your balance lasts indefinitely.' },
               ].map((faq, i) => (
                 <details key={i} className='group rounded-xl border bg-white/50 p-5'>
                   <summary className='text-foreground cursor-pointer text-base font-medium transition-colors group-open:text-primary flex items-center justify-between'>
@@ -308,14 +371,10 @@ export function Home() {
               {isZh ? '开始使用 TokenMaster' : 'Get Started with TokenMaster'}
             </h2>
             <p className='mt-4 text-lg opacity-90'>
-              {isZh ? '免费注册，立即体验统一 AI 模型网关' : 'Sign up free and experience unified AI model gateway'}
+              {isZh ? '免费注册，立即体验统一 AI 模型网关' : 'Join free and try the unified AI gateway'}
             </p>
             <div className='mt-8'>
-              <Button
-                size='lg'
-                className='rounded-full bg-white px-10 text-foreground hover:bg-white/90'
-                render={<Link to='/sign-up' />}
-              >
+              <Button size='lg' className='rounded-full bg-white px-10 text-foreground hover:bg-white/90' render={<Link to='/sign-up' />}>
                 {isZh ? '免费注册' : 'Sign Up Free'}
                 <ArrowRight className='ml-1.5 size-4' />
               </Button>
@@ -323,6 +382,8 @@ export function Home() {
           </div>
         </section>
 
+        {/* ===== Footer ===== */}
+        <HomeFooter isZh={isZh} />
       </main>
     </PublicLayout>
   )

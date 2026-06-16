@@ -33,27 +33,27 @@ export function AuthLayout({ children }: AuthLayoutProps) {
     <div className='relative grid h-svh max-w-none'>
       <Link
         to='/'
-        className='absolute top-4 left-4 z-10 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8'
+        className='absolute top-3 left-4 z-10 flex items-center gap-2 transition-opacity hover:opacity-80'
       >
-        <div className='relative h-8 w-8'>
+        <div className='relative h-7 w-7'>
           {loading ? (
             <Skeleton className='absolute inset-0 rounded-full' />
           ) : (
             <img
               src={logo}
               alt={t('Logo')}
-              className='h-8 w-8 rounded-full object-cover'
+              className='h-7 w-7 rounded-full object-cover'
             />
           )}
         </div>
         {loading ? (
-          <Skeleton className='h-6 w-24' />
+          <Skeleton className='h-5 w-20' />
         ) : (
-          <h1 className='text-xl font-medium'>{systemName}</h1>
+          <h1 className='text-base font-medium'>{systemName}</h1>
         )}
       </Link>
-      <div className='container flex items-center pt-16 sm:pt-0'>
-        <div className='mx-auto flex w-full flex-col justify-center space-y-2 px-4 py-8 sm:w-[480px] sm:p-8'>
+      <div className='container flex items-center pt-0'>
+        <div className='mx-auto flex w-full flex-col justify-center space-y-1 px-4 py-6 sm:w-[420px] sm:p-6'>
           {children}
         </div>
       </div>
