@@ -20,7 +20,7 @@ import { getStatus } from '@/lib/api'
 
 export type ModuleAccess = { enabled: boolean; requireAuth: boolean }
 
-export type HeaderNavModule = 'rankings' | 'pricing' | 'models'
+export type HeaderNavModule = 'rankings' | 'pricing'
 
 export type HeaderNavModules = {
   home: boolean
