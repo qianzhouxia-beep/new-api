@@ -20,6 +20,7 @@ import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useStatus } from '@/hooks/use-status'
 import { getPricing } from '../api'
+import { enrichWithDescriptions } from '../lib/model-descriptions'
 
 export function usePricingData() {
   const { status } = useStatus()
@@ -45,19 +46,21 @@ export function usePricingData() {
 
     const vendorMap = new Map(data.vendors.map((v) => [v.id, v]))
 
-    return data.data.map((model) => {
-      const vendor = model.vendor_id
-        ? vendorMap.get(model.vendor_id)
-        : undefined
-      return {
-        ...model,
-        key: model.model_name,
-        vendor_name: vendor?.name,
-        vendor_icon: vendor?.icon,
-        vendor_description: vendor?.description,
-        group_ratio: data.group_ratio,
-      }
-    })
+    return enrichWithDescriptions(
+      data.data.map((model) => {
+        const vendor = model.vendor_id
+          ? vendorMap.get(model.vendor_id)
+          : undefined
+        return {
+          ...model,
+          key: model.model_name,
+          vendor_name: vendor?.name,
+          vendor_icon: vendor?.icon,
+          vendor_description: vendor?.description,
+          group_ratio: data.group_ratio,
+        }
+      })
+    )
   }, [data])
 
   return {
