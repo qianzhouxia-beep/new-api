@@ -243,11 +243,7 @@ export function Home() {
                           {isZh ? m.tagZh : m.tagEn}
                         </span>
                       </div>
-                      <div className='mt-1.5 flex flex-wrap gap-1.5'>
-                        <span className='inline-block rounded-md bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400'>
-                          OpenAI 兼容
-                        </span>
-                      </div>
+
                     </div>
                   </div>
                 </div>
