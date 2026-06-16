@@ -1,6 +1,6 @@
 /*
 Copyright (C) 2023-2026 QuantumNous
-Modified by TokenMaster Team - Added Pricing Route
+Modified by TokenMaster Team - Added Plans Route
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -18,8 +18,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { createFileRoute } from '@tanstack/react-router'
-import { PricingPage } from '@/features/pricing'
+import { PricingPlansPage } from '@/features/pricing/plans'
 
-export const Route = createFileRoute('/pricing')({
-  component: PricingPage,
+export const Route = createFileRoute('/plans')({
+  component: PricingPlansPage,
 })

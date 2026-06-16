@@ -71,11 +71,14 @@ export function useTopNavLinks(): TopNavLink[] {
     links.push({ title: t('Console'), href: '/dashboard' })
   }
 
-  // Pricing
+  // Pricing (Model Square - model marketplace)
   const pricing = modules?.pricing
   if (pricing && typeof pricing === 'object' && pricing.enabled) {
     const requiresAuth = pricing.requireAuth && !isAuthed
     links.push({ title: t('Model Square'), href: '/pricing', requiresAuth })
+
+    // Plans (TokenMaster pricing plans page)
+    links.push({ title: t('Pricing'), href: '/plans' })
   }
 
   // Rankings
