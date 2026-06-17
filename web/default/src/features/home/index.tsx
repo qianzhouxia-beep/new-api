@@ -46,11 +46,16 @@ const faqs = [
 export function Home() {
   return (
     <PublicLayout>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 px-6 py-24 lg:py-32">
-        <div className="mx-auto max-w-7xl">
+      {/* Hero with tech background */}
+      <section className="hero-section relative overflow-hidden px-6 py-24 lg:py-32">
+        {/* Background effects */}
+        <div className="hero-grid pointer-events-none absolute inset-0" />
+        <div className="hero-glow hero-glow-1 pointer-events-none absolute" />
+        <div className="hero-glow hero-glow-2 pointer-events-none absolute" />
+
+        <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex flex-col items-center gap-8 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/10 px-4 py-1.5 text-sm text-blue-300">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/10 px-4 py-1.5 text-sm text-blue-300 backdrop-blur-sm">
               <Sparkles className="size-4" />
               AI Model Gateway
             </div>
@@ -60,21 +65,35 @@ export function Home() {
                 All Top AI Models
               </span>
             </h1>
-            <p className="max-w-2xl text-lg text-slate-400">
+            <p className="max-w-2xl text-lg text-slate-300">
               Access DeepSeek, GLM, Qwen and more through a single unified API.
               Fully OpenAI-compatible — switch models instantly.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link to="/sign-up">
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2 shadow-lg shadow-blue-500/25">
                   Get Started Free <ArrowRight className="size-4" />
                 </Button>
               </Link>
               <Link to="/pricing">
-                <Button size="lg" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-800">
+                <Button size="lg" variant="outline" className="border-slate-600 bg-slate-800/50 text-slate-300 hover:bg-slate-800">
                   View Models
                 </Button>
               </Link>
+            </div>
+
+            {/* Stats row */}
+            <div className="mt-12 grid grid-cols-3 gap-8 border-t border-white/10 pt-8">
+              {[
+                { value: '99.9%', label: 'Uptime SLA' },
+                { value: '<50ms', label: 'Avg Latency' },
+                { value: '10+', label: 'Model Providers' },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <div className="text-2xl font-bold text-white">{stat.value}</div>
+                  <div className="text-xs text-slate-400">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -83,11 +102,14 @@ export function Home() {
       {/* Models */}
       <section className="border-y border-slate-800 bg-slate-950/50 px-6 py-20" id="models">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-10 text-center text-3xl font-bold text-white">Available Models</h2>
+          <h2 className="mb-2 text-center text-3xl font-bold text-white">Available Models</h2>
+          <p className="mx-auto mb-10 max-w-xl text-center text-sm text-slate-400">
+            Premium AI models at competitive prices, all through a single unified endpoint.
+          </p>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
             {models.map((m, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4 transition hover:border-slate-700">
-                <BrandIcon brand={m.brand} className="size-8 shrink-0" />
+              <div key={i} className="group flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4 transition-all hover:border-blue-500/30 hover:bg-slate-900/80">
+                <BrandIcon brand={m.brand} className="size-8 shrink-0 transition-transform group-hover:scale-110" />
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold text-white">{m.nameEn}</div>
                   <div className="text-xs text-slate-500">{m.tagEn}</div>
@@ -101,10 +123,13 @@ export function Home() {
       {/* Features */}
       <section className="px-6 py-20" id="features">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-white">Why TokenMaster?</h2>
+          <h2 className="mb-2 text-center text-3xl font-bold text-white">Why TokenMaster?</h2>
+          <p className="mx-auto mb-12 max-w-xl text-center text-sm text-slate-400">
+            Built for developers who need reliable, fast, and affordable AI model access.
+          </p>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featuresData.map((f, i) => (
-              <div key={i} className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+              <div key={i} className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 transition-colors hover:border-blue-500/20">
                 <f.icon className="mb-4 size-10 text-blue-400" />
                 <h3 className="mb-2 text-lg font-semibold text-white">{f.title}</h3>
                 <p className="text-sm leading-relaxed text-slate-400">{f.desc}</p>
@@ -114,8 +139,30 @@ export function Home() {
         </div>
       </section>
 
+      {/* How it works - simple 3 steps */}
+      <section className="border-t border-slate-800 bg-slate-950/30 px-6 py-20" id="how-it-works">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-12 text-center text-3xl font-bold text-white">Get Started in 3 Steps</h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              { step: '01', title: 'Sign Up', desc: 'Create your free account in seconds. No credit card required.' },
+              { step: '02', title: 'Get Your API Key', desc: 'Generate your unique API key from the dashboard.' },
+              { step: '03', title: 'Start Building', desc: 'Replace base_url in your code and start making requests.' },
+            ].map((item) => (
+              <div key={item.step} className="relative text-center">
+                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-blue-500/10 text-xl font-bold text-blue-400 ring-1 ring-blue-500/20">
+                  {item.step}
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-white">{item.title}</h3>
+                <p className="text-sm text-slate-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section className="border-t border-slate-800 bg-slate-950/30 px-6 py-20" id="faq">
+      <section className="border-t border-slate-800 px-6 py-20" id="faq">
         <div className="mx-auto max-w-3xl">
           <h2 className="mb-10 text-center text-3xl font-bold text-white">FAQ</h2>
           <div className="space-y-4">
@@ -135,7 +182,7 @@ export function Home() {
 
       {/* CTA */}
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-3xl rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 p-10 text-center">
+        <div className="mx-auto max-w-3xl rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 p-10 text-center shadow-lg shadow-blue-500/20">
           <h2 className="mb-4 text-3xl font-bold text-white">Ready to Get Started?</h2>
           <p className="mb-8 text-lg text-blue-100">
             Join developers who use TokenMaster to access the best AI models.
@@ -154,6 +201,39 @@ export function Home() {
           &copy; {new Date().getFullYear()} TokenMaster. All rights reserved.
         </div>
       </footer>
+
+      {/* Embedded styles for hero background effects */}
+      <style>{`
+        .hero-section {
+          background: linear-gradient(135deg, #0a0e27 0%, #0f172a 40%, #0c1929 70%, #0a1628 100%);
+        }
+        .hero-grid {
+          background-image:
+            linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+          background-size: 60px 60px;
+          mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+        }
+        .hero-glow {
+          border-radius: 50%;
+          filter: blur(120px);
+          opacity: 0.15;
+        }
+        .hero-glow-1 {
+          width: 600px;
+          height: 600px;
+          top: -200px;
+          right: -100px;
+          background: radial-gradient(circle, #3b82f6, transparent 70%);
+        }
+        .hero-glow-2 {
+          width: 500px;
+          height: 500px;
+          bottom: -150px;
+          left: -100px;
+          background: radial-gradient(circle, #06b6d4, transparent 70%);
+        }
+      `}</style>
     </PublicLayout>
   )
 }
