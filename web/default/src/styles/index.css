@@ -468,7 +468,7 @@ For commercial licensing, please contact support@quantumnous.com
   0% { transform: translateY(-10%); opacity: 0; }
   15% { opacity: 1; }
   85% { opacity: 1; }
-  100% { transform: translateY(calc(100dvh + 10%)); opacity: 0; }
+  100% { transform: translateY(calc(100vh + 10%)); opacity: 0; }
 }
 .animate-scan-line {
   animation: scan-line 4.5s ease-in-out infinite;
