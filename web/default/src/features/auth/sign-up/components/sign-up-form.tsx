@@ -18,6 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { useEffect, useMemo, useState } from 'react'
 import type { z } from 'zod'
+import { useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
@@ -53,8 +54,10 @@ import {
 
 export function SignUpForm({
   className,
+  redirectTo,
   ...props
-}: React.HTMLAttributes<HTMLFormElement>) {
+}: React.HTMLAttributes<HTMLFormElement> & { redirectTo?: string }) {
+  const navigate = useNavigate()
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
@@ -167,7 +170,11 @@ export function SignUpForm({
 
       if (res?.success) {
         toast.success(t('Account created! Please sign in'))
-        redirectToLogin()
+        if (redirectTo) {
+          navigate({ to: '/sign-in', search: { redirect: redirectTo }, replace: true })
+        } else {
+          redirectToLogin()
+        }
       } else {
         toast.error(res?.message || t('Failed to create account'))
       }

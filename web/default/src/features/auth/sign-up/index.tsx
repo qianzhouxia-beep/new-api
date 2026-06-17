@@ -23,7 +23,11 @@ import { AuthLayout } from '../auth-layout'
 import { TermsFooter } from '../components/terms-footer'
 import { SignUpForm } from './components/sign-up-form'
 
-export function SignUp() {
+interface SignUpProps {
+  redirectTo?: string
+}
+
+export function SignUp({ redirectTo }: SignUpProps) {
   const { t } = useTranslation()
   const { status } = useStatus()
 
@@ -38,6 +42,7 @@ export function SignUp() {
             {t('Already have an account?')}{' '}
             <Link
               to='/sign-in'
+              search={redirectTo ? { redirect: redirectTo } : undefined}
               className='hover:text-primary font-medium underline underline-offset-4'
             >
               {t('Sign in')}
@@ -46,7 +51,7 @@ export function SignUp() {
           </p>
         </div>
 
-        <SignUpForm />
+        <SignUpForm redirectTo={redirectTo} />
 
         <TermsFooter
           variant='sign-up'
