@@ -155,7 +155,7 @@ export function Home() {
         {/* ===== Features ===== */}
         <section className="py-20 px-6" style={{ backgroundColor: '#fff8f6' }} id="features">
           <div className="mx-auto max-w-7xl">
-            <h2 className="mb-12 text-3xl font-semibold text-[#261814]">{t('Why TokenMaster?')}</h2>
+            <h2 className="mb-12 text-center text-3xl font-semibold text-[#261814]">{t('Why TokenMaster?')}</h2>
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-12 lg:col-span-8 bg-white border rounded-xl p-8 transition-all hover:shadow-md flex flex-col justify-between" style={{ borderColor: '#e1bfb5' }}>
                 <div>
@@ -246,7 +246,7 @@ resp = client.chat.completions.create(
         {/* ===== FAQ ===== */}
         <section className="py-20 px-6" style={{ backgroundColor: '#fff1ed' }} id="faq">
           <div className="mx-auto max-w-4xl">
-            <h2 className="mb-12 text-3xl font-semibold text-[#261814]">{t('FAQ')}</h2>
+            <h2 className="mb-12 text-center text-3xl font-semibold text-[#261814]">{t('FAQ')}</h2>
             <div className="space-y-3">
               {faqs.map((faq, idx) => (
                 <details key={idx} className="group bg-white border rounded-lg" style={{ borderColor: '#e1bfb5' }}>
