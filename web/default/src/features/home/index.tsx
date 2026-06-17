@@ -75,7 +75,7 @@ export function Home() {
   ]
 
   return (
-    <PublicLayout>
+    <PublicLayout showMainContainer={false}>
       <main>
         {/* ===== Hero ===== */}
         <section className="relative py-20 px-6" style={{ backgroundColor: '#fff8f6' }}>
