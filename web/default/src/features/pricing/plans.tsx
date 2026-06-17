@@ -338,6 +338,46 @@ export function PricingPlansPage() {
     [zh],
   )
 
+  const doPayPalPayment = useCallback(
+    async (amount: number) => {
+      setPaying('paypal')
+      setError(null)
+      try {
+        const res = await api.post(
+          '/api/user/paypal/pay',
+          {
+            amount: amount,
+            success_url: window.location.origin + '/plans?status=success',
+            cancel_url: window.location.origin + '/plans?status=cancel',
+          },
+          { skipBusinessError: true } as Record<string, unknown>,
+        )
+        const body = res.data as {
+          message?: string
+          data?: { pay_link?: string }
+        }
+        if (body.data?.pay_link) {
+          window.location.href = body.data.pay_link
+          return
+        }
+        setError(
+          zh
+            ? '拉起 PayPal 支付失败，请稍后重试。'
+            : 'Failed to initiate PayPal payment. Please try again.',
+        )
+        setPaying(null)
+      } catch {
+        setError(
+          zh
+            ? '拉起 PayPal 支付失败，请稍后重试。'
+            : 'Failed to initiate PayPal payment. Please try again.',
+        )
+        setPaying(null)
+      }
+    },
+    [zh],
+  )
+
   /* ── Entry point for plan button clicks ── */
   function handlePlanClick(plan: Plan) {
     setSelectedPlan(plan.id)

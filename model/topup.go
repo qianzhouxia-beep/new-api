@@ -29,6 +29,7 @@ const (
 	PaymentMethodCreem        = "creem"
 	PaymentMethodWaffo        = "waffo"
 	PaymentMethodWaffoPancake = "waffo_pancake"
+	PaymentMethodPayPal       = "paypal"
 	PaymentMethodBalance      = "balance"
 )
 
@@ -38,6 +39,7 @@ const (
 	PaymentProviderCreem        = "creem"
 	PaymentProviderWaffo        = "waffo"
 	PaymentProviderWaffoPancake = "waffo_pancake"
+	PaymentProviderPayPal       = "paypal"
 	PaymentProviderBalance      = "balance"
 )
 
@@ -125,7 +127,7 @@ func Recharge(referenceId string, customerId string, callerIp string) (err error
 			return errors.New("充值订单不存在")
 		}
 
-		if topUp.PaymentProvider != PaymentProviderStripe {
+		if topUp.PaymentProvider != PaymentProviderStripe && topUp.PaymentProvider != PaymentProviderPayPal {
 			return ErrPaymentMethodMismatch
 		}
 

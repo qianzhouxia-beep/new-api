@@ -95,9 +95,30 @@ func GetTopUpInfo(c *gin.Context) {
 		}
 	}
 
+	// 如果启用了 PayPal 支付，添加到支付方法列表
+	enablePayPal := isPayPalTopUpEnabled()
+	if enablePayPal {
+		hasPayPal := false
+		for _, method := range payMethods {
+			if method["type"] == model.PaymentMethodPayPal {
+				hasPayPal = true
+				break
+			}
+		}
+		if !hasPayPal {
+			payMethods = append(payMethods, map[string]string{
+				"name":      "PayPal",
+				"type":      model.PaymentMethodPayPal,
+				"color":     "rgba(var(--semi-blue-6), 1)",
+				"min_topup": strconv.Itoa(setting.PayPalMinTopUp),
+			})
+		}
+	}
+
 	data := gin.H{
 		"enable_online_topup":              isEpayTopUpEnabled(),
 		"enable_stripe_topup":              isStripeTopUpEnabled(),
+		"enable_paypal_topup":              enablePayPal,
 		"enable_creem_topup":               isCreemTopUpEnabled(),
 		"enable_waffo_topup":               enableWaffo,
 		"enable_waffo_pancake_topup":       enableWaffoPancake,
