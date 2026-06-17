@@ -42,12 +42,6 @@ const models: ModelDef[] = [
   { nameZh: 'Qwen Turbo',        nameEn: 'Qwen Turbo',       tagZh: '蹇€熷搷搴?, tagEn: 'Fast Response', brand: 'qwen' },
 ]
 
-const brandColors: Record<string, string> = {
-  deepseek: 'from-blue-500 to-indigo-600',
-  zhipu:    'from-emerald-500 to-teal-600',
-  qwen:     'from-violet-500 to-purple-600',
-}
-
 const brandGradients: Record<string, `oklch${string}`> = {
   deepseek: 'oklch(0.60 0.22 250 / 80%)',
   zhipu:    'oklch(0.65 0.18 170 / 80%)',
@@ -128,7 +122,7 @@ function HomeFooter({ isZh }: { isZh: boolean }) {
 
 /* ================================================================== */
 export function Home() {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const isZh = i18n.language.startsWith('zh')
 
   return (
