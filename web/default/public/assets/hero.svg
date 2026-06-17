@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 380" fill="none">
+  <rect width="560" height="380" rx="12" fill="#fff8f6"/>
+  <rect x="0" y="0" width="560" height="380" rx="12" fill="url(#bg)" fill-opacity="0.4"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="560" y2="380">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#FFB59D" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Decorative circles -->
+  <circle cx="480" cy="60" r="80" fill="#FF6B35" fill-opacity="0.04"/>
+  <circle cx="420" cy="80" r="40" fill="#FF6B35" fill-opacity="0.06"/>
+  <circle cx="100" cy="320" r="60" fill="#FF6B35" fill-opacity="0.03"/>
+  
+  <!-- Top nav bar mockup -->
+  <rect x="20" y="16" width="520" height="36" rx="8" fill="white" stroke="#e1bfb5" stroke-width="0.5"/>
+  <circle cx="36" cy="34" r="7" fill="#FF6B35"/>
+  <rect x="50" y="29" width="60" height="10" rx="3" fill="#261814" fill-opacity="0.12"/>
+  <circle cx="502" cy="34" r="8" fill="#FF6B35" fill-opacity="0.15"/>
+
+  <!-- Main content area mockup -->
+  <!-- Left: Editor panel -->
+  <rect x="20" y="64" width="260" height="190" rx="8" fill="#1a0f0c"/>
+  
+  <!-- Code lines -->
+  <rect x="32" y="80" width="120" height="6" rx="3" fill="#FF6B35" fill-opacity="0.8"/>
+  <rect x="32" y="96" width="200" height="6" rx="3" fill="white" fill-opacity="0.15"/>
+  <rect x="32" y="112" width="160" height="6" rx="3" fill="white" fill-opacity="0.12"/>
+  <rect x="48" y="128" width="100" height="6" rx="3" fill="white" fill-opacity="0.1"/>
+  <rect x="32" y="148" width="180" height="6" rx="3" fill="white" fill-opacity="0.12"/>
+  <rect x="48" y="164" width="150" height="6" rx="3" fill="white" fill-opacity="0.1"/>
+  <rect x="32" y="184" width="80" height="6" rx="3" fill="white" fill-opacity="0.08"/>
+  
+  <!-- Code accent line -->
+  <rect x="32" y="204" width="220" height="6" rx="3" fill="#FF6B35" fill-opacity="0.2"/>
+
+  <!-- Right: Response panel -->
+  <rect x="294" y="64" width="246" height="190" rx="8" fill="white" stroke="#e1bfb5" stroke-width="0.5"/>
+
+  <!-- Model badge -->
+  <rect x="310" y="80" width="100" height="22" rx="6" fill="#FF6B35" fill-opacity="0.1"/>
+  <circle cx="320" cy="91" r="3" fill="#22c55e"/>
+  <text x="328" y="95" font-size="10" fill="#FF6B35" font-family="system-ui" font-weight="500">deepseek-v4-flash</text>
+
+  <!-- Response content lines -->
+  <rect x="310" y="114" width="214" height="6" rx="3" fill="#261814" fill-opacity="0.08"/>
+  <rect x="310" y="128" width="180" height="6" rx="3" fill="#261814" fill-opacity="0.06"/>
+  <rect x="310" y="142" width="200" height="6" rx="3" fill="#261814" fill-opacity="0.06"/>
+  <rect x="310" y="156" width="160" height="6" rx="3" fill="#261814" fill-opacity="0.06"/>
+  <rect x="310" y="170" width="190" height="6" rx="3" fill="#261814" fill-opacity="0.05"/>
+
+  <!-- Usage stats bar -->
+  <rect x="310" y="190" width="100" height="16" rx="4" fill="#fff1ed"/>
+  <rect x="310" y="196" width="60" height="4" rx="2" fill="#FF6B35" fill-opacity="0.3"/>
+  <rect x="418" y="190" width="80" height="16" rx="4" fill="#fff1ed"/>
+  <rect x="420" y="196" width="40" height="4" rx="2" fill="#22c55e" fill-opacity="0.3"/>
+
+  <!-- Models bar at bottom -->
+  <rect x="20" y="266" width="520" height="56" rx="10" fill="white" stroke="#e1bfb5" stroke-width="0.5"/>
+  
+  <!-- Model chips -->
+  <rect x="32" y="280" width="90" height="28" rx="14" fill="#FF6B35" fill-opacity="0.1"/>
+  <text x="44" y="299" font-size="11" fill="#FF6B35" font-family="system-ui" font-weight="600">DeepSeek</text>
+  
+  <rect x="130" y="280" width="72" height="28" rx="14" fill="#fff1ed"/>
+  <text x="140" y="299" font-size="11" fill="#594139" font-family="system-ui" font-weight="500">GLM 4.7</text>
+  
+  <rect x="210" y="280" width="72" height="28" rx="14" fill="#fff1ed"/>
+  <text x="220" y="299" font-size="11" fill="#594139" font-family="system-ui" font-weight="500">Qwen 3.7</text>
+
+  <!-- Status indicator -->
+  <circle cx="490" cy="294" r="4" fill="#22c55e"/>
+  <text x="500" y="298" font-size="10" fill="#594139" font-family="system-ui">All systems normal</text>
+
+  <!-- Key display mockup -->
+  <rect x="20" y="334" width="520" height="32" rx="6" fill="white" stroke="#e1bfb5" stroke-width="0.5"/>
+  <rect x="30" y="342" width="14" height="14" rx="3" fill="#FF6B35" fill-opacity="0.15"/>
+  <text x="50" y="354" font-size="11" fill="#594139" font-family="monospace">tm_sk_xxxxxxxxxxxx</text>
+  <rect x="490" y="341" width="38" height="16" rx="4" fill="#FF6B35"/>
+  <text x="495" y="354" font-size="10" fill="white" font-family="system-ui" font-weight="600">Copy</text>
+</svg>
