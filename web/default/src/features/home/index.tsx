@@ -202,6 +202,19 @@ export function Home() {
         </div>
       </footer>
 
+      {/* Scan line overlay */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="scan-line" />
+      </div>
+
+      {/* Floating particles */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="particle particle-1" />
+        <div className="particle particle-2" />
+        <div className="particle particle-3" />
+        <div className="particle particle-4" />
+      </div>
+
       {/* Embedded styles for hero background effects */}
       <style>{`
         .hero-section {
@@ -233,6 +246,32 @@ export function Home() {
           left: -100px;
           background: radial-gradient(circle, #06b6d4, transparent 70%);
         }
+        @keyframes scan {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100vh); }
+        }
+        .scan-line {
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+          animation: scan 4s ease-in-out infinite;
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+          50% { transform: translateY(-20px) scale(1.1); opacity: 0.7; }
+        }
+        .particle {
+          position: absolute;
+          width: 4px; height: 4px;
+          border-radius: 50%;
+          background: #3b82f6;
+          animation: float 5s ease-in-out infinite;
+        }
+        .particle-1 { top: 20%; left: 15%; animation-delay: 0s; }
+        .particle-2 { top: 40%; left: 75%; animation-delay: 1.2s; background: #06b6d4; }
+        .particle-3 { top: 65%; left: 30%; animation-delay: 2.5s; }
+        .particle-4 { top: 30%; left: 55%; animation-delay: 3.8s; background: #10b981; }
       `}</style>
     </PublicLayout>
   )
