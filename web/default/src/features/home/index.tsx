@@ -386,8 +386,7 @@ export function Home() {
       />
       <style>{designSystemStyle}</style>
 
-      {/* ═══════════════ HEADER (TopNavBar) ═══════════════ */}
-      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-surface-variant shadow-sm" />
+      {/* ═══════════════ MAIN CONTENT ═══════════════ */}
 
       <main className="relative">
         {/* ═══════════════ HERO ═══════════════ */}
