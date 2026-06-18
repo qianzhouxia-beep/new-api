@@ -826,7 +826,7 @@ export function PricingPlansPage() {
         .tm-plans a:hover { color: #cd4700; }
 
         /* ── Hero ── */
-        .tmp-hero { text-align: center; padding: 40px 24px; max-width: 1440px; margin: 0 auto; }
+        .tmp-hero { text-align: center; padding: 80px 24px 40px; max-width: 1440px; margin: 0 auto; }
         .tmp-hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 16px;
           border-radius: 9999px; background: rgba(164,55,0,.1); color: #a43700;
           font-family: 'Space Grotesk', sans-serif; font-size: 14px; letter-spacing: .05em;
