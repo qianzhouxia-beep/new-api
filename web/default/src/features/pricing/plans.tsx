@@ -1,6 +1,6 @@
 /*
 Copyright (C) 2023-2026 QuantumNous
-Modified by TokenMaster Team - Payment Interface Page
+Modified by TokenMaster Team - Recharge Packages Page
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -35,6 +35,7 @@ interface TopupInfo {
   enable_creem_topup: boolean
   enable_waffo_topup: boolean
   enable_waffo_pancake_topup: boolean
+  enable_paypal_topup: boolean
   min_topup: number
   stripe_min_topup: number
   pay_methods: { name: string; type: string; min_topup?: string; icon?: string }[]
@@ -70,11 +71,15 @@ const MODELS = [
 const FAQS_ZH = [
   {
     q: '如何充值？',
-    a: '注册账号后，返回 /plans 选择按量付费或套餐方案。目前支持 Stripe（信用卡/储蓄卡）。充值后余额立即到账。',
+    a: '注册账号后，在 /plans 选择按量付费或充值优惠包。支持 Stripe（信用卡/储蓄卡）和 PayPal。充值后余额立即到账。',
   },
   {
-    q: '积分会过期吗？',
-    a: '按量付费购买的积分永不过期。月付套餐的积分按月刷新，未用完的积分不会累积到下月。',
+    q: '充值优惠包和多送金额怎么算？',
+    a: '优惠包是一次性充值，多送的部分相当于折扣。例如标准包付 $29 到账 $31，多送的 $2 直接计入余额，可用于所有模型调用。',
+  },
+  {
+    q: '余额会过期吗？',
+    a: '不会。所有充值余额永不过期，用完为止。',
   },
   {
     q: '支持哪些模型？',
@@ -85,8 +90,9 @@ const FAQS_ZH = [
 ]
 
 const FAQS_EN = [
-  { q: 'How do I top up?', a: 'After signing up, choose Pay As You Go or a plan on /plans. We support Stripe (credit/debit cards). Credits are added instantly.' },
-  { q: 'Do credits expire?', a: 'PAYG credits never expire. Monthly plan credits refresh each month and do not roll over.' },
+  { q: 'How do I top up?', a: 'After signing up, choose Pay As You Go or a Recharge Package on /plans. We support Stripe and PayPal. Balance is added instantly.' },
+  { q: 'What are the recharge packages?', a: 'Packages are one-time top-ups with bonus credit. E.g. pay $29, get $31 — the extra $2 is added to your balance and usable on all models.' },
+  { q: 'Does balance expire?', a: 'No. Your balance never expires.' },
   { q: 'Which models are supported?', a: 'Currently supports DeepSeek (V3/R1/V4/Coder), GLM (4.5/4.5-Air/4.7/4.7-Flash), and Qwen (Plus/Turbo/Max/Long/Coder-Plus) series. More coming soon.' },
   { q: 'Is the API OpenAI-compatible?', a: 'Yes, fully compatible. Use your existing OpenAI SDK and change the base_url to api-tokenmaster.com.' },
   { q: 'Do you offer refunds?', a: 'Full refund within 7 days of first purchase. After that, pro-rated. Email support@api-tokenmaster.com.' },
@@ -98,8 +104,6 @@ interface Plan {
   nameEn: string
   priceZh: string
   priceEn: string
-  priceYearlyZh: string | null
-  priceYearlyEn: string | null
   descZh: string
   descEn: string
   featuresZh: string[]
@@ -107,77 +111,116 @@ interface Plan {
   highlight: boolean
   ctaZh: string
   ctaEn: string
-  creditAmount: number
+  fixedAmount: number       // 0 for PAYG, >0 for packages
+  receiveAmount: number     // how much the user actually receives in their balance
+  badgeZh?: string          // optional bonus badge text
+  badgeEn?: string
 }
 
-const PLANS: Plan[] = [
+const PACKAGES: Plan[] = [
   {
     id: 'payg',
     nameZh: '按量付费',
     nameEn: 'Pay As You Go',
     priceZh: '最低 $1',
     priceEn: 'From $1',
-    priceYearlyZh: null,
-    priceYearlyEn: null,
-    descZh: '充多少用多少，无需月费',
-    descEn: 'Top up and use, no monthly commitment',
-    featuresZh: ['随时充值，即刻到账', '支持所有已配置模型', '无限期有效，永不过期'],
-    featuresEn: ['Top up anytime, instant credit', 'Access to all models', 'Never expires'],
+    descZh: '充多少用多少，无需承诺',
+    descEn: 'Top up and use, no commitment',
+    featuresZh: ['随时充值，即时到账', '支持所有已配置模型', '余额永不过期'],
+    featuresEn: ['Top up anytime', 'Access all models', 'Balance never expires'],
     highlight: false,
     ctaZh: '立即充值',
     ctaEn: 'Recharge Now',
-    creditAmount: 0,
+    fixedAmount: 0,
+    receiveAmount: 0,
   },
   {
-    id: 'starter',
-    nameZh: '入门版',
-    nameEn: 'Starter',
+    id: 'trial',
+    nameZh: '试玩包',
+    nameEn: 'Trial',
     priceZh: '$9.9',
     priceEn: '$9.9',
-    priceYearlyZh: '$99',
-    priceYearlyEn: '$99',
-    descZh: '适合个人开发者和小团队',
-    descEn: 'For individual developers and small teams',
-    featuresZh: ['10,000 积分/月', 'DeepSeek V3/R1 无限使用', 'Qwen-Plus/Turbo 无限使用', '邮件支持'],
-    featuresEn: ['10,000 credits/month', 'Unlimited DeepSeek V3/R1', 'Unlimited Qwen-Plus/Turbo', 'Email support'],
+    descZh: '适合轻度体验',
+    descEn: 'For light users',
+    featuresZh: ['支付 $9.9', '到账 $10.0', '适合个人开发者试用'],
+    featuresEn: ['Pay $9.9', 'Get $10.0 balance', 'Great for trying out'],
     highlight: true,
-    ctaZh: '选择方案',
-    ctaEn: 'Choose Plan',
-    creditAmount: 10000,
+    ctaZh: '立即购买',
+    ctaEn: 'Buy Now',
+    fixedAmount: 9.9,
+    receiveAmount: 10.0,
+    badgeZh: '多送 $0.1',
+    badgeEn: 'Bonus $0.1',
   },
   {
-    id: 'pro',
-    nameZh: '专业版',
-    nameEn: 'Pro',
-    priceZh: '$29.9',
-    priceEn: '$29.9',
-    priceYearlyZh: '$299',
-    priceYearlyEn: '$299',
-    descZh: '适合高频率调用和商业项目',
-    descEn: 'For high-frequency usage and commercial projects',
-    featuresZh: ['50,000 积分/月', '所有模型无限使用', '优先技术支持', '完整 API 访问', '专属客户经理'],
-    featuresEn: ['50,000 credits/month', 'All models unlimited', 'Priority tech support', 'Full API access', 'Dedicated manager'],
+    id: 'standard',
+    nameZh: '标准包',
+    nameEn: 'Standard',
+    priceZh: '$29',
+    priceEn: '$29',
+    descZh: '适合个人开发者和团队',
+    descEn: 'For individual devs and teams',
+    featuresZh: ['支付 $29', '到账 $31.0', '所有模型可用'],
+    featuresEn: ['Pay $29', 'Get $31.0 balance', 'Access all models'],
     highlight: false,
-    ctaZh: '选择方案',
-    ctaEn: 'Choose Plan',
-    creditAmount: 50000,
+    ctaZh: '立即购买',
+    ctaEn: 'Buy Now',
+    fixedAmount: 29,
+    receiveAmount: 31.0,
+    badgeZh: '多送 $2',
+    badgeEn: 'Bonus $2',
+  },
+  {
+    id: 'value',
+    nameZh: '超值包',
+    nameEn: 'Value',
+    priceZh: '$99',
+    priceEn: '$99',
+    descZh: '适合高频调用和商业项目',
+    descEn: 'For high-frequency and business use',
+    featuresZh: ['支付 $99', '到账 $110', '优先技术支持'],
+    featuresEn: ['Pay $99', 'Get $110 balance', 'Priority support'],
+    highlight: false,
+    ctaZh: '立即购买',
+    ctaEn: 'Buy Now',
+    fixedAmount: 99,
+    receiveAmount: 110,
+    badgeZh: '多送 $11',
+    badgeEn: 'Bonus $11',
+  },
+  {
+    id: 'flagship',
+    nameZh: '旗舰包',
+    nameEn: 'Flagship',
+    priceZh: '$299',
+    priceEn: '$299',
+    descZh: '企业级方案，最佳性价比',
+    descEn: 'Enterprise-grade, best value',
+    featuresZh: ['支付 $299', '到账 $350', '所有模型无限使用', '专属客户经理'],
+    featuresEn: ['Pay $299', 'Get $350 balance', 'All models unlimited', 'Dedicated manager'],
+    highlight: false,
+    ctaZh: '立即购买',
+    ctaEn: 'Buy Now',
+    fixedAmount: 299,
+    receiveAmount: 350,
+    badgeZh: '多送 $51',
+    badgeEn: 'Bonus $51',
   },
   {
     id: 'enterprise',
-    nameZh: '企业版',
-    nameEn: 'Enterprise',
-    priceZh: '联系我们',
-    priceEn: 'Contact Us',
-    priceYearlyZh: null,
-    priceYearlyEn: null,
-    descZh: '定制方案，专属部署',
+    nameZh: '联系我们',
+    nameEn: 'Contact Us',
+    priceZh: '定制方案',
+    priceEn: 'Custom',
+    descZh: '量身定制，专属部署',
     descEn: 'Custom solutions, dedicated deployment',
-    featuresZh: ['量身定制使用配额', 'SLA 保障', '私有化部署选项', '专线技术支持'],
-    featuresEn: ['Custom usage quotas', 'SLA guarantees', 'Private deployment', 'Dedicated support'],
+    featuresZh: ['定制使用配额', 'SLA 保障', '私有化部署选项', '专线技术支持'],
+    featuresEn: ['Custom quotas', 'SLA guarantees', 'Private deployment', 'Dedicated support'],
     highlight: false,
     ctaZh: '联系我们',
     ctaEn: 'Contact Us',
-    creditAmount: 0,
+    fixedAmount: 0,
+    receiveAmount: 0,
   },
 ]
 
@@ -230,7 +273,7 @@ function PaymentStatusBanner({
     >
       <span className='text-sm font-medium'>
         {isSuccess
-          ? t('Payment successful! Credits have been added to your account.')
+          ? t('Payment successful! Balance has been added to your account.')
           : t('Payment was cancelled. No charges were made.')}
       </span>
       <button
@@ -239,6 +282,108 @@ function PaymentStatusBanner({
       >
         {t('Dismiss')}
       </button>
+    </div>
+  )
+}
+
+/* ── Package Payment Modal ── */
+function PackagePaymentModal({
+  pkg,
+  availableMethods,
+  selectedMethod,
+  setSelectedMethod,
+  paying,
+  error,
+  onPay,
+  onClose,
+  zh,
+}: {
+  pkg: Plan
+  availableMethods: { id: string; name: string }[]
+  selectedMethod: string | null
+  setSelectedMethod: (id: string) => void
+  paying: string | null
+  error: string | null
+  onPay: () => void
+  onClose: () => void
+  zh: boolean
+}) {
+  return (
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4'>
+      <div className='w-full max-w-md rounded-2xl border bg-background p-6 shadow-2xl'>
+        <h3 className='mb-1 text-xl font-bold text-foreground'>
+          {zh ? pkg.nameZh : pkg.nameEn}
+        </h3>
+        <p className='text-muted-foreground mb-4 text-sm'>
+          {zh ? pkg.descZh : pkg.descEn}
+        </p>
+
+        {/* Amount preview */}
+        <div className='mb-5 rounded-xl border bg-muted/10 p-4'>
+          <div className='flex items-center justify-between'>
+            <span className='text-muted-foreground text-sm'>
+              {zh ? '支付' : 'Pay'}
+            </span>
+            <span className='text-xl font-bold text-foreground'>
+              ${pkg.fixedAmount}
+            </span>
+          </div>
+          <div className='mt-2 flex items-center justify-between border-t border-border pt-2'>
+            <span className='text-muted-foreground text-sm'>
+              {zh ? '到账余额' : 'Balance received'}
+            </span>
+            <span className='text-lg font-semibold text-green-600 dark:text-green-400'>
+              ${pkg.receiveAmount.toFixed(1)}
+            </span>
+          </div>
+          {pkg.receiveAmount > pkg.fixedAmount && (
+            <div className='mt-2 rounded-lg bg-green-50 px-3 py-1.5 text-center text-xs font-medium text-green-700 dark:bg-green-950 dark:text-green-300'>
+              🎉 {zh ? `多送 $${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}` : `Bonus $${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}`}
+            </div>
+          )}
+        </div>
+
+        {error && (
+          <div className='mb-4 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-600 dark:bg-red-950 dark:text-red-300'>
+            {error}
+          </div>
+        )}
+
+        {/* Payment method selection */}
+        <label className='text-muted-foreground mb-2 block text-xs font-medium uppercase tracking-wider'>
+          {zh ? '支付方式' : 'Payment Method'}
+        </label>
+        <div className='mb-6 flex flex-wrap gap-2'>
+          {availableMethods.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => setSelectedMethod(m.id)}
+              disabled={paying !== null}
+              className={`rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
+                selectedMethod === m.id
+                  ? 'border-foreground bg-foreground/5 dark:border-foreground dark:bg-foreground/10'
+                  : 'border-border hover:border-primary/50'
+              } ${paying !== null ? 'cursor-not-allowed opacity-50' : ''}`}
+            >
+              {m.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Action buttons */}
+        <div className='flex gap-3'>
+          <Button variant='outline' onClick={onClose} className='flex-1' disabled={paying !== null}>
+            {zh ? '取消' : 'Cancel'}
+          </Button>
+          <Button onClick={onPay} className='flex-1' disabled={paying !== null || !selectedMethod}>
+            {paying === 'stripe'
+              ? (zh ? '跳转支付中...' : 'Redirecting...')
+              : paying === 'paypal'
+                ? (zh ? '跳转 PayPal...' : 'Redirecting...')
+                : (zh ? `支付 $${pkg.fixedAmount}` : `Pay $${pkg.fixedAmount}`)}
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -271,6 +416,9 @@ export function PricingPlansPage() {
   const [topupLoading, setTopupLoading] = useState(false)
   const [paying, setPaying] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  /* ── Package payment modal state ── */
+  const [packageToPay, setPackageToPay] = useState<Plan | null>(null)
 
   /* ── Fetch topup info (dynamic payment methods) ── */
   useEffect(() => {
@@ -310,6 +458,9 @@ export function PricingPlansPage() {
   if (topupInfo?.enable_creem_topup) {
     availableMethods.push({ id: 'creem', name: 'Creem (Crypto)' })
   }
+  if (topupInfo?.enable_paypal_topup) {
+    availableMethods.push({ id: 'paypal', name: 'PayPal' })
+  }
   if (availableMethods.length === 0) {
     availableMethods.push({
       id: 'manual',
@@ -332,7 +483,6 @@ export function PricingPlansPage() {
         setPaying(null)
         return
       }
-      // Redirect to Stripe Checkout — balance credited by webhook on completion
       window.location.href = payLink
     },
     [zh],
@@ -391,23 +541,53 @@ export function PricingPlansPage() {
       return
     }
 
-    // Not logged in -> redirect to signup, then come back
+    // Not logged in -> redirect to signup
     if (!auth?.user) {
       navigate({ to: '/sign-up', search: { redirect: '/plans' } })
       return
     }
 
     if (plan.id === 'payg') {
+      // PAYG → open topup panel
       setShowTopup(true)
+      setPackageToPay(null)
       if (availableMethods.length > 0) {
         setSelectedMethod(availableMethods[0].id)
       }
     } else {
-      // Starter / Pro subscription -> not available via API yet, show info
+      // Recharge package → open payment modal with fixed amount
+      setPackageToPay(plan)
+      setShowTopup(false)
+      if (availableMethods.length > 0) {
+        setSelectedMethod(availableMethods[0].id)
+      }
+    }
+  }
+
+  function handlePackagePayment() {
+    if (!packageToPay) return
+    const amount = packageToPay.fixedAmount
+
+    if (!auth?.user) {
+      navigate({ to: '/sign-up', search: { redirect: '/plans' } })
+      return
+    }
+
+    if (selectedMethod === 'stripe') {
+      doStripePayment(amount)
+    } else if (selectedMethod === 'paypal') {
+      doPayPalPayment(amount)
+    } else if (selectedMethod === 'manual') {
       setError(
         zh
-          ? '月付套餐正在集成中。请先选择"按量付费"充值使用。'
-          : 'Monthly plans are being integrated. Please use Pay As You Go for now.',
+          ? '人工转账 - 请联系客服完成充值。'
+          : 'Manual transfer - please contact support to complete.',
+      )
+    } else {
+      setError(
+        zh
+          ? '该支付方式暂未开通，请选择其他方式。'
+          : 'This payment method is not yet available. Please choose another.',
       )
     }
   }
@@ -421,10 +601,12 @@ export function PricingPlansPage() {
     }
     if (selectedMethod === 'stripe') {
       doStripePayment(amount)
+    } else if (selectedMethod === 'paypal') {
+      doPayPalPayment(amount)
     } else if (selectedMethod === 'manual') {
       setError(
         zh
-          ? '人工转账开通后，请联系客服完成充值。'
+          ? '人工转账 - 请联系客服完成充值。'
           : 'Manual transfer - please contact support to complete.',
       )
     } else {
@@ -439,8 +621,8 @@ export function PricingPlansPage() {
   /* ── Hero ── */
   const title = s('简单透明的定价', 'Simple, Transparent Pricing', zh)
   const subtitle = zh
-    ? '注册即送 500 积分免费体验。选择按量付费或月付套餐，无需月费也可使用。'
-    : 'Get 500 free credits on signup. Pay as you go or subscribe - no minimum commitment.'
+    ? '注册即送 $5 体验金。选择按量付费或充值优惠包，无任何承诺要求。'
+    : 'Get $5 free credit on signup. Pay as you go or grab a package — no commitment.'
 
   /* ── Model card ── */
   function ModelCards() {
@@ -505,7 +687,7 @@ export function PricingPlansPage() {
     )
   }
 
-  /* ── Topup Interface ── */
+  /* ── Topup Interface (PAYG only) ── */
   function TopupPanel() {
     if (!auth?.user) {
       return (
@@ -556,7 +738,7 @@ export function PricingPlansPage() {
         )}
 
         <h2 className='mb-6 text-2xl font-bold text-foreground'>
-          {s('充值积分', 'Top Up Credits', zh)}
+          {s('自定义充值', 'Custom Top Up', zh)}
         </h2>
 
         {/* amount presets */}
@@ -580,7 +762,7 @@ export function PricingPlansPage() {
               >
                 <div className='text-lg font-bold'>${amt}</div>
                 <div className='text-muted-foreground mt-0.5 text-xs'>
-                  ${amt} {s('积分', 'credits', zh)}
+                  ${amt}
                 </div>
               </button>
             ))}
@@ -609,9 +791,6 @@ export function PricingPlansPage() {
               placeholder='10'
               className='h-10 text-lg'
             />
-            <span className='text-muted-foreground text-sm'>
-              {s('积分', 'credits', zh)}
-            </span>
           </div>
         </div>
 
@@ -658,19 +837,18 @@ export function PricingPlansPage() {
         <div className='flex items-center justify-between rounded-xl border bg-muted/20 p-4'>
           <div>
             <span className='text-muted-foreground text-sm'>
-              {s('合计', 'Total', zh)}:{' '}
+              {s('到账', 'You get', zh)}:{' '}
             </span>
             <span className='text-2xl font-bold text-foreground'>
               ${customAmount ? parseInt(customAmount) || 0 : topupAmount}
             </span>
-            <span className='text-muted-foreground ml-1 text-sm'>
-              {s('积分', 'credits', zh)}
-            </span>
           </div>
           <Button onClick={handlePaygPayment} size='lg' disabled={paying !== null}>
             {paying === 'stripe'
-              ? s('跳转支付中...', 'Redirecting...', zh)
-              : s('确认支付', 'Pay Now', zh)}
+              ? (zh ? '跳转支付中...' : 'Redirecting...')
+              : paying === 'paypal'
+                ? (zh ? '跳转 PayPal...' : 'Redirecting to PayPal...')
+                : (zh ? '确认支付' : 'Pay Now')}
           </Button>
         </div>
       </section>
@@ -710,8 +888,8 @@ export function PricingPlansPage() {
 
         {/* Plan Cards */}
         <section className='px-4 pb-6 sm:px-6' id='pricing-cards'>
-          <div className='mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-4'>
-            {PLANS.map((plan) => {
+          <div className='mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+            {PACKAGES.map((plan) => {
               const isSelected = selectedPlan === plan.id
               return (
                 <div
@@ -727,31 +905,43 @@ export function PricingPlansPage() {
                       {s('最受欢迎', 'Most Popular', zh)}
                     </div>
                   )}
+
+                  {/* Bonus badge */}
+                  {plan.badgeZh && plan.badgeEn && (
+                    <div className='absolute -top-3 right-4 rounded-full bg-green-500 px-3 py-0.5 text-xs font-semibold text-white shadow-sm'>
+                      {zh ? plan.badgeZh : plan.badgeEn}
+                    </div>
+                  )}
+
                   <div className='mb-6'>
                     <h3 className='text-lg font-semibold text-foreground'>
                       {zh ? plan.nameZh : plan.nameEn}
                     </h3>
+
+                    {/* Price display */}
                     <div className='mt-3'>
                       <span className='text-3xl font-bold text-foreground'>
                         {zh ? plan.priceZh : plan.priceEn}
                       </span>
-                      {plan.id !== 'payg' && plan.id !== 'enterprise' && (
-                        <span className='text-muted-foreground ml-1 text-sm'>
-                          /{s('月', 'mo', zh)}
+                      {plan.id !== 'payg' && plan.id !== 'enterprise' && plan.receiveAmount > plan.fixedAmount && (
+                        <span className='text-muted-foreground ml-2 text-sm line-through'>
+                          ${plan.receiveAmount.toFixed(1)}
                         </span>
                       )}
                     </div>
-                    {plan.priceYearlyZh && plan.priceYearlyEn && (
-                      <p className='text-muted-foreground mt-1 text-xs tracking-tight'>
-                        {s('年付', 'Yearly', zh)}:{' '}
-                        {zh ? plan.priceYearlyZh : plan.priceYearlyEn} (
-                        {s('省20%', 'save 20%', zh)})
+
+                    {/* Show receive amount for packages */}
+                    {plan.id !== 'payg' && plan.id !== 'enterprise' && plan.fixedAmount > 0 && (
+                      <p className='text-sm text-green-600 dark:text-green-400'>
+                        {s('到账', 'Balance')}: ${plan.receiveAmount.toFixed(1)}
                       </p>
                     )}
+
                     <p className='text-muted-foreground mt-2 text-xs leading-relaxed'>
                       {zh ? plan.descZh : plan.descEn}
                     </p>
                   </div>
+
                   <ul className='mb-auto space-y-2.5'>
                     {(zh ? plan.featuresZh : plan.featuresEn).map((feat, i) => (
                       <li key={i} className='flex items-start gap-2.5'>
@@ -774,14 +964,15 @@ export function PricingPlansPage() {
                       </li>
                     ))}
                   </ul>
+
                   <Button
                     onClick={() => handlePlanClick(plan)}
                     className='mt-6 w-full'
                     variant={plan.highlight ? 'default' : 'outline'}
                     size='lg'
-                    disabled={paying === 'stripe' && selectedPlan === plan.id}
+                    disabled={paying !== null && selectedPlan === plan.id}
                   >
-                    {paying === 'stripe' && selectedPlan === plan.id
+                    {paying !== null && selectedPlan === plan.id
                       ? s('处理中...', 'Processing...', zh)
                       : zh
                         ? plan.ctaZh
@@ -793,8 +984,27 @@ export function PricingPlansPage() {
           </div>
         </section>
 
-        {/* Topup Panel - shown when PAYG is selected & user is logged in */}
+        {/* Topup Panel - shown only when PAYG is selected & user is logged in */}
         {showTopup && <TopupPanel />}
+
+        {/* Package Payment Modal */}
+        {packageToPay && (
+          <PackagePaymentModal
+            pkg={packageToPay}
+            availableMethods={availableMethods}
+            selectedMethod={selectedMethod}
+            setSelectedMethod={setSelectedMethod}
+            paying={paying}
+            error={error}
+            onPay={handlePackagePayment}
+            onClose={() => {
+              setPackageToPay(null)
+              setError(null)
+              setPaying(null)
+            }}
+            zh={zh}
+          />
+        )}
 
         {/* Models */}
         <ModelCards />
@@ -809,8 +1019,8 @@ export function PricingPlansPage() {
           </h2>
           <p className='text-muted-foreground mx-auto mb-6 max-w-lg text-sm'>
             {s(
-              '注册即可获得 500 积分免费体验。无需绑定支付方式。',
-              'Sign up now and get 500 free credits. No payment method required.',
+              '注册即可获得 $5 体验金，无需绑定支付方式。',
+              'Sign up now and get $5 free credit. No payment method required.',
               zh,
             )}
           </p>
