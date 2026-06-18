@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import {
   IconDiscord,
   IconGithub,
+  IconGoogle,
   IconLinuxDo,
   IconWeChat,
 } from '@/assets/brand-icons'
@@ -125,10 +126,16 @@ export function OAuthProviders({
   const customProviders = status?.custom_oauth_providers
   if (customProviders && customProviders.length > 0) {
     for (const provider of customProviders) {
+      const googleIcon =
+        provider.name?.toLowerCase() === 'google' ||
+        provider.slug?.toLowerCase() === 'google'
+          ? { icon: <IconGoogle className='h-4 w-4' /> }
+          : {}
       providerButtons.push({
         key: `custom-${provider.slug}`,
         label: t('Continue with {{name}}', { name: provider.name }),
         onClick: () => handleCustomOAuthLogin(provider),
+        ...googleIcon,
       })
     }
   }
