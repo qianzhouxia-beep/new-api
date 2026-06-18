@@ -341,7 +341,6 @@ export function About() {
               <Link to='/user-agreement'>{t('Terms of Service', 'Terms of Service')}</Link>
               <a href='https://status.tokenmaster.com' target='_blank' rel='noopener noreferrer'>{t('Status', 'Status')}</a>
               <a href='mailto:support@tokenmaster.com'>{t('Contact', 'Contact')}</a>
-              <a href='https://github.com/qianzhouxia-beep/new-api' target='_blank' rel='noopener noreferrer'>{t('GitHub', 'GitHub')}</a>
             </nav>
           </div>
         </footer>
