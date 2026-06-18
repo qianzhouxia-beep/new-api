@@ -648,7 +648,7 @@ export function Home() {
                           client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">"tm_..."</span>){'\n\n'}
                           response = client.chat.completions.create({'\n'}
                           {'    '}model=<span className="text-on-tertiary-fixed-variant">"deepseek-reasoner"</span>,{'\n'}
-                          {'    '}messages=[{{"role": <span className="text-on-tertiary-fixed-variant">"user"</span>, "content": <span className="text-on-tertiary-fixed-variant">"Hi!"</span>}}]{'\n'}
+                          {'    '}messages=[{'{"role":'}<span className="text-on-tertiary-fixed-variant">"user"</span>, {'"content":'}<span className="text-on-tertiary-fixed-variant">"Hi!"</span>{'}'}]{'\n'}
                           ){'\n\n'}
                           print(response.choices[<span className="text-secondary">0</span>].message.content)
                         </code>
