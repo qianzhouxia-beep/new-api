@@ -955,7 +955,7 @@ export function PricingPlansPage() {
         .tm-plans a:hover { color: #cd4700; }
 
         /* ── Hero ── */
-        .tmp-hero { text-align: center; padding: 80px 24px 40px; max-width: 1440px; margin: 0 auto; }
+        .tmp-hero { text-align: center; padding: 120px 24px 40px; max-width: 1440px; margin: 0 auto; }
         .tmp-hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 16px;
           border-radius: 9999px; background: rgba(164,55,0,.1); color: #a43700;
           font-family: 'Space Grotesk', sans-serif; font-size: 14px; letter-spacing: .05em;
@@ -1209,7 +1209,7 @@ export function PricingPlansPage() {
           .tmp-cards-grid { grid-template-columns: repeat(3, 1fr); }
         }
         @media (min-width: 1280px) {
-          .tmp-hero { padding: 40px 96px; }
+          .tmp-hero { padding: 120px 96px 60px; }
           .tmp-cards { padding: 0 96px 40px; }
           .tmp-table-wrap { padding: 0 96px; }
           .tmp-how { padding: 40px 96px; }
