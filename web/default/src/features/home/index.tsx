@@ -4,7 +4,8 @@ Modified by TokenMaster Team — Kinetic Forge Light Design System
 Fully faithful 1:1 conversion from stitch_tokenmaster_design_system (5)/code.html
 */
 import { useEffect, useRef, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { useAuthStore } from '@/stores/auth-store'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 
@@ -137,6 +138,9 @@ export default function HomePage() {
 
 export function Home() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { auth } = useAuthStore()
+  const isAuthenticated = !!auth.user
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [activeTab, setActiveTab] = useState<'python' | 'curl'>('python')
 
@@ -335,9 +339,13 @@ export function Home() {
               </div>
             </div>
             <div className="flex gap-4 pt-4 justify-center">
-              <Link to="/register" className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg" style={{ fontFamily: 'Space Grotesk' }}>
+              <button
+                onClick={() => navigate(isAuthenticated ? '/dashboard' : '/sign-in')}
+                className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg"
+                style={{ fontFamily: 'Space Grotesk' }}
+              >
                 {t('Get API Key')} <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
+              </button>
               <a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="bg-white border border-outline-variant text-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold hover:bg-surface-container transition-all" style={{ fontFamily: 'Space Grotesk' }}>
                 {t('Documentation')}
               </a>
@@ -571,9 +579,13 @@ export function Home() {
             </div>
           </div>
           <div className="flex flex-col items-center gap-4">
-            <Link to="/plans" className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg" style={{ fontFamily: 'Space Grotesk' }}>
+            <button
+              onClick={() => navigate(isAuthenticated ? '/dashboard/topup' : '/sign-in')}
+              className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg"
+              style={{ fontFamily: 'Space Grotesk' }}
+            >
               {t('Top Up Now')} <span className="material-symbols-outlined">arrow_forward</span>
-            </Link>
+            </button>
             <p className="text-base leading-6" style={{ color: 'var(--m3-on-surface-variant)' }}>
               {t('No monthly fees, no subscriptions. Only pay for what you use.')}
             </p>
