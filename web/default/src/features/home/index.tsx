@@ -1,707 +1,763 @@
 /*
 Copyright (C) 2023-2026 QuantumNous
 Modified by TokenMaster Team — Kinetic Forge Light Design System
+Fully faithful to tokenmaster_enhanced_animation_visibility/code_en.html
 */
+import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
-import { Button } from '@/components/ui/button'
 
-/* ─── CSS-in-JS: Kinetic Forge shader background ─── */
-const kineticForgeStyle = `
-/* shader-flow background — CSS approximation of the GLSL sandbox shader */
-@keyframes shaderFlow {
-  0%   { background-position: 0% 0%, 33% 66%, 66% 33%; }
-  25%  { background-position: 15% 30%, 55% 40%, 80% 60%; }
-  50%  { background-position: 30% 60%, 10% 80%, 40% 90%; }
-  75%  { background-position: 10% 15%, 70% 20%, 20% 50%; }
-  100% { background-position: 0% 0%, 33% 66%, 66% 33%; }
-}
-@keyframes glitchShimmer {
-  0%, 100% { opacity: 0.02; }
-  50%      { opacity: 0.07; }
-}
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 30px rgba(255,107,53,0.15); }
-  50%      { box-shadow: 0 0 60px rgba(255,107,53,0.30); }
-}
-@keyframes floatParticle {
-  0%   { transform: translateY(0) scale(1); opacity: 0; }
-  10%  { opacity: 0.6; }
-  90%  { opacity: 0.6; }
-  100% { transform: translateY(-120px) scale(0.6); opacity: 0; }
-}
-.kf-hero {
-  position: relative;
-  overflow: hidden;
-  background: #f7f3f0;
-}
-.kf-hero::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 50% 40% at 50% 90%, rgba(255,107,53,0.10) 0%, transparent 70%),
-    radial-gradient(ellipse 30% 60% at 20% 40%, rgba(255,107,53,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 50% at 80% 30%, rgba(255,167,83,0.05) 0%, transparent 50%);
-  background-size: 200% 200%, 180% 180%, 190% 190%;
-  animation: shaderFlow 24s ease-in-out infinite;
-  pointer-events: none;
-}
-.kf-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    repeating-linear-gradient(90deg, transparent 0px, rgba(255,107,53,0.01) 1px, transparent 2px);
-  background-size: 60px 60px;
-  animation: glitchShimmer 8s ease-in-out infinite;
-  pointer-events: none;
-}
-.kf-hero > * { position: relative; z-index: 1; }
-
-/* 3D illustration card */
-.api-orb-card {
-  position: relative;
-  width: 100%;
-  max-width: 540px;
-  aspect-ratio: 4/3;
-  border-radius: 24px;
-  background: linear-gradient(145deg, #1f1512 0%, #2b1e19 40%, #3d2922 100%);
-  box-shadow:
-    0 20px 80px rgba(255,107,53,0.12),
-    0 0 0 1px rgba(255,107,53,0.08);
-  overflow: hidden;
-  animation: pulseGlow 4s ease-in-out infinite;
-  margin: 0 auto;
-}
-.api-orb-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 60% 75%, rgba(255,107,53,0.20) 0%, transparent 60%),
-    radial-gradient(circle 40% at 30% 30%, rgba(255,167,83,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(255,107,53,0.06) 0%, transparent 50%);
-  pointer-events: none;
-}
-.api-orb-card .orb-glow {
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(255,107,53,0.35) 0%, rgba(255,167,83,0.08) 40%, transparent 65%);
-  filter: blur(20px);
-  pointer-events: none;
-}
-.api-orb-card .orb-core {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  top: 38%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fff6f0 0%, #ff8a50 20%, #ff6b35 50%, #bf4400 100%);
-  box-shadow:
-    0 0 40px rgba(255,107,53,0.5),
-    0 0 80px rgba(255,167,83,0.2);
-  pointer-events: none;
-}
-.api-orb-card .orb-ring {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  top: 28%;
-  left: 50%;
-  transform: translateX(-50%) rotateX(70deg);
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,107,53,0.15);
-  box-shadow:
-    0 0 20px rgba(255,107,53,0.05),
-    inset 0 0 20px rgba(255,107,53,0.03);
-  pointer-events: none;
-}
-.api-orb-card .orb-ring-2 {
-  position: absolute;
-  width: 300px;
-  height: 80px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotateX(60deg);
-  border-radius: 50%;
-  border: 1px solid rgba(255,107,53,0.06);
-  pointer-events: none;
-}
-.api-orb-card .orb-particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255,167,83,0.5);
-  animation: floatParticle 6s ease-in-out infinite;
-  pointer-events: none;
-}
-.api-orb-card .orb-particle:nth-child(1) { left: 20%; top: 70%; animation-delay: 0s; }
-.api-orb-card .orb-particle:nth-child(2) { left: 75%; top: 65%; animation-delay: 1.5s; }
-.api-orb-card .orb-particle:nth-child(3) { left: 40%; top: 80%; animation-delay: 3s; }
-.api-orb-card .orb-particle:nth-child(4) { left: 60%; top: 55%; animation-delay: 4.5s; }
-.api-orb-card .orb-particle:nth-child(5) { left: 85%; top: 45%; animation-delay: 2s; width: 3px; height: 3px; }
-.api-orb-card .orb-label {
-  position: absolute;
-  bottom: 22%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Space Grotesk', monospace;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.15);
-  text-shadow: 0 0 10px rgba(255,107,53,0.1);
-  pointer-events: none;
-}
-.api-orb-card .orb-grid {
-  position: absolute;
-  inset: 10%;
-  background:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
-}
-
-/* model brand badge */
-.model-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 16px;
-  border-radius: 100px;
-  background: white;
-  border: 1px solid #e6d9d2;
-  font-size: 13px;
-  font-weight: 500;
-  color: #261814;
-  transition: all 0.2s ease;
-}
-.model-badge:hover {
-  border-color: #FF6B35;
-  box-shadow: 0 2px 12px rgba(255,107,53,0.10);
-}
-
-/* feature card */
-.feature-card {
-  background: white;
-  border: 1px solid #e6d9d2;
-  border-radius: 20px;
-  padding: 32px;
-  transition: all 0.25s ease;
-}
-.feature-card:hover {
-  border-color: #FF6B35;
-  box-shadow: 0 8px 30px rgba(255,107,53,0.06);
-  transform: translateY(-2px);
-}
-.feature-card.accent {
-  background: linear-gradient(135deg, #FF6B35 0%, #ff854f 100%);
-  border-color: transparent;
-  color: white;
-}
-
-/* section heading */
-.section-heading {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #261814;
-  line-height: 1.15;
-}
+/* ─── M3 Color System + Tailwind Extensions ─── */
+const designSystemStyle = `
+  body {
+    background-color: #fcfaf8;
+  }
+  .glow-radial {
+    background: radial-gradient(circle at center, rgba(164, 55, 0, 0.12) 0%, transparent 70%);
+  }
+  .card-lift {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  #hero-shader-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.9;
+  }
+  /* ─── Spacing Utilities ─── */
+  .gap-xs { gap: 4px; }
+  .gap-sm { gap: 8px; }
+  .gap-md { gap: 16px; }
+  .gap-lg { gap: 24px; }
+  .gap-xl { gap: 40px; }
+  .p-xs { padding: 4px; }
+  .p-sm { padding: 8px; }
+  .p-md { padding: 16px; }
+  .p-lg { padding: 24px; }
+  .p-xl { padding: 40px; }
+  .px-xs { padding-left: 4px; padding-right: 4px; }
+  .px-sm { padding-left: 8px; padding-right: 8px; }
+  .px-md { padding-left: 16px; padding-right: 16px; }
+  .px-lg { padding-left: 24px; padding-right: 24px; }
+  .px-xl { padding-left: 40px; padding-right: 40px; }
+  .px-gutter { padding-left: 24px; padding-right: 24px; }
+  .py-sm { padding-top: 8px; padding-bottom: 8px; }
+  .py-md { padding-top: 16px; padding-bottom: 16px; }
+  .py-lg { padding-top: 24px; padding-bottom: 24px; }
+  .py-xl { padding-top: 40px; padding-bottom: 40px; }
+  .py-32 { padding-top: 128px; padding-bottom: 128px; }
+  .pt-sm { padding-top: 8px; }
+  .pt-md { padding-top: 16px; }
+  .pt-48 { padding-top: 192px; }
+  .pb-sm { padding-bottom: 8px; }
+  .pb-32 { padding-bottom: 128px; }
+  .mb-sm { margin-bottom: 8px; }
+  .mb-md { margin-bottom: 16px; }
+  .mb-lg { margin-bottom: 24px; }
+  .mb-xl { margin-bottom: 40px; }
+  .mt-sm { margin-top: 8px; }
+  .mt-md { margin-top: 16px; }
+  .mt-2xl { margin-top: 60px; }
+  .space-y-xs > * + * { margin-top: 4px; }
+  .space-y-sm > * + * { margin-top: 8px; }
+  .space-y-md > * + * { margin-top: 16px; }
+  .space-y-lg > * + * { margin-top: 24px; }
+  .space-y-xl > * + * { margin-top: 40px; }
+  .min-w-\\[80px\\] { min-width: 80px; }
+  .min-h-\\[300px\\] { min-height: 300px; }
+  /* ─── Typography Utilities ─── */
+  .font-body-md { font-family: 'Inter', sans-serif; font-weight: 400; }
+  .font-body-lg { font-family: 'Inter', sans-serif; font-weight: 400; }
+  .font-headline-lg { font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+  .font-headline-md { font-family: 'Space Grotesk', sans-serif; font-weight: 500; }
+  .font-headline-sm { font-family: 'Space Grotesk', sans-serif; }
+  .font-display { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+  .font-label-md { font-family: 'Space Grotesk', sans-serif; font-weight: 600; letter-spacing: 0.05em; }
+  .font-mono-code { font-family: 'JetBrains Mono', monospace; font-weight: 400; }
+  .text-body-md { font-size: 16px; line-height: 24px; font-weight: 400; }
+  .text-body-lg { font-size: 18px; line-height: 28px; font-weight: 400; }
+  .text-headline-lg { font-size: 32px; line-height: 40px; letter-spacing: -0.01em; font-weight: 600; }
+  .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 500; }
+  .text-headline-sm { font-size: 20px; line-height: 28px; }
+  .text-display { font-size: 48px; line-height: 56px; letter-spacing: -0.02em; font-weight: 700; }
+  .text-label-md { font-size: 14px; line-height: 20px; letter-spacing: 0.05em; font-weight: 600; }
+  .text-mono-code { font-size: 14px; line-height: 20px; font-weight: 400; }
+  .text-\\[12px\\] { font-size: 12px; }
+  .text-\\[13px\\] { font-size: 13px; }
+  .text-\\[18px\\] { font-size: 18px; }
+  /* ─── Color Utilities ─── */
+  .text-primary { color: #a43700; }
+  .text-on-primary { color: #ffffff; }
+  .text-on-primary-fixed { color: #380d00; }
+  .text-on-primary-fixed-variant { color: #802a00; }
+  .text-primary-fixed-dim { color: #ffb59a; }
+  .text-on-surface { color: #191c1d; }
+  .text-on-surface-variant { color: #5a4138; }
+  .text-secondary { color: #4c56af; }
+  .text-tertiary { color: #0f666a; }
+  .text-error { color: #ba1a1a; }
+  .text-secondary-container { color: #959efd; }
+  .text-on-tertiary-fixed-variant { color: #004f53; }
+  .text-white { color: #ffffff; }
+  .bg-white { background: #ffffff; }
+  .bg-primary { background: #a43700; }
+  .bg-primary\\/10 { background: rgba(164, 55, 0, 0.1); }
+  .bg-primary\\/5 { background: rgba(164, 55, 0, 0.05); }
+  .bg-primary\\/20 { background: rgba(164, 55, 0, 0.2); }
+  .bg-primary-fixed { background: #ffdbcf; }
+  .bg-secondary-container\\/20 { background: rgba(149, 158, 253, 0.2); }
+  .bg-tertiary-container\\/20 { background: rgba(51, 127, 131, 0.2); }
+  .bg-error-container\\/20 { background: rgba(186, 26, 26, 0.2); }
+  .bg-inverse-surface { background: #2e3132; }
+  .bg-surface-container-low { background: #f3f4f5; }
+  .bg-surface-container-lowest { background: #ffffff; }
+  .bg-surface-container { background: #edeeef; }
+  .bg-surface-container-low { background: #f3f4f5; }
+  .bg-surface-variant { background: #e1e3e4; }
+  .bg-white\\/80 { background: rgba(255, 255, 255, 0.8); }
+  .border-surface-variant { border-color: #e1e3e4; }
+  .border-outline-variant { border-color: #e3bfb2; }
+  .border-white\\/10 { border-color: rgba(255, 255, 255, 0.1); }
+  .border-outline-variant\\/30 { border-color: rgba(227, 191, 178, 0.3); }
+  .border-primary { border-color: #a43700; }
+  .border-transparent { border-color: transparent; }
+  .hover\\:bg-surface-container:hover { background: #edeeef; }
+  .hover\\:bg-surface-container-high:hover { background: #e7e8e9; }
+  .hover\\:text-primary:hover { color: #a43700; }
+  .hover\\:opacity-95:hover { opacity: 0.95; }
+  .hover\\:underline:hover { text-decoration: underline; }
+  .decoration-primary { text-decoration-color: #a43700; }
+  .transition-opacity { transition: opacity 0.2s; }
+  .transition-all { transition: all 0.2s ease; }
+  .transition-colors { transition: colors 0.2s ease; }
+  .transition-transform { transition: transform 0.2s ease; }
+  /* ─── Effect Classes ─── */
+  .backdrop-blur-md { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .shadow-lg { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); }
+  .shadow-xl { box-shadow: 0 20px 40px -10px rgba(0,0,0,0.10); }
+  .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); }
+  .tracking-wider { letter-spacing: 0.05em; }
+  .tracking-widest { letter-spacing: 0.1em; }
+  .uppercase { text-transform: uppercase; }
+  .list-none { list-style: none; }
+  .overflow-x-auto { overflow-x: auto; }
+  .overflow-hidden { overflow: hidden; }
+  .pointer-events-none { pointer-events: none; }
+  .cursor-pointer { cursor: pointer; }
+  .select-none { user-select: none; }
+  .relative { position: relative; }
+  .absolute { position: absolute; }
+  .sticky { position: sticky; }
+  .top-0 { top: 0; }
+  .z-0 { z-index: 0; }
+  .z-10 { z-index: 10; }
+  .z-50 { z-index: 50; }
+  .-top-48 { top: -192px; }
+  .-left-48 { left: -192px; }
+  .-bottom-48 { bottom: -192px; }
+  .-right-48 { right: -192px; }
+  .inset-0 { inset: 0; }
+  .w-\\[600px\\] { width: 600px; }
+  .w-\\[800px\\] { width: 800px; }
+  .w-3 { width: 12px; }
+  .w-20 { width: 80px; }
+  .w-32 { width: 128px; }
+  .w-full { width: 100%; }
+  .h-3 { height: 12px; }
+  .h-20 { height: 80px; }
+  .h-32 { height: 128px; }
+  .h-auto { height: auto; }
+  .h-full { height: 100%; }
+  .max-w-2xl { max-width: 42rem; }
+  .max-w-4xl { max-width: 56rem; }
+  .max-w-container-max { max-width: 1440px; }
+  .min-w-\\[80px\\] { min-width: 80px; }
+  .rounded { border-radius: 2px; }
+  .rounded-lg { border-radius: 4px; }
+  .rounded-xl { border-radius: 8px; }
+  .rounded-full { border-radius: 12px; }
+  .rounded-\\[12px\\] { border-radius: 12px; }
+  .border { border: 1px solid; }
+  .border-4 { border-width: 4px; }
+  .border-t { border-top: 1px solid; }
+  .border-b { border-bottom: 1px solid; }
+  .border-b-2 { border-bottom: 2px solid; }
+  .border-t-primary { border-top-color: #a43700; }
+  .border-r-primary { border-right-color: #a43700; }
+  .border-b-primary\\/20 { border-bottom-color: rgba(164, 55, 0, 0.2); }
+  .border-l-primary\\/20 { border-left-color: rgba(164, 55, 0, 0.2); }
+  .animate-spin { animation: spin 1s linear infinite; }
+  .group-open\\:rotate-180[open] .group-open\\:rotate-180 { transform: rotate(180deg); }
+  details > summary::-webkit-details-marker { display: none; }
+  details summary { list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  .hidden { display: none; }
+  .block { display: block; }
+  .inline-block { display: inline-block; }
+  .inline-flex { display: inline-flex; }
+  .flex { display: flex; }
+  .grid { display: grid; }
+  .flex-col { flex-direction: column; }
+  .flex-wrap { flex-wrap: wrap; }
+  .items-center { align-items: center; }
+  .items-start { align-items: flex-start; }
+  .justify-between { justify-content: space-between; }
+  .justify-center { justify-content: center; }
+  .text-center { text-align: center; }
+  .opacity-40 { opacity: 0.4; }
+  .opacity-90 { opacity: 0.9; }
+  .opacity-0 { opacity: 0; }
+  .opacity-100 { opacity: 1; }
+  .translate-y-0 { transform: translateY(0); }
+  .translate-y-8 { transform: translateY(32px); }
 `
 
 export function Home() {
   const { t } = useTranslation()
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [activeTab, setActiveTab] = useState<'python' | 'curl'>('python')
   const year = new Date().getFullYear()
 
-  const modelBrands = [
-    { name: 'DeepSeek', models: 'V4 Flash · V4 Pro · R1' },
-    { name: 'GLM', models: '4.7-Flash · 4.5-Air · 4-Vision' },
-    { name: 'Qwen', models: '3.7-Max · 3.7-Plus · 3.5' },
-  ]
+  /* ─── WebGL Shader ─── */
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const gl = canvas.getContext('webgl')
+    if (!gl) return
 
-  const features = [
-    {
-      icon: '⚡',
-      title: t('Unified API Gateway'),
-      desc: t('One key to access all models — DeepSeek, GLM, Qwen. Fully OpenAI-compatible. Switch models by changing the model parameter. No SDK changes needed.'),
-      wide: true,
-    },
-    {
-      icon: '💳',
-      title: t('Prepay & Use'),
-      desc: t('USD prepaid balance, pay-per-use. No monthly fees, no subscriptions, no minimum spend.'),
-    },
-    {
-      icon: '🔑',
-      title: t('No Multiple Sign-ups'),
-      desc: t('One TokenMaster account = all models. No separate registrations or API keys needed.'),
-    },
-    {
-      icon: '🔄',
-      title: t('Zero Migration'),
-      desc: t('Just change your base_url. Existing OpenAI SDK code needs zero modification.'),
-      wide: true,
-    },
-  ]
+    let width: number, height: number
+    let mouseX = 0.5, mouseY = 0.5
 
-  const faqs = [
-    {
-      q: t('How is TokenMaster different from using models directly?'),
-      a: t('TokenMaster provides unified access to top Chinese AI models (DeepSeek, GLM, Qwen) with a single API key. No need to register and prepay on each platform separately.'),
-    },
-    {
-      q: t('Which models are supported?'),
-      a: t('Currently: DeepSeek (V4 Flash, V4 Pro, Chat, Reasoner), GLM (4.7-Flash, 4.5-Air, 4-Vision, etc.), Qwen (3.7-Max, 3.7-Plus, 3.5 series). More models being added continuously.'),
-    },
-    {
-      q: t('Do I need to bring my own API keys?'),
-      a: t('No. After signing up, you get a dedicated API key that works for all models. No need to prepare keys from DeepSeek, Zhipu, or Alibaba Cloud.'),
-    },
-    {
-      q: t('How does billing work?'),
-      a: t('USD prepaid balance, pay-per-use. Each model has a clear per-million-token price. No monthly fees, no subscriptions, no minimum spend.'),
-    },
-    {
-      q: t('Does my balance expire?'),
-      a: t('Balance never expires. Top up once and use it anytime.'),
-    },
-    {
-      q: t('How do I get started?'),
-      a: t('Three steps: (1) Sign up to get your API key; (2) Top up your USD balance; (3) Change your OpenAI SDK base_url to https://api-tokenmaster.com/v1 and start calling.'),
-    },
-  ]
+    const vertexShaderSource = `
+      attribute vec2 position;
+      void main() { gl_Position = vec4(position, 0.0, 1.0); }
+    `
+    const fragmentShaderSource = `
+      precision highp float;
+      uniform float time;
+      uniform vec2 resolution;
+      uniform vec2 mouse;
+      float hash(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
+      }
+      float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+      }
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution.xy;
+        vec2 p = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+        float t = time * 0.15;
+        float n = 0.0;
+        for(float i = 1.0; i < 5.0; i++) {
+          p += vec2(0.15 * sin(t + p.y * i), 0.15 * cos(t + p.x * i));
+          n += noise(p * i + t) * (1.0 / i);
+        }
+        vec3 bgColor = vec3(0.988, 0.98, 0.972);
+        vec3 flowColor = vec3(1.0, 0.42, 0.208);
+        float intensity = smoothstep(0.35, 0.75, n);
+        float dist = length(uv - mouse);
+        intensity += smoothstep(0.25, 0.0, dist) * 0.15;
+        vec3 color = mix(bgColor, flowColor, intensity * 0.12);
+        float grid = (step(0.996, fract(uv.x * 25.0)) + step(0.996, fract(uv.y * 25.0))) * 0.015;
+        color += grid;
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `
+    function createShader(gl: WebGLRenderingContext, type: number, source: string) {
+      const shader = gl.createShader(type)!
+      gl.shaderSource(shader, source)
+      gl.compileShader(shader)
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error(gl.getShaderInfoLog(shader))
+        gl.deleteShader(shader)
+        return null
+      }
+      return shader
+    }
+
+    const program = gl.createProgram()!
+    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource)!)
+    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource)!)
+    gl.linkProgram(program)
+
+    const positionBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW)
+
+    const positionLocation = gl.getAttribLocation(program, 'position')
+    const timeLocation = gl.getUniformLocation(program, 'time')
+    const resLocation = gl.getUniformLocation(program, 'resolution')
+    const mouseLocation = gl.getUniformLocation(program, 'mouse')
+
+    function resize() {
+      const parent = canvas!.parentElement!
+      width = parent.clientWidth
+      height = parent.clientHeight
+      canvas!.width = width
+      canvas!.height = height
+      gl.viewport(0, 0, width, height)
+    }
+
+    window.addEventListener('resize', resize)
+
+    function onMouseMove(e: MouseEvent) {
+      const rect = canvas!.getBoundingClientRect()
+      mouseX = (e.clientX - rect.left) / width
+      mouseY = 1.0 - ((e.clientY - rect.top) / height)
+    }
+    window.addEventListener('mousemove', onMouseMove)
+
+    let animId: number
+    function render(time: number) {
+      gl.clearColor(0, 0, 0, 0)
+      gl.clear(gl.COLOR_BUFFER_BIT)
+      gl.useProgram(program)
+      gl.enableVertexAttribArray(positionLocation)
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+      gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
+      gl.uniform1f(timeLocation, time * 0.001)
+      gl.uniform2f(resLocation, width, height)
+      gl.uniform2f(mouseLocation, mouseX, mouseY)
+      gl.drawArrays(gl.TRIANGLES, 0, 6)
+      animId = requestAnimationFrame(render)
+    }
+
+    resize()
+    animId = requestAnimationFrame(render)
+
+    return () => {
+      window.removeEventListener('resize', resize)
+      window.removeEventListener('mousemove', onMouseMove)
+      cancelAnimationFrame(animId)
+    }
+  }, [])
+
+  /* ─── IntersectionObserver for card-lift animations ─── */
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0')
+            entry.target.classList.remove('opacity-0', 'translate-y-8')
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+    document.querySelectorAll('.card-lift').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <PublicLayout showMainContainer={false}>
-      <style>{kineticForgeStyle}</style>
-      <main>
-        {/* ════════════════════════════════════════
-             HERO — Kinetic Forge Light
-             ════════════════════════════════════════ */}
-        <section className="kf-hero px-6 py-20 lg:py-28">
-          <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 lg:flex-row lg:gap-16">
-            {/* --- left: text --- */}
-            <div className="flex-1 space-y-8">
-              {/* tagline */}
-              <span
-                className="inline-block rounded-full px-4 py-1.5 text-xs font-semibold tracking-wider uppercase"
-                style={{ background: 'rgba(255,107,53,0.08)', color: '#cc5500' }}
-              >
-                {t('⚡ One API Key for All Top AI Models')}
-              </span>
+      {/* Preload fonts */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet"
+      />
+      <style>{designSystemStyle}</style>
 
-              <h1
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                  fontWeight: 700,
-                  lineHeight: 1.03,
-                  letterSpacing: '-0.035em',
-                  color: '#1c110c',
-                  textWrap: 'balance',
-                }}
-              >
-                {t('The Fastest')}{' '}
-                <span style={{ color: '#FF6B35' }}>
-                  {t('AI API')}
+      {/* ═══════════════ HEADER (TopNavBar) ═══════════════ */}
+      <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-surface-variant shadow-sm" />
+
+      <main className="relative">
+        {/* ═══════════════ HERO ═══════════════ */}
+        <section className="relative overflow-hidden pb-32 pt-48">
+          <canvas
+            ref={canvasRef}
+            className="pointer-events-none"
+            id="hero-shader-canvas"
+          />
+          <div className="glow-radial absolute -top-48 -left-48 w-[600px] h-[600px] pointer-events-none" />
+          <div className="max-w-container-max mx-auto px-gutter grid grid-cols-1 lg:grid-cols-12 gap-xl items-center px-xl relative z-10">
+            <div className="lg:col-span-7 space-y-lg">
+              <div className="inline-flex items-center gap-sm bg-primary-fixed text-on-primary-fixed px-sm py-1 rounded-full">
+                <span
+                  className="material-symbols-outlined text-[18px]"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  bolt
                 </span>
+                <span className="font-label-md text-[12px] tracking-wider uppercase">
+                  {t('New Models Added')}
+                </span>
+              </div>
+              <h1 className="font-display text-display text-on-surface">
+                {t('One line to access top AI models.')}
                 <br />
-                {t('for Production')}
+                <span className="text-primary">
+                  {t('DeepSeek · GLM · Qwen,')} {t('one key for all.')}
+                </span>
               </h1>
-
-              <p
-                className="max-w-xl text-lg leading-relaxed"
-                style={{ color: '#594139' }}
-              >
-                {t('One unified gateway to DeepSeek, GLM, and Qwen. One key. Pay as you go. No separate registrations, no SDK switching. Built for developers who ship.')}
+              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                {t('Seamlessly integrate cutting-edge LLMs with a single API. Professional-grade infrastructure for high-precision engineering and data science workloads.')}
               </p>
 
-              {/* model brand badges */}
-              <div className="flex flex-wrap gap-3">
-                {modelBrands.map((b) => (
-                  <span key={b.name} className="model-badge">
-                    <span style={{
-                      display: 'inline-block', width: 6, height: 6, borderRadius: '50%',
-                      background: '#FF6B35', flexShrink: 0,
-                    }} />
-                    <strong>{b.name}</strong>
-                    <span style={{ color: '#8d7168' }}>{b.models}</span>
-                  </span>
-                ))}
+              {/* Model Badges */}
+              <div className="pt-sm space-y-md">
+                <div className="flex flex-wrap gap-sm items-center">
+                  <span className="font-label-md text-label-md text-on-surface-variant min-w-[80px]">DeepSeek:</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">V4 Flash</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">V4 Pro</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">Chat</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">Reasoner</span>
+                </div>
+                <div className="flex flex-wrap gap-sm items-center">
+                  <span className="font-label-md text-label-md text-on-surface-variant min-w-[80px]">GLM:</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">4.7-Flash</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">4.5-Air</span>
+                </div>
+                <div className="flex flex-wrap gap-sm items-center">
+                  <span className="font-label-md text-label-md text-on-surface-variant min-w-[80px]">Qwen:</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">3.7-Max</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">3.7-Plus</span>
+                  <span className="px-sm py-xs bg-white border border-surface-variant rounded text-on-surface font-label-md text-xs">{t('3.5 Series')}</span>
+                </div>
               </div>
 
-              {/* CTA */}
-              <div className="flex flex-col gap-4 sm:flex-row pt-2">
+              <div className="flex gap-md pt-md">
                 <Link to="/register">
-                  <Button
-                    size="lg"
-                    className="gap-2 border-0 text-white shadow-md hover:shadow-lg"
-                    style={{
-                      background: '#FF6B35',
-                      padding: '14px 44px',
-                      fontSize: '15px',
-                      fontWeight: 600,
-                      borderRadius: 12,
-                    }}
-                  >
-                    {t('Start Building for Free')} →
-                  </Button>
+                  <button className="bg-primary text-on-primary px-xl py-md rounded-lg font-label-md text-label-md flex items-center gap-sm hover:opacity-95 transition-all shadow-lg">
+                    {t('Get API Key')} <span className="material-symbols-outlined">arrow_forward</span>
+                  </button>
                 </Link>
                 <Link to="/pricing">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="gap-2"
-                    style={{
-                      borderColor: '#c9b7ae',
-                      color: '#261814',
-                      padding: '14px 44px',
-                      fontSize: '15px',
-                      fontWeight: 600,
-                      borderRadius: 12,
-                    }}
-                  >
-                    {t('View Pricing')}
-                  </Button>
+                  <button className="bg-white border border-outline-variant text-primary px-xl py-md rounded-lg font-label-md text-label-md hover:bg-surface-container transition-all">
+                    {t('Documentation')}
+                  </button>
                 </Link>
               </div>
-
-              {/* social proof */}
-              <div className="flex items-center gap-2 text-xs" style={{ color: '#8d7168' }}>
-                <span className="flex -space-x-1.5">
-                  {['👨‍💻', '👩‍💻', '🧑‍💻', '👨‍💻'].map((emoji, i) => (
-                    <span key={i} className="inline-flex items-center justify-center size-6 rounded-full"
-                      style={{ background: '#f0e8e4', border: '2px solid #f7f3f0' }}>{emoji}</span>
-                  ))}
-                </span>
-                <span>{t('Trusted by developers worldwide · 100ms avg latency')}</span>
-              </div>
             </div>
 
-            {/* --- right: 3D illustration orb --- */}
-            <div className="flex-1 flex justify-center lg:justify-end w-full">
-              <div className="api-orb-card">
-                <div className="orb-glow" />
-                <div className="orb-grid" />
-                <div className="orb-core" />
-                <div className="orb-ring" />
-                <div className="orb-ring-2" />
-                <div className="orb-particle" />
-                <div className="orb-particle" />
-                <div className="orb-particle" />
-                <div className="orb-particle" />
-                <div className="orb-particle" />
-                <div className="orb-label">API Gateway</div>
+            {/* 3D illustration */}
+            <div className="lg:col-span-5 relative group">
+              <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-all" />
+              <div className="relative z-10 bg-white p-4 rounded-xl border border-surface-variant shadow-2xl">
+                <img
+                  alt={t('High-fidelity 3D tech illustration for an AI API gateway platform. A central glowing orange sphere representing a master key or core engine, surrounded by floating translucent data nodes and intricate white circuit lines.')}
+                  className="w-full h-auto rounded-lg"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5e2fy42apB-xHkBvo0N_cc03O0tfDPsjLs48csNcWSWVaPxbfDrRw2yAbi8WJOgNRs_Trj3W4MX2q7e5f-T-ciALW3lC9d3888TXUo95banA_UdAxhCAX57D6huuSJLp4ohdMg75v5Kng7KGqeADu9n35T7q7U7--3ZKYS1Dk89KNz4-lLriAlsBxhAHABYGJG3jd4XwUAFsBHZo_fvdUXV6PHUVFnZSsOih5nUVxATNkEChn0i7FH8SwoGHHK4kvpAneoYaQDEI"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════════
-             WHY TOKENMASTER — Features
-             ════════════════════════════════════════ */}
-        <section className="px-6 py-20" style={{ background: '#ffffff' }} id="features">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-10 text-center">
-              <span className="inline-block rounded-full px-4 py-1 text-xs font-semibold tracking-wider uppercase"
-                style={{ background: 'rgba(255,107,53,0.08)', color: '#cc5500' }}>
-                {t('Why TokenMaster')}
-              </span>
-              <h2 className="section-heading mt-4">
-                {t('Built for developers who ship fast')}
+        {/* ═══════════════ BENTO GRID FEATURES ═══════════════ */}
+        <section className="py-xl bg-surface-container-lowest relative">
+          <div className="max-w-container-max mx-auto px-gutter px-xl">
+            <div className="mb-xl text-center">
+              <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                {t('Engineered for Performance')}
               </h2>
-              <p className="mt-3 max-w-xl mx-auto" style={{ color: '#594139' }}>
-                {t('Stop managing API keys across platforms. One integration, all the models you need.')}
+              <p className="font-body-md text-body-md text-on-surface-variant mt-sm">
+                {t('Built for massive scale and millisecond latency.')}
               </p>
             </div>
 
-            <div className="grid grid-cols-12 gap-4">
-              {/* wide card — code demo */}
-              <div className="feature-card col-span-12 lg:col-span-8 flex flex-col justify-between gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-lg">
+              {/* Large Card: API Gateway */}
+              <div className="md:col-span-2 lg:col-span-2 bg-white p-lg border border-surface-variant rounded-xl card-lift flex flex-col justify-between transition-all duration-500 opacity-100 translate-y-0">
                 <div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#261814' }}>
-                    <span style={{ color: '#FF6B35' }}>⚡</span> {t('Unified API Gateway')}
-                  </h3>
-                  <p style={{ color: '#594139' }}>
-                    {t('One key for all models, fully OpenAI-compatible. Switch models by changing the model parameter, no SDK changes needed.')}
+                  <div className="flex items-center gap-sm text-primary mb-md">
+                    <span className="material-symbols-outlined">hub</span>
+                    <span className="font-label-md text-label-md uppercase tracking-widest">{t('Unified API Gateway')}</span>
+                  </div>
+                  <h3 className="font-headline-md text-headline-md mb-sm">{t('Standardize your AI pipeline')}</h3>
+                  <p className="font-body-md text-body-md text-on-surface-variant mb-lg">
+                    {t('Access every top-tier model through a single OpenAI-compatible endpoint. Switch models in production without changing a line of your infrastructure code.')}
                   </p>
                 </div>
-                <div
-                  className="rounded-xl p-5 text-sm font-mono overflow-x-auto"
-                  style={{ background: '#1c110c', color: '#f0e8e4' }}
-                >
-                  <code className="block" style={{ color: '#FF6B35' }}>POST /v1/chat/completions</code>
-                  <code className="block mt-1 opacity-70">
-                    Authorization: Bearer{' '}
-                    <span style={{ color: '#fff' }}>tm_{t('your_key')}</span>
-                  </code>
-                  <code className="block mt-1 opacity-70">
-                    {`{ "model": "`}<span style={{ color: '#fff' }}>deepseek-v4-flash</span>{`", "messages": [...] }`}
-                  </code>
-                </div>
-              </div>
-
-              {/* prepay */}
-              <div className="feature-card col-span-12 md:col-span-6 lg:col-span-4">
-                <div className="text-2xl mb-3">💳</div>
-                <h3 className="text-lg font-semibold mb-2" style={{ color: '#261814' }}>
-                  {t('Prepay & Use')}
-                </h3>
-                <p style={{ color: '#594139' }}>
-                  {t('USD prepaid balance, pay-per-use. No monthly fees, no subscriptions, no minimum spend.')}
-                </p>
-              </div>
-
-              {/* no multiple signups — accent */}
-              <div className="feature-card accent col-span-12 md:col-span-6 lg:col-span-4">
-                <div className="text-2xl mb-3">🔑</div>
-                <h3 className="text-lg font-semibold mb-2">{t('No Multiple Sign-ups')}</h3>
-                <p className="opacity-90">
-                  {t('One TokenMaster account = all models. No need to register, prepay, and manage keys on each platform separately.')}
-                </p>
-              </div>
-
-              {/* zero migration */}
-              <div className="feature-card col-span-12 lg:col-span-8 flex flex-col sm:flex-row items-start gap-6">
-                <div className="flex-1">
-                  <div className="text-2xl mb-3">🔄</div>
-                  <h3 className="text-lg font-semibold mb-2" style={{ color: '#261814' }}>
-                    {t('Zero Migration, Drop-in Replacement')}
-                  </h3>
-                  <p style={{ color: '#594139' }}>
-                    {t('Just change your base_url. Existing OpenAI SDK code needs zero modification. Python, Node.js, cURL — all languages supported.')}
-                  </p>
-                </div>
-                <div
-                  className="rounded-xl px-4 py-3 text-xs font-mono shrink-0"
-                  style={{ background: '#f7f3f0', border: '1px solid #e6d9d2', color: '#594139' }}
-                >
-                  <code className="block">base_url = <span style={{ color: '#FF6B35' }}>"https://api-tokenmaster.com/v1"</span></code>
-                  <code className="block mt-1 opacity-70"># That's it. No other changes.</code>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ════════════════════════════════════════
-             QUICK START
-             ════════════════════════════════════════ */}
-        <section className="px-6 py-20" style={{ background: '#f7f3f0' }} id="usage">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 text-center">
-              <span className="inline-block rounded-full px-4 py-1 text-xs font-semibold tracking-wider uppercase"
-                style={{ background: 'rgba(255,107,53,0.08)', color: '#cc5500' }}>
-                {t('Quick Start')}
-              </span>
-              <h2 className="section-heading mt-4">{t('Get started in 3 minutes')}</h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-              {/* python */}
-              <div
-                className="rounded-xl border p-6"
-                style={{ background: '#ffffff', borderColor: '#e6d9d2' }}
-              >
-                <p className="mb-3 text-xs font-medium tracking-wider uppercase" style={{ color: '#594139' }}>
-                  {t('Python — 3 lines')}
-                </p>
-                <pre
-                  className="rounded-xl p-5 text-sm leading-relaxed overflow-x-auto"
-                  style={{ background: '#1c110c', color: '#f0e8e4' }}
-                >
-                  <code>{`import openai
-client = openai.OpenAI(
-    api_key="tm_${t('your_key')}",
-    base_url="https://api-tokenmaster.com/v1",
-)
-resp = client.chat.completions.create(
-    model="deepseek-v4-flash",
-    messages=[{"role":"user", "content": "Hello!"}],
-)`}</code>
-                </pre>
-              </div>
-
-              {/* cURL + steps */}
-              <div className="flex flex-col gap-6">
-                <div
-                  className="rounded-xl border p-5"
-                  style={{ background: '#ffffff', borderColor: '#e6d9d2' }}
-                >
-                  <p className="mb-2 text-xs font-medium tracking-wider uppercase" style={{ color: '#594139' }}>
-                    {t('cURL — any language')}
-                  </p>
-                  <pre
-                    className="rounded-xl p-4 text-xs leading-relaxed overflow-x-auto"
-                    style={{ background: '#1c110c', color: '#f0e8e4' }}
-                  >
-                    <code>{`curl https://api-tokenmaster.com/v1/chat/completions \\
-  -H "Authorization: Bearer tm_${t('your_key')}" \\
-  -d '{"model":"glm-4.7-flash","messages":[{"role":"user","content":"Hi"}]}'`}</code>
+                <div className="bg-inverse-surface rounded-lg p-md font-mono-code text-white overflow-x-auto border border-outline-variant/30">
+                  <div className="flex gap-sm mb-sm border-b border-white/10 pb-sm">
+                    <div className="w-3 h-3 rounded-full bg-error" />
+                    <div className="w-3 h-3 rounded-full bg-secondary-container" />
+                    <div className="w-3 h-3 rounded-full bg-on-tertiary-fixed-variant" />
+                  </div>
+                  <pre className="text-[13px] leading-relaxed opacity-90">
+                    <code>
+                      <span className="text-secondary-container">POST</span> /v1/chat/completions{'\n'}
+                      {'{'}{'\n'}
+                      {'  '}"<span className="text-primary-fixed-dim">model</span>": "<span className="text-on-primary-fixed-variant">deepseek-v4-pro</span>",{'\n'}
+                      {'  '}"<span className="text-primary-fixed-dim">messages</span>": [{'\n'}
+                      {'    '}{"{"}"<span className="text-primary-fixed-dim">role</span>": "<span className="text-on-primary-fixed-variant">user</span>", "<span className="text-primary-fixed-dim">content</span>": "<span className="text-on-primary-fixed-variant">{t('Optimize this SQL...')}</span>"{'}'}{'\n'}
+                      {'  '}]{'\n'}
+                      {'}'}
+                    </code>
                   </pre>
                 </div>
-                <div
-                  className="rounded-xl border p-5 flex items-center gap-4"
-                  style={{ background: '#ffffff', borderColor: '#e6d9d2' }}
-                >
-                  <div
-                    className="flex size-12 shrink-0 items-center justify-center rounded-full text-lg font-bold"
-                    style={{ background: 'rgba(255,107,53,0.10)', color: '#FF6B35' }}
-                  >
-                    3
+              </div>
+
+              {/* Feature 2: Enterprise Security */}
+              <div className="bg-white p-lg border border-surface-variant rounded-xl card-lift flex flex-col items-start transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-primary/10 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-primary">security</span>
+                </div>
+                <h3 className="font-headline-md text-headline-md mb-sm">{t('Enterprise Security')}</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {t('SOC2 compliant infrastructure with end-to-end encryption for all token transmissions and prompts.')}
+                </p>
+              </div>
+
+              {/* Feature 3: Low Latency */}
+              <div className="bg-white p-lg border border-surface-variant rounded-xl card-lift flex flex-col items-start transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-secondary-container/20 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-secondary">speed</span>
+                </div>
+                <h3 className="font-headline-md text-headline-md mb-sm">{t('Low Latency')}</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {t('Global edge nodes ensure your API calls reach the nearest model server in under 50ms.')}
+                </p>
+              </div>
+
+              {/* Feature 4: Analytics */}
+              <div className="lg:col-span-2 bg-white p-lg border border-surface-variant rounded-xl card-lift flex items-center gap-lg transition-all duration-500 opacity-100 translate-y-0">
+                <div className="flex-1">
+                  <div className="flex items-center gap-sm text-primary mb-md">
+                    <span className="material-symbols-outlined">analytics</span>
+                    <span className="font-label-md text-label-md uppercase tracking-widest">{t('Real-time Insights')}</span>
                   </div>
-                  <div>
-                    <p className="font-semibold" style={{ color: '#261814' }}>{t('3 Steps')}</p>
-                    <ol className="mt-1 space-y-0.5 text-sm" style={{ color: '#594139' }}>
-                      <li>1. {t('Sign up for TokenMaster → get your API key instantly')}</li>
-                      <li>2. {t('Top up USD balance (no monthly fees)')}</li>
-                      <li>3. {t('Call APIs with your key — pay only for what you use')}</li>
-                    </ol>
+                  <h3 className="font-headline-md text-headline-md mb-sm">{t('Granular Usage Analytics')}</h3>
+                  <p className="font-body-md text-body-md text-on-surface-variant">
+                    {t('Monitor token consumption, costs, and response times across all models in a unified dashboard.')}
+                  </p>
+                </div>
+                <div className="hidden sm:block w-32 h-32 relative">
+                  <div className="absolute inset-0 bg-primary/5 rounded-full flex items-center justify-center">
+                    <div className="w-20 h-20 border-4 border-t-primary border-r-primary border-b-primary/20 border-l-primary/20 rounded-full animate-spin" />
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mt-12 text-center">
-              <p style={{ color: '#594139' }}>
-                {t("Don't have an account?")}{' '}
-                <Link to="/register" style={{ color: '#FF6B35' }} className="hover:underline font-medium">
-                  {t('Sign Up Free')
-                }</Link>
-                {' — '}{t('Get your API key in 30 seconds.')}
-              </p>
+              {/* Feature 5: Smart Key Management */}
+              <div className="bg-white p-lg border border-surface-variant rounded-xl card-lift flex flex-col items-start transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-tertiary-container/20 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-tertiary">key</span>
+                </div>
+                <h3 className="font-headline-md text-headline-md mb-sm">{t('Smart Key Management')}</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {t('Set per-key budgets, expiration dates, and model restrictions with ease.')}
+                </p>
+              </div>
+
+              {/* Feature 6: Log everything */}
+              <div className="bg-white p-lg border border-surface-variant rounded-xl card-lift flex flex-col items-start transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-error-container/20 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-error">monitoring</span>
+                </div>
+                <h3 className="font-headline-md text-headline-md mb-sm">{t('Log everything')}</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  {t('Complete audit trails for every request, making debugging and compliance a breeze.')}
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════════
-             FAQ
-             ════════════════════════════════════════ */}
-        <section className="px-6 py-20" style={{ background: '#ffffff' }} id="faq">
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-10 text-center">
-              <span className="inline-block rounded-full px-4 py-1 text-xs font-semibold tracking-wider uppercase"
-                style={{ background: 'rgba(255,107,53,0.08)', color: '#cc5500' }}>
-                {t('FAQ')}
-              </span>
-              <h2 className="section-heading mt-4">{t('Frequently asked questions')}</h2>
-            </div>
-            <div className="space-y-3">
-              {faqs.map((faq, idx) => (
-                <details
-                  key={idx}
-                  className="group border rounded-xl overflow-hidden"
-                  style={{ background: '#ffffff', borderColor: '#e6d9d2' }}
-                >
-                  <summary
-                    className="flex cursor-pointer items-center justify-between px-6 py-4 font-medium select-none transition-colors"
-                    style={{ color: '#261814' }}
-                  >
-                    <span className="group-open:text-[#FF6B35]">{faq.q}</span>
-                    <span className="ml-4 text-lg transition-transform group-open:rotate-180" style={{ color: '#FF6B35' }}>
-                      ▾
+        {/* ═══════════════ QUICK START ═══════════════ */}
+        <section className="py-32 relative overflow-hidden">
+          <div className="glow-radial absolute bottom-0 right-0 w-[800px] h-[800px] opacity-40" />
+          <div className="max-w-container-max mx-auto px-gutter px-xl">
+            <div className="flex flex-col lg:flex-row gap-xl items-center">
+              <div className="lg:w-1/2 space-y-md">
+                <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                  {t('Get started in seconds')}
+                </h2>
+                <p className="font-body-lg text-body-lg text-on-surface-variant">
+                  {t('Stop juggling multiple API documentation sites. Use our SDK or generic REST calls to tap into the world most powerful models.')}
+                </p>
+                <ul className="space-y-sm">
+                  <li className="flex items-center gap-sm font-body-md text-body-md text-on-surface">
+                    <span
+                      className="material-symbols-outlined text-primary"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      check_circle
                     </span>
-                  </summary>
-                  <div
-                    className="border-t px-6 py-4 text-sm leading-relaxed"
-                    style={{ borderColor: '#e6d9d280', color: '#594139' }}
-                  >
-                    {faq.a}
+                    {t('Fully OpenAI-Compatible')}
+                  </li>
+                  <li className="flex items-center gap-sm font-body-md text-body-md text-on-surface">
+                    <span
+                      className="material-symbols-outlined text-primary"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      check_circle
+                    </span>
+                    {t('Python & Node.js Native SDKs')}
+                  </li>
+                  <li className="flex items-center gap-sm font-body-md text-body-md text-on-surface">
+                    <span
+                      className="material-symbols-outlined text-primary"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      check_circle
+                    </span>
+                    {t('Global Rate-Limit Handling')}
+                  </li>
+                </ul>
+              </div>
+
+              {/* Dual Pane Code Block */}
+              <div className="lg:w-1/2 w-full">
+                <div className="bg-white rounded-xl shadow-xl border border-surface-variant overflow-hidden">
+                  <div className="flex border-b border-surface-variant bg-surface-container-low">
+                    <button
+                      className={`px-lg py-md font-label-md text-label-md border-b-2 transition-all ${activeTab === 'python' ? 'border-primary text-primary' : 'border-transparent text-on-surface-variant hover:bg-surface-container'}`}
+                      onClick={() => setActiveTab('python')}
+                    >
+                      Python
+                    </button>
+                    <button
+                      className={`px-lg py-md font-label-md text-label-md border-b-2 transition-all ${activeTab === 'curl' ? 'border-primary text-primary' : 'border-transparent text-on-surface-variant hover:bg-surface-container'}`}
+                      onClick={() => setActiveTab('curl')}
+                    >
+                      cURL
+                    </button>
                   </div>
-                </details>
-              ))}
+                  <div className="p-lg bg-white min-h-[300px] font-mono-code">
+                    {activeTab === 'python' && (
+                      <pre className="text-body-md">
+                        <code className="text-on-surface-variant">
+                          <span className="text-primary">import</span> tokenmaster{'\n\n'}
+                          client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">"tm_..."</span>){'\n\n'}
+                          response = client.chat.completions.create({'\n'}
+                          {'    '}model=<span className="text-on-tertiary-fixed-variant">"deepseek-reasoner"</span>,{'\n'}
+                          {'    '}messages=[{{"role": <span className="text-on-tertiary-fixed-variant">"user"</span>, "content": <span className="text-on-tertiary-fixed-variant">"Hi!"</span>}}]{'\n'}
+                          ){'\n\n'}
+                          print(response.choices[<span className="text-secondary">0</span>].message.content)
+                        </code>
+                      </pre>
+                    )}
+                    {activeTab === 'curl' && (
+                      <pre className="text-body-md">
+                        <code className="text-on-surface-variant">{[
+                          'curl https://api.tokenmaster.ai/v1/chat/completions \\',
+                          '  -H "Content-Type: application/json" \\',
+                          '  -H "Authorization: Bearer $TM_API_KEY" \\',
+                          "  -d '{",
+                          '    "model": "glm-4-flash",',
+                          '    "messages": [{"role": "user", "content": "Hello!"}]',
+                          "  }'",
+                        ].join(String.fromCharCode(10))}</code>
+                      </pre>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ════════════════════════════════════════
-             FOOTER
-             ════════════════════════════════════════ */}
-        <footer
-          className="border-t px-6 py-16"
-          style={{ background: '#f7f3f0', borderColor: '#e6d9d2' }}
-        >
-          <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-              {/* brand */}
-              <div className="lg:col-span-4">
-                <span className="text-lg font-bold" style={{ color: '#261814' }}>
-                  <span style={{ color: '#FF6B35' }}>⚡</span> TokenMaster
-                </span>
-                <p className="mt-3 max-w-xs text-sm" style={{ color: '#594139' }}>
-                  {t('One-stop AI API gateway for developers. One key, all models.')}
+        {/* ═══════════════ FAQ ═══════════════ */}
+        <section className="py-xl bg-white">
+          <div className="max-w-4xl mx-auto px-gutter px-xl">
+            <h2 className="font-headline-lg text-headline-lg text-center mb-xl">
+              {t('Common Questions')}
+            </h2>
+            <div className="space-y-md">
+              <details className="group bg-surface-container-low rounded-xl border border-surface-variant p-md cursor-pointer hover:bg-surface-container-high transition-colors" open>
+                <summary className="flex items-center justify-between font-headline-md text-headline-md list-none">
+                  {t('How does the billing work?')}
+                  <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <p className="mt-md font-body-md text-body-md text-on-surface-variant">
+                  {t('We use a unified credit system. You purchase TM-Tokens, and we handle the translation to provider-specific costs. You only pay for what you use across all models.')}
                 </p>
-                <p className="mt-6 text-xs" style={{ color: '#8d7168' }}>
-                  © {year} TokenMaster. {t('All rights reserved.')}
+              </details>
+              <details className="group bg-surface-container-low rounded-xl border border-surface-variant p-md cursor-pointer hover:bg-surface-container-high transition-colors">
+                <summary className="flex items-center justify-between font-headline-md text-headline-md list-none">
+                  {t('Is there a limit on API keys?')}
+                  <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <p className="mt-md font-body-md text-body-md text-on-surface-variant">
+                  {t('On our Starter plan, you can create up to 10 keys. Pro and Enterprise plans offer unlimited keys with granular permission sets.')}
                 </p>
-              </div>
-
-              {/* links */}
-              <div className="lg:col-span-6 grid grid-cols-2 gap-8 md:grid-cols-4">
-                <div>
-                  <h4 className="mb-4 text-xs font-bold tracking-wider uppercase" style={{ color: '#261814' }}>
-                    {t('Product')}
-                  </h4>
-                  <ul className="space-y-2.5 text-sm" style={{ color: '#594139' }}>
-                    <li><a href="#features" className="hover:text-[#FF6B35] transition-colors">{t('Features')}</a></li>
-                    <li><Link to="/pricing" className="hover:text-[#FF6B35] transition-colors">{t('Pricing')}</Link></li>
-                    <li><Link to="/plans" className="hover:text-[#FF6B35] transition-colors">{t('Plans')}</Link></li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="mb-4 text-xs font-bold tracking-wider uppercase" style={{ color: '#261814' }}>
-                    {t('Resources')}
-                  </h4>
-                  <ul className="space-y-2.5 text-sm" style={{ color: '#594139' }}>
-                    <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="hover:text-[#FF6B35] transition-colors">{t('API Docs')}</a></li>
-                    <li><a href="#faq" className="hover:text-[#FF6B35] transition-colors">{t('FAQ')}</a></li>
-                    <li><Link to="/about" className="hover:text-[#FF6B35] transition-colors">{t('About')}</Link></li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="mb-4 text-xs font-bold tracking-wider uppercase" style={{ color: '#261814' }}>
-                    {t('Legal')}
-                  </h4>
-                  <ul className="space-y-2.5 text-sm" style={{ color: '#594139' }}>
-                    <li><Link to="/privacy-policy" className="hover:text-[#FF6B35] transition-colors">{t('Privacy Policy')}</Link></li>
-                    <li><Link to="/user-agreement" className="hover:text-[#FF6B35] transition-colors">{t('Terms of Service')}</Link></li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* status */}
-              <div className="lg:col-span-2 flex flex-col items-start lg:items-end justify-end">
-                <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs"
-                  style={{ background: 'white', border: '1px solid #e6d9d2' }}>
-                  <span className="inline-block size-2 rounded-full bg-green-500 animate-pulse" />
-                  <span style={{ color: '#594139' }}>{t('All Systems Operational')}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* divider */}
-            <div className="mt-12 border-t pt-6 text-center text-xs" style={{ borderColor: '#e6d9d2', color: '#8d7168' }}>
-              {t('Built with')} ❤️ {t('for the developer community')}
+              </details>
+              <details className="group bg-surface-container-low rounded-xl border border-surface-variant p-md cursor-pointer hover:bg-surface-container-high transition-colors">
+                <summary className="flex items-center justify-between font-headline-md text-headline-md list-none">
+                  {t('Which models are supported?')}
+                  <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <p className="mt-md font-body-md text-body-md text-on-surface-variant">
+                  {t('Currently we support the full suites of DeepSeek, GLM, and Qwen. We add new state-of-the-art models within 24 hours of their public release.')}
+                </p>
+              </details>
             </div>
           </div>
-        </footer>
+        </section>
       </main>
+
+      {/* ═══════════════ FOOTER ═══════════════ */}
+      <footer className="bg-surface-container-low border-t border-surface-variant">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-lg px-gutter py-xl max-w-container-max mx-auto px-xl">
+          <div className="col-span-1 space-y-md">
+            <span className="font-headline-sm text-headline-sm font-semibold text-on-surface">TokenMaster</span>
+            <p className="font-body-md text-body-md text-on-surface-variant">
+              {t('The industrial-grade bridge to the world most advanced artificial intelligence models.')}
+            </p>
+          </div>
+          <div className="col-span-1">
+            <h4 className="font-label-md text-label-md text-on-surface-variant uppercase mb-md">{t('Product')}</h4>
+            <ul className="space-y-sm">
+              <li><Link to="/pricing" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Models')}</Link></li>
+              <li><Link to="/pricing" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Pricing')}</Link></li>
+              <li><a href="#" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('API Reference')}</a></li>
+            </ul>
+          </div>
+          <div className="col-span-1">
+            <h4 className="font-label-md text-label-md text-on-surface-variant uppercase mb-md">{t('Resources')}</h4>
+            <ul className="space-y-sm">
+              <li><a href="#" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Documentation')}</a></li>
+              <li><a href="#" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Changelog')}</a></li>
+              <li><a href="#" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('System Status')}</a></li>
+            </ul>
+          </div>
+          <div className="col-span-1">
+            <h4 className="font-label-md text-label-md text-on-surface-variant uppercase mb-md">{t('Legal')}</h4>
+            <ul className="space-y-sm">
+              <li><Link to="/user-agreement" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Terms')}</Link></li>
+              <li><Link to="/privacy-policy" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Privacy')}</Link></li>
+              <li><a href="#" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Security')}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-container-max mx-auto px-gutter py-md border-t border-surface-variant flex flex-col md:flex-row justify-between items-center gap-sm px-xl">
+          <p className="font-label-md text-label-md text-on-surface-variant">{t('© 2024 TokenMaster AI. All systems operational.')}</p>
+          <div className="flex gap-md">
+            <a href="#" className="text-on-surface-variant hover:text-primary transition-colors"><span className="material-symbols-outlined">public</span></a>
+            <a href="#" className="text-on-surface-variant hover:text-primary transition-colors"><span className="material-symbols-outlined">chat</span></a>
+          </div>
+        </div>
+      </footer>
     </PublicLayout>
   )
 }
