@@ -714,9 +714,9 @@ export function PricingPlansPage() {
       return
     }
 
-    // Not logged in -> redirect to signup
+    // Not logged in -> redirect to signin
     if (!auth?.user) {
-      navigate({ to: '/sign-up', search: { redirect: '/plans' } })
+      navigate({ to: '/sign-in', search: { redirect: '/plans' } })
       return
     }
 
@@ -742,7 +742,7 @@ export function PricingPlansPage() {
     const amount = packageToPay.fixedAmount
 
     if (!auth?.user) {
-      navigate({ to: '/sign-up', search: { redirect: '/plans' } })
+      navigate({ to: '/sign-in', search: { redirect: '/plans' } })
       return
     }
 
@@ -781,7 +781,7 @@ export function PricingPlansPage() {
       return
     }
     if (!auth?.user) {
-      navigate({ to: '/sign-up', search: { redirect: '/plans' } })
+      navigate({ to: '/sign-in', search: { redirect: '/plans' } })
       return
     }
     if (!selectedMethod) {
