@@ -81,8 +81,7 @@ export function About() {
         .tm-value-icon { width: 64px; height: 64px; margin-bottom: 22px; display: flex;
           align-items: center; justify-content: center; background: #ffdbcf; border-radius: 50%;
           overflow: hidden; flex-shrink: 0; }
-        .tm-value-icon img { width: 36px; height: 36px; object-fit: contain; }
-        .tm-value-icon .icon-symbol { font-size: 28px; color: #a43700; }
+        .tm-value-icon svg { width: 36px; height: 36px; }
         .tm-value-card h3 { font-family: 'Space Grotesk', sans-serif;
           font-size: 20px; line-height: 1.4; font-weight: 500; color: #191c1d;
           margin-bottom: 14px; padding-bottom: 14px; position: relative; }
@@ -221,11 +220,11 @@ export function About() {
               {/* Value 1 — Universal Access */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
-                  <img
-                    src='https://lh3.googleusercontent.com/aida-public/AB6AXuCP57yCV1_3jCmstDU6RSLGm6guAlRwxQSG4rhbnRoDU1Ca3DuzfbFzurajtZysVPG-3S9H8qNv-SpOMIDs_j32EhCCfco3htO6JOujBtV1y_AdkmsG-_WafQek_AneVT59JhNI8tMPEvusvsdbJP7kgBT-hr58kj-iomn7wGhhcTJtTGkcob-ErmMIQmtMb34zF6gUNUorYjvVZ6H85H5n5-ulekTjBAHN-7IAKtxRB_NrFMLj4qQOFHhLN8XiiLSIi_t8TQTtdjo'
-                    alt='Universal Access'
-                    loading='lazy'
-                  />
+                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#a43700' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                    <circle cx='12' cy='12' r='10' />
+                    <path d='M2 12h20' />
+                    <path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' />
+                  </svg>
                 </div>
                 <h3>{t('Universal Access', 'Universal Access')}</h3>
                 <p>{t('A single integration key unlocks the world\'s most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.', "A single integration key unlocks the world's most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.")}</p>
@@ -234,7 +233,10 @@ export function About() {
               {/* Value 2 — High-Precision */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
-                  <span className='material-symbols-outlined icon-symbol' aria-hidden='true'>precision_manufacturing</span>
+                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#a43700' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                    <circle cx='12' cy='12' r='3' />
+                    <path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' />
+                  </svg>
                 </div>
                 <h3>{t('High-Precision', 'High-Precision')}</h3>
                 <p>{t('Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.', 'Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.')}</p>
@@ -243,7 +245,12 @@ export function About() {
               {/* Value 3 — Transparent Economics */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
-                  <span className='material-symbols-outlined icon-symbol' aria-hidden='true'>receipt_long</span>
+                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#a43700' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                    <rect x='2' y='4' width='20' height='16' rx='2' ry='2' />
+                    <line x1='2' y1='10' x2='22' y2='10' />
+                    <line x1='6' y1='14' x2='14' y2='14' />
+                    <line x1='6' y1='17' x2='18' y2='17' />
+                  </svg>
                 </div>
                 <h3>{t('Transparent Economics', 'Transparent Economics')}</h3>
                 <p>{t('No obscure tier systems or hidden fees. We operate on a pure pay-per-use model, ensuring your costs scale linearly with your success.', 'No obscure tier systems or hidden fees. We operate on a pure pay-per-use model, ensuring your costs scale linearly with your success.')}</p>
