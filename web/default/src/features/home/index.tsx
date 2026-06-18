@@ -412,11 +412,10 @@ export function Home() {
                 </span>
               </div>
               <h1 className="font-display text-display text-on-surface">
-                {t('One line to access top AI models.')}
+                {t('One line to access top AI models —')}
                 <br />
                 <span className="text-primary">
-                  {t('DeepSeek · GLM · Qwen,')} {t('one key for all.')}
-                </span>
+                  {t('DeepSeek · GLM · Qwen')}</span>, {t('one key for all.')}
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
                 {t('Seamlessly integrate cutting-edge LLMs with a single API. Professional-grade infrastructure for high-precision engineering and data science workloads.')}
@@ -450,11 +449,9 @@ export function Home() {
                     {t('Get API Key')} <span className="material-symbols-outlined">arrow_forward</span>
                   </button>
                 </Link>
-                <Link to="/pricing">
-                  <button className="bg-white border border-outline-variant text-primary px-xl py-md rounded-lg font-label-md text-label-md hover:bg-surface-container transition-all">
-                    {t('Documentation')}
-                  </button>
-                </Link>
+                <button className="bg-white border border-outline-variant text-primary px-xl py-md rounded-lg font-label-md text-label-md hover:bg-surface-container transition-all">
+                  {t('Documentation')}
+                </button>
               </div>
             </div>
 
@@ -677,6 +674,67 @@ export function Home() {
           </div>
         </section>
 
+        {/* ═══════════════ PRICING CTA ═══════════════ */}
+        <section className="py-xl bg-surface-container-lowest relative">
+          <div className="max-w-container-max mx-auto px-gutter px-xl">
+            <div className="mb-xl text-center">
+              <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                {t('Ready to ship?')}
+              </h2>
+              <p className="font-body-md text-body-md text-on-surface-variant mt-sm">
+                {t('USD prepaid, pay-per-use. Top up your balance and start building.')}
+              </p>
+            </div>
+
+            {/* Package Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg mb-xl">
+              <div className="bg-white border border-surface-variant rounded-xl p-lg card-lift text-center flex flex-col items-center transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-primary/10 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-primary text-[28px]">bolt</span>
+                </div>
+                <span className="font-headline-md text-headline-md text-on-surface">$10</span>
+                <span className="inline-block px-sm py-xs bg-primary/10 text-primary font-label-md text-label-md rounded-full mt-sm">+$1</span>
+                <p className="font-body-md text-body-md text-on-surface-variant mt-sm">{t('Get $11.00 balance')}</p>
+              </div>
+              <div className="bg-white border border-surface-variant rounded-xl p-lg card-lift text-center flex flex-col items-center transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-secondary-container/20 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-secondary text-[28px]">rocket_launch</span>
+                </div>
+                <span className="font-headline-md text-headline-md text-on-surface">$50</span>
+                <span className="inline-block px-sm py-xs bg-secondary-container/20 text-secondary font-label-md text-label-md rounded-full mt-sm">+$8</span>
+                <p className="font-body-md text-body-md text-on-surface-variant mt-sm">{t('Get $58.00 balance')}</p>
+              </div>
+              <div className="bg-white border border-surface-variant rounded-xl p-lg card-lift text-center flex flex-col items-center transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-tertiary-container/20 p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-tertiary text-[28px]">diamond</span>
+                </div>
+                <span className="font-headline-md text-headline-md text-on-surface">$100</span>
+                <span className="inline-block px-sm py-xs bg-tertiary-container/20 text-tertiary font-label-md text-label-md rounded-full mt-sm">+$20</span>
+                <p className="font-body-md text-body-md text-on-surface-variant mt-sm">{t('Get $120.00 balance')}</p>
+              </div>
+              <div className="bg-white border border-surface-variant rounded-xl p-lg card-lift text-center flex flex-col items-center transition-all duration-500 opacity-100 translate-y-0">
+                <div className="bg-surface-container p-md rounded-full mb-md">
+                  <span className="material-symbols-outlined text-on-surface-variant text-[28px]">tune</span>
+                </div>
+                <span className="font-headline-md text-headline-md text-on-surface">{t('Custom')}</span>
+                <span className="inline-block px-sm py-xs bg-surface-container text-on-surface-variant font-label-md text-label-md rounded-full mt-sm">{t('Any amount')}</span>
+                <p className="font-body-md text-body-md text-on-surface-variant mt-sm">{t('Enter any amount in USD')}</p>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <Link to="/plans">
+                <button className="bg-primary text-on-primary px-xl py-md rounded-lg font-label-md text-label-md inline-flex items-center gap-sm hover:opacity-95 transition-all shadow-lg">
+                  {t('Top Up Now')} <span className="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </Link>
+              <p className="font-body-md text-body-md text-on-surface-variant mt-sm">
+                {t('No monthly fees, no subscriptions. Only pay for what you use.')}
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* ═══════════════ FAQ ═══════════════ */}
         <section className="py-xl bg-white">
           <div className="max-w-4xl mx-auto px-gutter px-xl">
@@ -729,7 +787,7 @@ export function Home() {
             <h4 className="font-label-md text-label-md text-on-surface-variant uppercase mb-md">{t('Product')}</h4>
             <ul className="space-y-sm">
               <li><Link to="/pricing" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Models')}</Link></li>
-              <li><Link to="/pricing" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Pricing')}</Link></li>
+              <li><Link to="/plans" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('Pricing')}</Link></li>
               <li><a href="#" className="font-label-md text-label-md text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-opacity">{t('API Reference')}</a></li>
             </ul>
           </div>
