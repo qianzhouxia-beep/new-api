@@ -273,15 +273,15 @@ async function payViaStripe(amount: number): Promise<string | null> {
     const res = await api.post(
       '/api/user/stripe/pay',
       {
-        amount: amount,
+        amount: Math.round(amount),
         payment_method: 'stripe',
         success_url: window.location.origin + '/plans?status=success',
         cancel_url: window.location.origin + '/plans?status=cancel',
       },
       { skipBusinessError: true } as Record<string, unknown>,
     )
-    const body = res.data as { success?: boolean; data?: { pay_link?: string } }
-    if (body.data?.pay_link) return body.data.pay_link
+    const body = res.data as { message?: string; data?: { pay_link?: string } }
+    if (body.message === 'success' && body.data?.pay_link) return body.data.pay_link
     return null
   } catch {
     return null
@@ -580,7 +580,7 @@ export function PricingPlansPage() {
         const res = await api.post(
           '/api/user/paypal/pay',
           {
-            amount: amount,
+            amount: Math.round(amount),
             success_url: window.location.origin + '/plans?status=success',
             cancel_url: window.location.origin + '/plans?status=cancel',
           },
@@ -588,9 +588,9 @@ export function PricingPlansPage() {
         )
         const body = res.data as {
           message?: string
-          data?: { pay_link?: string }
+          data?: { pay_link?: string; order_id?: string }
         }
-        if (body.data?.pay_link) {
+        if (body.message === 'success' && body.data?.pay_link) {
           window.location.href = body.data.pay_link
           return
         }
@@ -657,10 +657,19 @@ export function PricingPlansPage() {
       return
     }
 
+    if (!selectedMethod) {
+      setError(zh ? '请选择支付方式' : 'Please select a payment method')
+      return
+    }
+
     if (selectedMethod === 'stripe') {
       doStripePayment(amount)
     } else if (selectedMethod === 'paypal') {
       doPayPalPayment(amount)
+    } else if (selectedMethod === 'epay') {
+      setError(zh ? '支付宝/微信支付暂不支持套餐购买，请使用按量充值' : 'Alipay/WeChat not available for packages, please use Pay As You Go')
+    } else if (selectedMethod === 'creem') {
+      setError(zh ? 'Creem 支付暂未开放' : 'Creem payment is not yet available')
     } else if (selectedMethod === 'manual') {
       setError(
         zh
@@ -678,15 +687,46 @@ export function PricingPlansPage() {
 
   function handlePaygPayment() {
     const amount = customAmount ? parseInt(customAmount) : topupAmount
-    if (!amount || amount < 1) return
+    if (!amount || amount < 1) {
+      setError(zh ? '请输入有效金额（最低 $1）' : 'Please enter a valid amount (min $1)')
+      return
+    }
     if (!auth?.user) {
       navigate({ to: '/sign-up', search: { redirect: '/plans' } })
+      return
+    }
+    if (!selectedMethod) {
+      setError(zh ? '请选择支付方式' : 'Please select a payment method')
       return
     }
     if (selectedMethod === 'stripe') {
       doStripePayment(amount)
     } else if (selectedMethod === 'paypal') {
       doPayPalPayment(amount)
+    } else if (selectedMethod === 'epay') {
+      // Epay (Alipay/WeChat) uses the legacy /api/user/topup endpoint
+      setError(
+        zh
+          ? '支付宝/微信支付正在跳转...'
+          : 'Redirecting to payment...',
+      )
+      try {
+        const form = document.createElement('form')
+        form.method = 'POST'
+        form.action = '/api/user/topup'
+        form.style.display = 'none'
+        const amtInput = document.createElement('input')
+        amtInput.type = 'hidden'
+        amtInput.name = 'amount'
+        amtInput.value = String(amount)
+        form.appendChild(amtInput)
+        document.body.appendChild(form)
+        form.submit()
+      } catch {
+        setError(zh ? '支付跳转失败，请重试' : 'Payment redirect failed, please retry')
+      }
+    } else if (selectedMethod === 'creem') {
+      setError(zh ? 'Creem 支付暂未开放' : 'Creem payment is not yet available')
     } else if (selectedMethod === 'manual') {
       setError(
         zh
@@ -791,8 +831,8 @@ export function PricingPlansPage() {
           {selectedMethod === 'manual' && (
             <p className="tmp-topup-manual-note">
               {zh
-                ? '请转账至公司银行账户，并将转账凭证发送至 support@tokenmaster.com。客服确认后为您充值。'
-                : 'Please transfer to our company bank account and email the receipt to support@tokenmaster.com. We will credit your account upon confirmation.'}
+                ? <>{'请转账至公司银行账户，并将转账凭证发送至 '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{'。客服确认后为您充值。'}</>
+                : <>{'Please transfer to our company bank account and email the receipt to '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{'. We will credit your account upon confirmation.'}</>}
             </p>
           )}
         </div>
@@ -1060,10 +1100,23 @@ export function PricingPlansPage() {
               <span className="tmp-hero-pill-text">{t('3.7-Max, 3.7-Plus')}</span>
             </div>
           </div>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/plans#packages" className="tmp-cta-btn" style={{ textDecoration: 'none' }}>
+              {t('View Pricing Plans')}
+            </Link>
+            <Link to="/sign-up" className="tmp-card-btn tmp-card-btn-outline" style={{
+              display: 'inline-flex', alignItems: 'center', padding: '15px 38px', borderRadius: '8px',
+              fontFamily: "'Space Grotesk', sans-serif", fontSize: '16px', fontWeight: 600,
+              cursor: 'pointer', transition: 'all .2s', border: 'none',
+              textDecoration: 'none',
+            }}>
+              {t('Start Free Trial')}
+            </Link>
+          </div>
         </section>
 
         {/* ═══════ Plan Cards ═══════ */}
-        <section className="tmp-cards">
+        <section className="tmp-cards" id="packages">
           <div className="tmp-cards-grid">
             {PACKAGES.map((plan) => (
               <div
@@ -1146,7 +1199,7 @@ export function PricingPlansPage() {
         )}
 
         {/* ═══════ Pricing Table ═══════ */}
-        <section className="tmp-table-wrap">
+        <section className="tmp-table-wrap" id="model-pricing">
           <div className="tmp-table-inner">
             <div className="tmp-table-scroll">
               <table className="tmp-table">
