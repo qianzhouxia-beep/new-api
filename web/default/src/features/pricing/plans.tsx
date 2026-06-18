@@ -400,15 +400,15 @@ function PackagePaymentModal({
 
         <div className='tmp-modal-price-row'>
           <span className='tmp-modal-price-label'>{zh ? '支付' : 'Pay'}</span>
-          <span className='tmp-modal-price-value'>${`$`}{pkg.fixedAmount}</span>
+          <span className='tmp-modal-price-value'>${pkg.fixedAmount}</span>
         </div>
         <div className='tmp-modal-balance-row'>
           <span className='tmp-modal-balance-label'>{zh ? '到账余额' : 'Balance received'}</span>
-          <span className='tmp-modal-balance-value'>${`$`}{pkg.receiveAmount.toFixed(1)}</span>
+          <span className='tmp-modal-balance-value'>${pkg.receiveAmount.toFixed(1)}</span>
         </div>
         {pkg.receiveAmount > pkg.fixedAmount && (
           <div className='tmp-modal-bonus'>
-            🎉 {zh ? `Bonus ${`$`}${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}` : `Bonus ${`$`}${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}`}
+            🎉 {zh ? `Bonus $${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}` : `Bonus $${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}`}
           </div>
         )}
 
@@ -439,7 +439,7 @@ function PackagePaymentModal({
               ? (zh ? '跳转支付中...' : 'Redirecting...')
               : paying === 'paypal'
                 ? (zh ? '跳转 PayPal...' : 'Redirecting to PayPal...')
-                : (zh ? `支付 ${`$`}${pkg.fixedAmount}` : `Pay ${`$`}${pkg.fixedAmount}`)}
+                : (zh ? `支付 $${pkg.fixedAmount}` : `Pay $${pkg.fixedAmount}`)}
           </button>
         </div>
       </div>
@@ -537,7 +537,7 @@ function PaygPaymentModal({
           <p className='tmp-modal-manual-note'>
             {zh
               ? <>{'请转账至公司银行账户，并将转账凭证发送至 '}<a href='mailto:support@tokenmaster.com'>support@tokenmaster.com</a>{'。客服确认后为您充值。'}</>
-              : <>{'Please transfer to our company bank account and email the receipt to '}<a href='mailto:support@tokenmaster.com'>support@tokenmaster.com</a>{'. We will credit your account upon confirmation.'}</>}
+              : <>{'Email receipt to '}<a href='mailto:support@tokenmaster.com'>support@tokenmaster.com</a>{' — credited within 24h.'}</>}
           </p>
         )}
 
@@ -921,7 +921,7 @@ export function PricingPlansPage() {
             <p className="tmp-topup-manual-note">
               {zh
                 ? <>{'请转账至公司银行账户，并将转账凭证发送至 '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{'。客服确认后为您充值。'}</>
-                : <>{'Please transfer to our company bank account and email the receipt to '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{'. We will credit your account upon confirmation.'}</>}
+                : <>{'Email receipt to '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{' — credited within 24h.'}</>}
             </p>
           )}
         </div>
