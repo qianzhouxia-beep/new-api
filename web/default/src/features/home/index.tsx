@@ -10,6 +10,8 @@ import { PublicLayout } from '@/components/layout'
 
 /* ─── M3 Color System + Tailwind Extensions ─── */
 const designSystemStyle = `
+  @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
   body {
     background-color: #fcfaf8;
   }
@@ -587,7 +589,7 @@ export function Home() {
           </h2>
           <div className="space-y-4">
             <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }} open>
-              <summary className="flex items-center justify-between text-2xl leading-8 font-medium list-none" style={{ fontFamily: 'Space Grotesk' }}>
+              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk' }}>
                 {t('How does the billing work?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
@@ -596,7 +598,7 @@ export function Home() {
               </p>
             </details>
             <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-              <summary className="flex items-center justify-between text-2xl leading-8 font-medium list-none" style={{ fontFamily: 'Space Grotesk' }}>
+              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk' }}>
                 {t('Is there a limit on API keys?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
@@ -605,7 +607,7 @@ export function Home() {
               </p>
             </details>
             <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-              <summary className="flex items-center justify-between text-2xl leading-8 font-medium list-none" style={{ fontFamily: 'Space Grotesk' }}>
+              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk' }}>
                 {t('Which models are supported?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
@@ -627,7 +629,7 @@ export function Home() {
             </p>
           </div>
           <div className="col-span-1">
-            <h4 className="text-sm tracking-wider font-semibold uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+            <h4 className="text-sm tracking-wider font-normal uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
               {t('Product')}
             </h4>
             <ul className="space-y-2">
@@ -637,7 +639,7 @@ export function Home() {
             </ul>
           </div>
           <div className="col-span-1">
-            <h4 className="text-sm tracking-wider font-semibold uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+            <h4 className="text-sm tracking-wider font-normal uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
               {t('Resources')}
             </h4>
             <ul className="space-y-2">
@@ -647,7 +649,7 @@ export function Home() {
             </ul>
           </div>
           <div className="col-span-1">
-            <h4 className="text-sm tracking-wider font-semibold uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+            <h4 className="text-sm tracking-wider font-normal uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
               {t('Legal')}
             </h4>
             <ul className="space-y-2">
