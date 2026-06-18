@@ -126,17 +126,18 @@ export function About() {
           opacity: .8; margin-bottom: 36px; }
         .tm-cta-btns { display: flex; flex-direction: column; gap: 14px;
           align-items: center; justify-content: center; flex-wrap: wrap; }
-        .tm-cta-btn-primary { display: inline-block; background: #a43700; color: #fff;
+        .tm-cta-btn-primary { display: inline-block; background: #a43700; color: #ffffff !important;
           padding: 15px 38px; font-family: 'Space Grotesk', sans-serif; font-size: 14px;
           font-weight: 600; border-radius: 8px; border: none; cursor: pointer;
           transition: all .2s; text-decoration: none !important;
           box-shadow: 0 10px 25px rgba(164,55,0,.2); }
-        .tm-cta-btn-primary:hover { background: #cd4700; transform: scale(1.04); color: #fff; }
-        .tm-cta-btn-secondary { display: inline-block; background: transparent; color: #fff;
+        .tm-cta-btn-primary:hover { background: #cd4700; transform: scale(1.04); color: #ffffff !important; }
+        .tm-cta-btn-primary span { color: #ffffff !important; }
+        .tm-cta-btn-secondary { display: inline-block; background: transparent; color: #ffffff !important;
           padding: 15px 38px; font-family: 'Space Grotesk', sans-serif; font-size: 14px;
           font-weight: 600; border-radius: 8px; border: 1px solid #e3bfb2; cursor: pointer;
           transition: all .2s; text-decoration: none !important; }
-        .tm-cta-btn-secondary:hover { background: rgba(255,255,255,.05); color: #fff; }
+        .tm-cta-btn-secondary:hover { background: rgba(255,255,255,.05); color: #ffffff !important; }
 
         /* ── Footer ── */
         .tm-footer { background: #f3f4f5; border-top: 1px solid #e3bfb2;
@@ -191,11 +192,25 @@ export function About() {
             <div className='tm-mission-grid'>
               <div>
                 <div className='tm-mission-img-wrap'>
-                  <img
-                    src='https://lh3.googleusercontent.com/aida-public/AB6AXuCLgK9xT9vow7XqYl2D2MOMORFC7O5Pu60FIDis6Baxi23tn_vFFaioeqeK1x_DNLc8DVwS3YyKiC3biBVwfKYLqBojMxrNsSiq61rUIFnRWRYWvRHezgZj0_AOuwn9yrRv2eEcaWE8FEUMkADLFdIW6bwLR5boKQRZnzOqbATTef1H-EaADzJCyWdN7CwiekP-2uaDt_kbcOuI5egaQDFqh3jDU4yF4fIiCOYrMGZ3oacaiS7Mh60FMf-rHs23GkZvzuaYdT_JbTs'
-                    alt='TokenMaster Headquarters'
-                    loading='lazy'
-                  />
+                  <svg viewBox='0 0 400 225' width='100%' height='100%' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'>
+                    <defs>
+                      <linearGradient id='mg' x1='0%' y1='0%' x2='100%' y2='100%'>
+                        <stop offset='0%' stopColor='#a43700' stopOpacity='.12'/>
+                        <stop offset='50%' stopColor='#4c56af' stopOpacity='.08'/>
+                        <stop offset='100%' stopColor='#e3bfb2' stopOpacity='.18'/>
+                      </linearGradient>
+                    </defs>
+                    <rect width='400' height='225' fill='url(#mg)' rx='12'/>
+                    <g fill='#a43700' opacity='.25' text-anchor='middle' dominant-baseline='middle'>
+                      <circle cx='120' cy='90' r='40' stroke='#a43700' stroke-width='1.5' fill='none'/>
+                      <circle cx='280' cy='135' r='30' stroke='#a43700' stroke-width='1.5' fill='none'/>
+                      <line x1='150' y1='110' x2='255' y2='130' stroke='#a43700' stroke-width='1.5' stroke-dasharray='4 3'/>
+                      <circle cx='200' cy='170' r='20' stroke='#4c56af' stroke-width='1.5' fill='none'/>
+                      <line x1='140' y1='115' x2='185' y2='160' stroke='#4c56af' stroke-width='1' stroke-dasharray='3 3'/>
+                      <line x1='295' y1='140' x2='215' y2='168' stroke='#4c56af' stroke-width='1' stroke-dasharray='3 3'/>
+                      <text x='200' y='45' font-family='Space Grotesk,sans-serif' font-size='13' font-weight='600' fill='#a43700' opacity='.35'>TOKENMASTER ARCHITECTURE</text>
+                    </g>
+                  </svg>
                 </div>
               </div>
               <div className='tm-mission-content'>
