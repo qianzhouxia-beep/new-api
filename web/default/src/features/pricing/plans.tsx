@@ -1083,7 +1083,6 @@ export function PricingPlansPage() {
 
         {/* ═══════ Hero ═══════ */}
         <section className="tmp-hero">
-          <span className="tmp-hero-badge">✨ {t('Transparent Pricing')}</span>
           <h1>{t('Simple, usage-based pricing')}</h1>
           <p>{t('All prices in USD. No subscriptions. Pay only for tokens you use. High-precision infrastructure for industrial-grade AI development.')}</p>
           <div className="tmp-hero-pills">
@@ -1099,19 +1098,6 @@ export function PricingPlansPage() {
               <span className="tmp-hero-pill-tag">Qwen</span>
               <span className="tmp-hero-pill-text">{t('3.7-Max, 3.7-Plus')}</span>
             </div>
-          </div>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/plans#packages" className="tmp-cta-btn" style={{ textDecoration: 'none' }}>
-              {t('View Pricing Plans')}
-            </Link>
-            <Link to="/sign-up" className="tmp-card-btn tmp-card-btn-outline" style={{
-              display: 'inline-flex', alignItems: 'center', padding: '15px 38px', borderRadius: '8px',
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: '16px', fontWeight: 600,
-              cursor: 'pointer', transition: 'all .2s', border: 'none',
-              textDecoration: 'none',
-            }}>
-              {t('Start Free Trial')}
-            </Link>
           </div>
         </section>
 
