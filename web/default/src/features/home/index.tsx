@@ -629,38 +629,38 @@ export function Home() {
             </p>
           </div>
           <div className="col-span-1">
-            <h4 className="text-sm tracking-wider font-normal uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+            <h4 className="text-sm tracking-wider font-semibold uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
               {t('Product')}
             </h4>
             <ul className="space-y-2">
-              <li><Link to="/pricing" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
-              <li><Link to="/plans" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Pricing Plans')}</Link></li>
-              <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('API Reference')}</a></li>
+              <li><Link to="/pricing" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
+              <li><Link to="/plans" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Pricing Plans')}</Link></li>
+              <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('API Reference')}</a></li>
             </ul>
           </div>
           <div className="col-span-1">
-            <h4 className="text-sm tracking-wider font-normal uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+            <h4 className="text-sm tracking-wider font-semibold uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
               {t('Resources')}
             </h4>
             <ul className="space-y-2">
-              <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Documentation')}</a></li>
-              <li><a href="#" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Changelog')}</a></li>
-              <li><a href="#" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('System Status')}</a></li>
+              <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Documentation')}</a></li>
+              <li><a href="#" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Changelog')}</a></li>
+              <li><a href="#" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('System Status')}</a></li>
             </ul>
           </div>
           <div className="col-span-1">
-            <h4 className="text-sm tracking-wider font-normal uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+            <h4 className="text-sm tracking-wider font-semibold uppercase mb-4" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
               {t('Legal')}
             </h4>
             <ul className="space-y-2">
-              <li><Link to="/user-agreement" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Terms of Service')}</Link></li>
-              <li><Link to="/privacy-policy" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Privacy Policy')}</Link></li>
-              <li><a href="#" className="text-sm tracking-wider font-semibold hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</a></li>
+              <li><Link to="/user-agreement" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Terms of Service')}</Link></li>
+              <li><Link to="/privacy-policy" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Privacy Policy')}</Link></li>
+              <li><a href="#" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</a></li>
             </ul>
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto px-6 py-4 border-t flex flex-col md:flex-row justify-between items-center gap-2 px-10" style={{ borderColor: 'var(--m3-surface-variant)' }}>
-          <p className="text-sm tracking-wider font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+          <p className="text-sm tracking-wider font-normal" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
             {t('\u00a9 2024 TokenMaster AI. All systems operational.')}
           </p>
           <div className="flex gap-4">
