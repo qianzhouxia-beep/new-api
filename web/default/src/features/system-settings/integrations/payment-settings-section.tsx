@@ -159,6 +159,12 @@ const paymentSchema = z.object({
   WaffoPancakeMerchantID: z.string(),
   WaffoPancakePrivateKey: z.string(),
   WaffoPancakeReturnURL: z.string(),
+  PayPalClientId: z.string(),
+  PayPalClientSecret: z.string(),
+  PayPalWebhookId: z.string(),
+  PayPalSandbox: z.boolean(),
+  PayPalUnitPrice: z.coerce.number().min(0),
+  PayPalMinTopUp: z.coerce.number().min(0),
 })
 
 type PaymentFormValues = z.infer<typeof paymentSchema>
@@ -419,6 +425,12 @@ export function PaymentSettingsSection({
       CreemWebhookSecret: values.CreemWebhookSecret.trim(),
       CreemTestMode: values.CreemTestMode,
       CreemProducts: values.CreemProducts.trim(),
+      PayPalClientId: values.PayPalClientId.trim(),
+      PayPalClientSecret: values.PayPalClientSecret.trim(),
+      PayPalWebhookId: values.PayPalWebhookId.trim(),
+      PayPalSandbox: values.PayPalSandbox,
+      PayPalUnitPrice: values.PayPalUnitPrice,
+      PayPalMinTopUp: values.PayPalMinTopUp,
       WaffoEnabled: values.WaffoEnabled,
       WaffoSandbox: values.WaffoSandbox,
       WaffoMerchantId: values.WaffoMerchantId.trim(),
@@ -464,6 +476,12 @@ export function PaymentSettingsSection({
       CreemWebhookSecret: initialRef.current.CreemWebhookSecret.trim(),
       CreemTestMode: initialRef.current.CreemTestMode,
       CreemProducts: initialRef.current.CreemProducts.trim(),
+      PayPalClientId: initialRef.current.PayPalClientId.trim(),
+      PayPalClientSecret: initialRef.current.PayPalClientSecret.trim(),
+      PayPalWebhookId: initialRef.current.PayPalWebhookId.trim(),
+      PayPalSandbox: initialRef.current.PayPalSandbox,
+      PayPalUnitPrice: initialRef.current.PayPalUnitPrice,
+      PayPalMinTopUp: initialRef.current.PayPalMinTopUp,
       WaffoEnabled: initialRef.current.WaffoEnabled,
       WaffoSandbox: initialRef.current.WaffoSandbox,
       WaffoMerchantId: initialRef.current.WaffoMerchantId.trim(),
@@ -609,6 +627,42 @@ export function PaymentSettingsSection({
       normalizeJsonForComparison(initial.CreemProducts)
     ) {
       updates.push({ key: 'CreemProducts', value: sanitized.CreemProducts })
+    }
+
+    if (
+      sanitized.PayPalClientId &&
+      sanitized.PayPalClientId !== initial.PayPalClientId
+    ) {
+      updates.push({ key: 'PayPalClientId', value: sanitized.PayPalClientId })
+    }
+
+    if (
+      sanitized.PayPalClientSecret &&
+      sanitized.PayPalClientSecret !== initial.PayPalClientSecret
+    ) {
+      updates.push({
+        key: 'PayPalClientSecret',
+        value: sanitized.PayPalClientSecret,
+      })
+    }
+
+    if (
+      sanitized.PayPalWebhookId &&
+      sanitized.PayPalWebhookId !== initial.PayPalWebhookId
+    ) {
+      updates.push({ key: 'PayPalWebhookId', value: sanitized.PayPalWebhookId })
+    }
+
+    if (sanitized.PayPalSandbox !== initial.PayPalSandbox) {
+      updates.push({ key: 'PayPalSandbox', value: sanitized.PayPalSandbox })
+    }
+
+    if (sanitized.PayPalUnitPrice !== initial.PayPalUnitPrice) {
+      updates.push({ key: 'PayPalUnitPrice', value: sanitized.PayPalUnitPrice })
+    }
+
+    if (sanitized.PayPalMinTopUp !== initial.PayPalMinTopUp) {
+      updates.push({ key: 'PayPalMinTopUp', value: sanitized.PayPalMinTopUp })
     }
 
     if (sanitized.WaffoEnabled !== initial.WaffoEnabled) {
@@ -1510,6 +1564,184 @@ export function PaymentSettingsSection({
                 </FormItem>
               )}
             />
+          </div>
+
+          <Separator />
+
+          <div className='space-y-4'>
+            <div>
+              <h3 className='text-lg font-medium'>{t('PayPal Gateway')}</h3>
+              <p className='text-muted-foreground text-sm'>
+                {t('Configuration for PayPal payment integration')}
+              </p>
+            </div>
+
+            <div className='rounded-md bg-blue-50 p-4 text-sm text-blue-900 dark:bg-blue-950 dark:text-blue-100'>
+              <p className='mb-2 font-medium'>{t('Webhook Configuration:')}</p>
+              <ul className='list-inside list-disc space-y-1'>
+                <li>
+                  {t('Webhook URL:')}{' '}
+                  <code className='rounded bg-blue-100 px-1 py-0.5 text-xs dark:bg-blue-900'>
+                    {'<ServerAddress>/api/paypal/webhook'}
+                  </code>
+                </li>
+                <li>
+                  {t('Required event:')}{' '}
+                  <code className='rounded bg-blue-100 px-1 py-0.5 text-xs dark:bg-blue-900'>
+                    CHECKOUT.ORDER.APPROVED
+                  </code>
+                </li>
+                <li>
+                  {t('Configure at:')}{' '}
+                  <a
+                    href='https://developer.paypal.com/dashboard/'
+                    target='_blank'
+                    rel='noreferrer'
+                    className='underline hover:no-underline'
+                  >
+                    {t('PayPal Developer Dashboard')}
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className='grid gap-6 md:grid-cols-3'>
+              <FormField
+                control={form.control}
+                name='PayPalClientId'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('Client ID')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t('Enter PayPal Client ID')}
+                        autoComplete='off'
+                        {...field}
+                        onChange={(event) => field.onChange(event.target.value)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      {t('PayPal App Client ID')}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='PayPalClientSecret'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('Client Secret')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='password'
+                        placeholder={t('Enter PayPal Client Secret')}
+                        autoComplete='new-password'
+                        {...field}
+                        onChange={(event) => field.onChange(event.target.value)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      {t('PayPal App Secret (leave blank unless updating)')}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='PayPalWebhookId'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('Webhook ID')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t('Enter PayPal Webhook ID')}
+                        autoComplete='off'
+                        {...field}
+                        onChange={(event) => field.onChange(event.target.value)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      {t('PayPal Webhook ID for signature verification')}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className='grid gap-6 md:grid-cols-3'>
+              <FormField
+                control={form.control}
+                name='PayPalUnitPrice'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      {t('Unit price (local currency / USD)')}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        step='0.01'
+                        min={0}
+                        {...safeNumberFieldProps(field)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      {t('e.g., 1 means 1 USD per USD (no markup)')}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='PayPalMinTopUp'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('Minimum top-up (USD)')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        step='0.01'
+                        min={0}
+                        {...safeNumberFieldProps(field)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      {t('Minimum recharge amount in USD')}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='PayPalSandbox'
+                render={({ field }) => (
+                  <SettingsSwitchItem>
+                    <SettingsSwitchContent>
+                      <FormLabel>{t('Sandbox Mode')}</FormLabel>
+                      <FormDescription>
+                        {t('Use PayPal Sandbox for testing')}
+                      </FormDescription>
+                    </SettingsSwitchContent>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </SettingsSwitchItem>
+                )}
+              />
+            </div>
           </div>
 
           <Separator />

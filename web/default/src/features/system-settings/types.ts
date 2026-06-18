@@ -264,6 +264,12 @@ export type BillingSettings = {
   // section (saved via /api/option/waffo-pancake/save).
   WaffoPancakeStoreID: string
   WaffoPancakeProductID: string
+  PayPalClientId: string
+  PayPalClientSecret: string
+  PayPalWebhookId: string
+  PayPalSandbox: boolean
+  PayPalUnitPrice: number
+  PayPalMinTopUp: number
   'checkin_setting.enabled': boolean
   'checkin_setting.min_quota': number
   'checkin_setting.max_quota': number
