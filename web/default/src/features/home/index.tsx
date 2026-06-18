@@ -346,9 +346,9 @@ export function Home() {
               >
                 {t('Get API Key')} <span className="material-symbols-outlined">arrow_forward</span>
               </button>
-              <a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="bg-white border border-outline-variant text-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold hover:bg-surface-container transition-all" style={{ fontFamily: 'Space Grotesk' }}>
+              <Link to="/pricing" className="bg-white border border-outline-variant text-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold hover:bg-surface-container transition-all" style={{ fontFamily: 'Space Grotesk' }}>
                 {t('Documentation')}
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -580,7 +580,7 @@ export function Home() {
           </div>
           <div className="flex flex-col items-center gap-4">
             <button
-              onClick={() => navigate(isAuthenticated ? '/dashboard/topup' : '/sign-in')}
+              onClick={() => navigate(isAuthenticated ? '/console/topup' : '/sign-in')}
               className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg"
               style={{ fontFamily: 'Space Grotesk' }}
             >
@@ -647,7 +647,7 @@ export function Home() {
             <ul className="space-y-2">
               <li><Link to="/pricing" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
               <li><Link to="/plans" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Pricing Plans')}</Link></li>
-              <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('API Reference')}</a></li>
+              <li><Link to="/pricing" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
             </ul>
           </div>
           <div className="col-span-1">
@@ -655,9 +655,9 @@ export function Home() {
               {t('Resources')}
             </h4>
             <ul className="space-y-2">
-              <li><a href="https://api-tokenmaster.com/docs" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Documentation')}</a></li>
-              <li><a href="#" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Changelog')}</a></li>
-              <li><a href="#" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('System Status')}</a></li>
+              <li><Link to="/pricing" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
+              <li><a href="https://github.com/qianzhouxia-beep/new-api" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Changelog')}</a></li>
+              <li><a href="https://status.tokenmaster.com" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('System Status')}</a></li>
             </ul>
           </div>
           <div className="col-span-1">
@@ -667,7 +667,7 @@ export function Home() {
             <ul className="space-y-2">
               <li><Link to="/user-agreement" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Terms of Service')}</Link></li>
               <li><Link to="/privacy-policy" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Privacy Policy')}</Link></li>
-              <li><a href="#" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</a></li>
+              <li><a href="https://github.com/qianzhouxia-beep/new-api/security" target="_blank" rel="noopener noreferrer" className="text-sm tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</a></li>
             </ul>
           </div>
         </div>
@@ -676,10 +676,10 @@ export function Home() {
             {t('\u00a9 2024 TokenMaster AI. All systems operational.')}
           </p>
           <div className="flex gap-4">
-            <a href="#" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
+            <a href="https://github.com/qianzhouxia-beep/new-api" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
               <span className="material-symbols-outlined">public</span>
             </a>
-            <a href="#" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
+            <a href="https://github.com/qianzhouxia-beep/new-api" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
               <span className="material-symbols-outlined">chat</span>
             </a>
           </div>
