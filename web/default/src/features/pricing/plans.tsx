@@ -1348,8 +1348,7 @@ export function PricingPlansPage() {
           .tmp-footer-inner > div:first-child { align-items: flex-start; }
           .tmp-footer-copy { text-align: left; }
         }
-      `}
-        /* ── Payment Result Modal ── */
+      `}/* ── Payment Result Modal ── */
         .tmp-modal-overlay {
           position: fixed; inset: 0; z-index: 1000;
           display: flex; align-items: center; justify-content: center;
@@ -1417,7 +1416,7 @@ export function PricingPlansPage() {
         .tmp-result-close-btn:hover {
           background: rgba(0,0,0,.12);
         }
-      </style>
+      `}</style>
 
       <div className="tm-plans">
         {/* ════ Payment Result Modal ════ */}
