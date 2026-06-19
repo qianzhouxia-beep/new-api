@@ -311,7 +311,7 @@ func RequestPayPalPay(c *gin.Context) {
 	}
 	if err := topUp.Insert(); err != nil {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("PayPal 鍒涘缓鍏呭€艰鍗曞け璐?user_id=%d trade_no=%s amount=%d error=%q", id, referenceId, req.Amount, err.Error()))
-		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "鍒涘缓璁㈠崟澶辫触"})
+		c.JSON(http.StatusOK, gin.H{"message": "error", "data": fmt.Sprintf("创建订单失败: %s", err.Error())})
 		return
 	}
 
@@ -319,7 +319,7 @@ func RequestPayPalPay(c *gin.Context) {
 	token, err := paypalAccessToken(c.Request.Context())
 	if err != nil {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("PayPal 鑾峰彇token澶辫触 user_id=%d error=%q", id, err.Error()))
-		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "鑾峰彇鏀粯token澶辫触"})
+		c.JSON(http.StatusOK, gin.H{"message": "error", "data": fmt.Sprintf("获取支付token失败: %s", err.Error())})
 		return
 	}
 
@@ -330,7 +330,7 @@ func RequestPayPalPay(c *gin.Context) {
 	)
 	if err != nil {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("PayPal 鍒涘缓Order澶辫触 user_id=%d trade_no=%s amount=%d error=%q", id, referenceId, req.Amount, err.Error()))
-		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "鎷夎捣鏀粯澶辫触"})
+		c.JSON(http.StatusOK, gin.H{"message": "error", "data": fmt.Sprintf("拉起支付失败: %s", err.Error())})
 		return
 	}
 

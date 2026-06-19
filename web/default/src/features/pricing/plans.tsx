@@ -664,7 +664,7 @@ export function PricingPlansPage() {
         }
         // Show the actual error from server for debugging
         const serverErr =
-          (body as any).message || (body as any).data || JSON.stringify(body)
+          (body as any).data || (body as any).message || JSON.stringify(body)
         setError(
           zh
             ? `拉起 PayPal 支付失败：${serverErr}`
