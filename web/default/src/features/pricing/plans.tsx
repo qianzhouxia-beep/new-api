@@ -21,9 +21,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, Link } from '@tanstack/react-router'
 import { PublicLayout } from '@/components/layout'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+
 import { useAuthStore } from '@/stores/auth-store'
 import { api } from '@/lib/api'
 
@@ -41,8 +39,6 @@ interface TopupInfo {
 }
 
 /* ── Constants ── */
-const PRESET_AMOUNTS = [5, 10, 25, 50, 100, 200]
-
 interface Plan {
   id: string
   nameZh: string
@@ -89,15 +85,15 @@ const PACKAGES: Plan[] = [
     priceEn: '$29',
     descZh: '适合个人开发者和团队',
     descEn: 'For individual devs and teams',
-    featuresZh: ['支付 $29', '到账 $31.0', '所有模型可用'],
-    featuresEn: ['Pay $29', 'Get $31.0 balance', 'Access all models'],
+    featuresZh: ['支付 $29', '到账 $35', '所有模型可用'],
+    featuresEn: ['Pay $29', 'Get $35 balance', 'Access all models'],
     highlight: false,
     ctaZh: '立即购买',
     ctaEn: 'Buy Now',
     fixedAmount: 29,
-    receiveAmount: 31.0,
-    badgeZh: '多送 $2',
-    badgeEn: 'Bonus $2',
+    receiveAmount: 35.0,
+    badgeZh: '多送 $6',
+    badgeEn: 'Bonus $6',
   },
   {
     id: 'value',
@@ -107,15 +103,15 @@ const PACKAGES: Plan[] = [
     priceEn: '$99',
     descZh: '适合高频调用和商业项目',
     descEn: 'For high-frequency and business use',
-    featuresZh: ['支付 $99', '到账 $110', '优先技术支持'],
-    featuresEn: ['Pay $99', 'Get $110 balance', 'Priority support'],
+    featuresZh: ['支付 $99', '到账 $130', '优先技术支持'],
+    featuresEn: ['Pay $99', 'Get $130 balance', 'Priority support'],
     highlight: false,
     ctaZh: '立即购买',
     ctaEn: 'Buy Now',
     fixedAmount: 99,
-    receiveAmount: 110,
-    badgeZh: '多送 $11',
-    badgeEn: 'Bonus $11',
+    receiveAmount: 130,
+    badgeZh: '多送 $31',
+    badgeEn: 'Bonus $31',
   },
   {
     id: 'flagship',
@@ -125,15 +121,15 @@ const PACKAGES: Plan[] = [
     priceEn: '$299',
     descZh: '企业级方案，最佳性价比',
     descEn: 'Enterprise-grade, best value',
-    featuresZh: ['支付 $299', '到账 $350', '所有模型无限使用', '专属客户经理'],
-    featuresEn: ['Pay $299', 'Get $350 balance', 'All models unlimited', 'Dedicated manager'],
+    featuresZh: ['支付 $299', '到账 $450', '所有模型无限使用', '专属客户经理'],
+    featuresEn: ['Pay $299', 'Get $450 balance', 'All models unlimited', 'Dedicated manager'],
     highlight: false,
     ctaZh: '立即购买',
     ctaEn: 'Buy Now',
     fixedAmount: 299,
-    receiveAmount: 350,
-    badgeZh: '多送 $51',
-    badgeEn: 'Bonus $51',
+    receiveAmount: 450,
+    badgeZh: '多送 $151',
+    badgeEn: 'Bonus $151',
   },
   {
     id: 'payg',
@@ -730,7 +726,6 @@ export function PricingPlansPage() {
     } else {
       // Recharge package → open payment modal with fixed amount
       setPackageToPay(plan)
-      setShowTopup(false)
       if (availableMethods.length > 0) {
         setSelectedMethod(availableMethods[0].id)
       }
@@ -829,118 +824,6 @@ export function PricingPlansPage() {
           : 'This payment method is not yet available. Please choose another.',
       )
     }
-  }
-
-  /* ── Topup Interface (PAYG only) ── */
-  function TopupPanel() {
-    if (!auth?.user) {
-      return (
-        <div className="tmp-topup-unauthed">
-          <h2 className="tmp-faq-title">{zh ? '登录后即可充值' : 'Sign in to top up'}</h2>
-          <p className="tmp-topup-desc">{zh ? '已有账号？登录后选择金额和支付方式。还没有账号？先注册，再充值。' : 'Already have an account? Sign in to continue. New here? Sign up first.'}</p>
-          <div className="tmp-topup-auth-btns">
-            <Button onClick={() => navigate({ to: '/sign-in', search: { redirect: '/plans' } })}>
-              {zh ? '登录' : 'Sign In'}
-            </Button>
-            <Button variant="outline" onClick={() => navigate({ to: '/sign-up', search: { redirect: '/plans' } })}>
-              {zh ? '注册' : 'Sign Up'}
-            </Button>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div className="tmp-topup-section">
-        {error && (
-          <div className="tmp-topup-error">{error}</div>
-        )}
-
-        <h2 className="tmp-faq-title">{zh ? '自定义充值' : 'Custom Top Up'}</h2>
-
-        <div className="tmp-topup-row">
-          <label className="tmp-topup-label">{zh ? '选择金额' : 'Select Amount'}</label>
-          <div className="tmp-topup-amounts">
-            {PRESET_AMOUNTS.map((amt) => (
-              <button
-                key={amt}
-                onClick={() => {
-                  setTopupAmount(amt)
-                  setCustomAmount('')
-                }}
-                className={`tmp-topup-amt-btn ${topupAmount === amt && !customAmount ? 'tmp-topup-amt-active' : ''}`}
-              >
-                <div className="tmp-topup-amt-value">${amt}</div>
-                <div className="tmp-topup-amt-label">${amt}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="tmp-topup-row">
-          <Label htmlFor="custom-amount-input" className="tmp-topup-label">
-            {zh ? '自定义金额' : 'Custom Amount'}
-          </Label>
-          <div className="tmp-topup-custom-wrap">
-            <span className="tmp-topup-dollar">$</span>
-            <Input
-              id="custom-amount-input"
-              type="number"
-              min={1}
-              value={customAmount}
-              onChange={(e) => {
-                setCustomAmount(e.target.value)
-                setTopupAmount(0)
-              }}
-              placeholder="10"
-              className="tmp-topup-custom-input"
-            />
-          </div>
-        </div>
-
-        <div className="tmp-topup-row">
-          <label className="tmp-topup-label">{zh ? '支付方式' : 'Payment Method'}</label>
-          <div className="tmp-topup-methods">
-            {availableMethods.length > 0
-              ? availableMethods.map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => setSelectedMethod(m.id)}
-                    disabled={paying !== null}
-                    className={`tmp-topup-method-btn ${selectedMethod === m.id ? 'tmp-topup-method-active' : ''} ${paying !== null ? 'tmp-topup-disabled' : ''}`}
-                  >
-                    {m.name}
-                  </button>
-                ))
-              : topupLoading && (
-                  <span className="tmp-topup-loading">{zh ? '加载中...' : 'Loading...'}</span>
-                )}
-          </div>
-
-          {selectedMethod === 'manual' && (
-            <p className="tmp-topup-manual-note">
-              {zh
-                ? <>{'请转账至公司银行账户，并将转账凭证发送至 '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{'。客服确认后为您充值。'}</>
-                : <>{'Email receipt to '}<a href="mailto:support@tokenmaster.com">support@tokenmaster.com</a>{' — credited within 24h.'}</>}
-            </p>
-          )}
-        </div>
-
-        <div className="tmp-topup-footer-bar">
-          <div className="tmp-topup-footer-info">
-            <span className="tmp-topup-footer-label">{zh ? '到账' : 'You get'}: </span>
-            <span className="tmp-topup-footer-amount">${customAmount ? parseInt(customAmount) || 0 : topupAmount}</span>
-          </div>
-          <Button onClick={handlePaygPayment} size="lg" disabled={paying !== null}>
-            {paying === 'stripe'
-              ? (zh ? '跳转支付中...' : 'Redirecting...')
-              : paying === 'paypal'
-                ? (zh ? '跳转 PayPal...' : 'Redirecting to PayPal...')
-                : (zh ? '确认支付' : 'Pay Now')}
-          </Button>
-        </div>
-      </div>
-    )
   }
 
   /* ── Render ── */
