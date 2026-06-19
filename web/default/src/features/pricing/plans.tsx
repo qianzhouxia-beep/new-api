@@ -573,7 +573,6 @@ export function PricingPlansPage() {
 
   /* ── Fetch topup info (dynamic payment methods) ── */
   useEffect(() => {
-    if (!auth?.user) return
     let cancelled = false
     setTopupLoading(true)
     api
@@ -583,14 +582,16 @@ export function PricingPlansPage() {
           setTopupInfo(res.data as unknown as TopupInfo)
         }
       })
-      .catch(() => {})
+      .catch((err) => {
+        if (import.meta.env.DEV) console.warn('topup/info fetch failed (non-critical):', err)
+      })
       .finally(() => {
         if (!cancelled) setTopupLoading(false)
       })
     return () => {
       cancelled = true
     }
-  }, [auth?.user])
+  }, [])
 
   /* ── Build dynamic payment methods list ── */
   const availableMethods: { id: string; name: string }[] = []
