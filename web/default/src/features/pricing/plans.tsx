@@ -1328,27 +1328,7 @@ export function PricingPlansPage() {
         .tmp-payg-balance-label { font-size: 13px; color: #5a4138; margin-left: auto; }
         .tmp-payg-balance-value { font-size: 18px; font-weight: 700; color: #16a34a; }
 
-
-/* ── Responsive ── */
-        @media (min-width: 640px) {
-          .tmp-cards-grid { grid-template-columns: repeat(2, 1fr); }
-          .tmp-how-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (min-width: 1024px) {
-          .tmp-cards-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (min-width: 1280px) {
-          .tmp-hero { padding: 120px 96px 60px; }
-          .tmp-cards { padding: 0 96px 40px; }
-          .tmp-table-wrap { padding: 0 96px; }
-          .tmp-how { padding: 40px 96px; }
-          .tmp-faq { padding: 40px 96px; }
-          .tmp-cta { padding: 0 96px; }
-          .tmp-footer-inner { flex-direction: row; justify-content: space-between; }
-          .tmp-footer-inner > div:first-child { align-items: flex-start; }
-          .tmp-footer-copy { text-align: left; }
-        }
-      `}/* ── Payment Result Modal ── */
+        /* ── Payment Result Modal (overlay + popup) ── */
         .tmp-modal-overlay {
           position: fixed; inset: 0; z-index: 1000;
           display: flex; align-items: center; justify-content: center;
@@ -1356,18 +1336,11 @@ export function PricingPlansPage() {
           backdrop-filter: blur(4px);
           animation: tmpOverlayIn .3s ease-out;
         }
-        @keyframes tmpOverlayIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
+        @keyframes tmpOverlayIn { from { opacity: 0; } to { opacity: 1; } }
         .tmp-result-modal {
-          position: relative;
-          width: 92%; max-width: 440px;
-          border-radius: 20px;
-          border: 1px solid;
-          padding: 40px 32px 32px;
-          text-align: center;
-          overflow: hidden;
+          position: relative; width: 92%; max-width: 440px;
+          border-radius: 20px; border: 1px solid;
+          padding: 40px 32px 32px; text-align: center; overflow: hidden;
           animation: tmpModalPop .4s cubic-bezier(.175,.885,.32,1.275);
         }
         @keyframes tmpModalPop {
@@ -1377,8 +1350,7 @@ export function PricingPlansPage() {
         .tmp-result-shine {
           position: absolute; inset: 0;
           background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.12) 50%, transparent 60%, transparent 70%);
-          pointer-events: none;
-          z-index: 0;
+          pointer-events: none; z-index: 0;
         }
         .tmp-result-icon {
           position: relative; z-index: 1;
@@ -1404,17 +1376,31 @@ export function PricingPlansPage() {
         }
         .tmp-result-close-btn {
           position: relative; z-index: 1;
-          padding: 10px 32px;
-          border-radius: 10px;
-          border: none;
-          background: rgba(0,0,0,.06);
+          padding: 10px 32px; border-radius: 10px;
+          border: none; background: rgba(0,0,0,.06);
           font-size: 14px; font-weight: 600;
-          cursor: pointer;
-          transition: all .2s;
-          font-family: inherit;
+          cursor: pointer; transition: all .2s; font-family: inherit;
         }
-        .tmp-result-close-btn:hover {
-          background: rgba(0,0,0,.12);
+        .tmp-result-close-btn:hover { background: rgba(0,0,0,.12); }
+
+        /* ── Responsive ── */
+        @media (min-width: 640px) {
+          .tmp-cards-grid { grid-template-columns: repeat(2, 1fr); }
+          .tmp-how-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .tmp-cards-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1280px) {
+          .tmp-hero { padding: 120px 96px 60px; }
+          .tmp-cards { padding: 0 96px 40px; }
+          .tmp-table-wrap { padding: 0 96px; }
+          .tmp-how { padding: 40px 96px; }
+          .tmp-faq { padding: 40px 96px; }
+          .tmp-cta { padding: 0 96px; }
+          .tmp-footer-inner { flex-direction: row; justify-content: space-between; }
+          .tmp-footer-inner > div:first-child { align-items: flex-start; }
+          .tmp-footer-copy { text-align: left; }
         }
       `}</style>
 
