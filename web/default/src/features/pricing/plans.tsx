@@ -315,15 +315,15 @@ function ExpandMoreIcon() {
   )
 }
 
-/* ── Payment Status Banner ── */
-function PaymentStatusBanner({
+/* ── Payment Result Modal ── */
+function PaymentResultModal({
   status,
   callbackStatus,
-  onDismiss,
+  onClose,
 }: {
   status: 'success' | 'cancel'
   callbackStatus?: string | null
-  onDismiss: () => void
+  onClose: () => void
 }) {
   const { t } = useTranslation()
   const isSuccess = status === 'success'
@@ -334,64 +334,118 @@ function PaymentStatusBanner({
   const hasInfo = callbackStatus?.startsWith('info:')
   const infoMsg = hasInfo ? callbackStatus!.replace('info:', '') : ''
 
-  return (
-    <div className={`tmp-pay-banner ${isSuccess ? (credited ? 'tmp-pay--ok' : pending ? 'tmp-pay--pend' : 'tmp-pay--ok') : 'tmp-pay--cancel'}`}>
-      {/* bg decoration */}
-      <div className='tmp-pay-bg' />
+  // Determine variant
+  const variant = isSuccess
+    ? (credited ? 'ok' : pending ? 'pend' : 'ok')
+    : 'cancel'
 
-      {/* icon ring */}
-      <div className='tmp-pay-icon-ring'>
-        {isSuccess ? (
-          credited ? (
-            <svg width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-              <polyline points='20 6 9 17 4 12' />
-            </svg>
-          ) : pending ? (
-            <svg width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-              <circle cx='12' cy='12' r='10' /><polyline points='12 6 12 12 16 14' />
-            </svg>
-          ) : (
-            <svg width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-              <polyline points='20 6 9 17 4 12' />
-            </svg>
-          )
-        ) : (
-          <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-            <line x1='18' y1='6' x2='6' y2='18' /><line x1='6' y1='6' x2='18' y2='18' />
-          </svg>
-        )}
-      </div>
-
-      {/* text */}
-      <div className='tmp-pay-text'>
-        <h3 className='tmp-pay-title'>
-          {isSuccess
-            ? (credited
-                ? t('Payment Successful — Balance Credited!')
-                : pending
-                  ? t('Payment Confirmed')
-                  : t('Payment Successful'))
-            : t('Payment Cancelled')}
-        </h3>
-        <p className='tmp-pay-desc'>
-          {isSuccess
-            ? (credited
-                ? t('Your balance has been updated.')
-                : pending
-                  ? t('Capturing payment… balance will be credited shortly.')
-                  : hasInfo
-                    ? infoMsg
-                    : t('Your payment is being processed. Balance will be credited shortly.'))
-            : t('No charges were made. Feel free to try again when ready.')}
-        </p>
-      </div>
-
-      {/* dismiss */}
-      <button onClick={onDismiss} className='tmp-pay-dismiss' title={t('Dismiss')}>
-        <svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+  // Icon + colors by variant
+  const variantConfig = {
+    ok: {
+      icon: (
+        <svg width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.2' strokeLinecap='round' strokeLinejoin='round'>
+          <polyline points='20 6 9 17 4 12' />
+        </svg>
+      ),
+      ringGradient: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+      shadowColor: 'rgba(34,197,94,.35)',
+      bgGradient: 'linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 40%, #f7fef9 100%)',
+      borderColor: 'rgba(34,197,94,.2)',
+      titleColor: '#166534',
+      descColor: '#15803d',
+      shineFrom: 'rgba(34,197,94,.08)',
+      shineTo: 'transparent',
+    },
+    pend: {
+      icon: (
+        <svg width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.2' strokeLinecap='round' strokeLinejoin='round'>
+          <circle cx='12' cy='12' r='10' /><polyline points='12 6 12 12 16 14' />
+        </svg>
+      ),
+      ringGradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+      shadowColor: 'rgba(59,130,246,.3)',
+      bgGradient: 'linear-gradient(180deg, #eff6ff 0%, #dbeafe 40%, #f5f9ff 100%)',
+      borderColor: 'rgba(59,130,246,.2)',
+      titleColor: '#1e40af',
+      descColor: '#2563eb',
+      shineFrom: 'rgba(59,130,246,.07)',
+      shineTo: 'transparent',
+    },
+    cancel: {
+      icon: (
+        <svg width='30' height='30' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.2' strokeLinecap='round' strokeLinejoin='round'>
           <line x1='18' y1='6' x2='6' y2='18' /><line x1='6' y1='6' x2='18' y2='18' />
         </svg>
-      </button>
+      ),
+      ringGradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+      shadowColor: 'rgba(245,158,11,.25)',
+      bgGradient: 'linear-gradient(180deg, #fffbeb 0%, #fef3c7 40%, #fffef8 100%)',
+      borderColor: 'rgba(245,158,11,.2)',
+      titleColor: '#92400e',
+      descColor: '#a16207',
+      shineFrom: 'rgba(245,158,11,.06)',
+      shineTo: 'transparent',
+    },
+  } as const
+
+  const cfg = variantConfig[variant]
+
+  const title = isSuccess
+    ? (credited
+        ? t('Payment Successful — Balance Credited!')
+        : pending
+          ? t('Payment Confirmed')
+          : t('Payment Successful'))
+    : t('Payment Cancelled')
+
+  const desc = isSuccess
+    ? (credited
+        ? t('Your balance has been updated.')
+        : pending
+          ? t('Capturing payment… balance will be credited shortly.')
+          : hasInfo
+            ? infoMsg
+            : t('Your payment is being processed. Balance will be credited shortly.'))
+    : t('No charges were made. Feel free to try again when ready.')
+
+  return (
+    <div className='tmp-modal-overlay' onClick={onClose}>
+      <div
+        className='tmp-result-modal'
+        style={{
+          background: cfg.bgGradient,
+          borderColor: cfg.borderColor,
+          boxShadow: `0 24px 80px ${cfg.shadowColor}, 0 8px 32px rgba(0,0,0,.08)`,
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* shine sweep */}
+        <div
+          className='tmp-result-shine'
+          style={{ background: `linear-gradient(105deg, transparent 40%, ${cfg.shineFrom} 50%, ${cfg.shineTo} 60%, transparent 70%)` }}
+        />
+
+        {/* icon */}
+        <div
+          className='tmp-result-icon'
+          style={{ background: cfg.ringGradient, boxShadow: `0 6px 24px ${cfg.shadowColor}` }}
+        >
+          {cfg.icon}
+        </div>
+
+        {/* text */}
+        <h2 className='tmp-result-title' style={{ color: cfg.titleColor }}>{title}</h2>
+        <p className='tmp-result-desc' style={{ color: cfg.descColor }}>{desc}</p>
+
+        {/* close button */}
+        <button
+          className='tmp-result-close-btn'
+          onClick={onClose}
+          style={{ color: cfg.descColor }}
+        >
+          {t('Close')}
+        </button>
+      </div>
     </div>
   )
 }
@@ -943,11 +997,6 @@ export function PricingPlansPage() {
         .tm-plans a:hover { color: #cd4700; }
 
         /* ── Payment Result Overlay ── */
-        .tmp-pay-result {
-          display: flex; justify-content: center;
-          padding: 40px 24px 0;
-        }
-        .tmp-pay-result > * { width: 100%; max-width: 520px; }
 
         /* ── Payment Status Banner ── */
         @keyframes tmpBannerIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
@@ -1299,18 +1348,85 @@ export function PricingPlansPage() {
           .tmp-footer-inner > div:first-child { align-items: flex-start; }
           .tmp-footer-copy { text-align: left; }
         }
-      `}</style>
+      `}
+        /* ── Payment Result Modal ── */
+        .tmp-modal-overlay {
+          position: fixed; inset: 0; z-index: 1000;
+          display: flex; align-items: center; justify-content: center;
+          background: rgba(0,0,0,.45);
+          backdrop-filter: blur(4px);
+          animation: tmpOverlayIn .3s ease-out;
+        }
+        @keyframes tmpOverlayIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .tmp-result-modal {
+          position: relative;
+          width: 92%; max-width: 440px;
+          border-radius: 20px;
+          border: 1px solid;
+          padding: 40px 32px 32px;
+          text-align: center;
+          overflow: hidden;
+          animation: tmpModalPop .4s cubic-bezier(.175,.885,.32,1.275);
+        }
+        @keyframes tmpModalPop {
+          from { transform: scale(.85) translateY(20px); opacity: 0; }
+          to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .tmp-result-shine {
+          position: absolute; inset: 0;
+          background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.12) 50%, transparent 60%, transparent 70%);
+          pointer-events: none;
+          z-index: 0;
+        }
+        .tmp-result-icon {
+          position: relative; z-index: 1;
+          width: 72px; height: 72px; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          margin: 0 auto 20px;
+          animation: tmpResultIconPop .45s .15s cubic-bezier(.175,.885,.32,1.275) both;
+        }
+        @keyframes tmpResultIconPop {
+          from { transform: scale(0); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+        .tmp-result-title {
+          position: relative; z-index: 1;
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 20px; font-weight: 700;
+          margin-bottom: 8px; line-height: 1.3;
+        }
+        .tmp-result-desc {
+          position: relative; z-index: 1;
+          font-size: 14px; line-height: 1.6;
+          margin-bottom: 24px; opacity: .85;
+        }
+        .tmp-result-close-btn {
+          position: relative; z-index: 1;
+          padding: 10px 32px;
+          border-radius: 10px;
+          border: none;
+          background: rgba(0,0,0,.06);
+          font-size: 14px; font-weight: 600;
+          cursor: pointer;
+          transition: all .2s;
+          font-family: inherit;
+        }
+        .tmp-result-close-btn:hover {
+          background: rgba(0,0,0,.12);
+        }
+      </style>
 
       <div className="tm-plans">
-        {/* ═══════ Payment Status Banner ═══════ */}
+        {/* ════ Payment Result Modal ════ */}
         {paymentStatus && !dismissedStatus && (
-          <div className='tmp-pay-result'>
-            <PaymentStatusBanner
-              status={paymentStatus}
-              callbackStatus={callbackResult}
-              onDismiss={() => setDismissedStatus(true)}
-            />
-          </div>
+          <PaymentResultModal
+            status={paymentStatus}
+            callbackStatus={callbackResult}
+            onClose={() => setDismissedStatus(true)}
+          />
         )}
 
         {/* ═══════ Hero ═══════ */}
