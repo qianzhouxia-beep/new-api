@@ -14,10 +14,10 @@ const designSystemStyle = `
   @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
   @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
   body {
-    background-color: #fcfaf8;
+    background-color: #1a1a1a;
   }
   .glow-radial {
-    background: radial-gradient(circle at center, rgba(164, 55, 0, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(239, 68, 68, 0.08) 0%, transparent 70%);
   }
   .card-lift {
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
@@ -42,52 +42,52 @@ const designSystemStyle = `
 
   /* ─── M3 Color CSS Variables ─── */
   :root {
-    --m3-primary: #a43700;
+    --m3-primary: #ef4444;
     --m3-on-primary: #ffffff;
-    --m3-primary-fixed: #ffdbcf;
-    --m3-primary-fixed-dim: #ffb59a;
-    --m3-on-primary-fixed: #380d00;
-    --m3-on-primary-fixed-variant: #802a00;
-    --m3-primary-container: #cd4700;
-    --m3-on-primary-container: #fffbff;
-    --m3-surface: #f8f9fa;
-    --m3-surface-dim: #d9dadb;
-    --m3-surface-bright: #f8f9fa;
-    --m3-surface-container-lowest: #ffffff;
-    --m3-surface-container-low: #f3f4f5;
-    --m3-surface-container: #edeeef;
-    --m3-surface-container-high: #e7e8e9;
-    --m3-surface-container-highest: #e1e3e4;
-    --m3-surface-variant: #e1e3e4;
-    --m3-on-surface: #191c1d;
-    --m3-on-surface-variant: #5a4138;
-    --m3-secondary: #4c56af;
-    --m3-secondary-container: #959efd;
+    --m3-primary-fixed: #fecaca;
+    --m3-primary-fixed-dim: #fca5a5;
+    --m3-on-primary-fixed: #3b0909;
+    --m3-on-primary-fixed-variant: #7f1d1d;
+    --m3-primary-container: #b91c1c;
+    --m3-on-primary-container: #ffffff;
+    --m3-surface: #1a1a1a;
+    --m3-surface-dim: #2a2a2a;
+    --m3-surface-bright: #2e2e2e;
+    --m3-surface-container-lowest: #111111;
+    --m3-surface-container-low: #1a1a1a;
+    --m3-surface-container: #222222;
+    --m3-surface-container-high: #2a2a2a;
+    --m3-surface-container-highest: #333333;
+    --m3-surface-variant: #444444;
+    --m3-on-surface: #ffffff;
+    --m3-on-surface-variant: #d1d5db;
+    --m3-secondary: #6b7280;
+    --m3-secondary-container: #374151;
     --m3-on-secondary: #ffffff;
-    --m3-on-secondary-container: #27308a;
-    --m3-secondary-fixed: #e0e0ff;
-    --m3-secondary-fixed-dim: #bdc2ff;
-    --m3-on-secondary-fixed: #000767;
-    --m3-on-secondary-fixed-variant: #343d96;
-    --m3-tertiary: #0f666a;
-    --m3-tertiary-container: #337f83;
+    --m3-on-secondary-container: #e5e7eb;
+    --m3-secondary-fixed: #e5e7eb;
+    --m3-secondary-fixed-dim: #9ca3af;
+    --m3-on-secondary-fixed: #1f2937;
+    --m3-on-secondary-fixed-variant: #374151;
+    --m3-tertiary: #6b7280;
+    --m3-tertiary-container: #374151;
     --m3-on-tertiary: #ffffff;
-    --m3-on-tertiary-fixed: #002021;
-    --m3-on-tertiary-fixed-variant: #004f53;
-    --m3-tertiary-fixed: #a6eff3;
-    --m3-tertiary-fixed-dim: #8ad3d7;
-    --m3-on-tertiary-container: #f3ffff;
-    --m3-error: #ba1a1a;
-    --m3-error-container: #ffdad6;
+    --m3-on-tertiary-fixed: #1f2937;
+    --m3-on-tertiary-fixed-variant: #374151;
+    --m3-tertiary-fixed: #e5e7eb;
+    --m3-tertiary-fixed-dim: #9ca3af;
+    --m3-on-tertiary-container: #e5e7eb;
+    --m3-error: #ef4444;
+    --m3-error-container: #7f1d1d;
     --m3-on-error: #ffffff;
-    --m3-on-error-container: #93000a;
-    --m3-background: #f8f9fa;
-    --m3-on-background: #191c1d;
-    --m3-outline: #8f7066;
-    --m3-outline-variant: #e3bfb2;
-    --m3-inverse-surface: #2e3132;
-    --m3-inverse-on-surface: #f0f1f2;
-    --m3-inverse-primary: #ffb59a;
+    --m3-on-error-container: #fecaca;
+    --m3-background: #1a1a1a;
+    --m3-on-background: #ffffff;
+    --m3-outline: #6b7280;
+    --m3-outline-variant: #4b5563;
+    --m3-inverse-surface: #e5e7eb;
+    --m3-inverse-on-surface: #1a1a1a;
+    --m3-inverse-primary: #ef4444;
   }
 
   /* ─── M3 Utility Classes ─── */
@@ -194,8 +194,8 @@ export function Home() {
           p += vec2(0.15 * sin(t + p.y * i), 0.15 * cos(t + p.x * i));
           n += noise(p * i + t) * (1.0 / i);
         }
-        vec3 bgColor = vec3(0.988, 0.98, 0.972);
-        vec3 flowColor = vec3(1.0, 0.42, 0.208);
+        vec3 bgColor = vec3(0.10, 0.10, 0.11);
+        vec3 flowColor = vec3(0.94, 0.27, 0.27);
         float intensity = smoothstep(0.35, 0.75, n);
         float dist = length(uv - mouse);
         intensity += smoothstep(0.25, 0.0, dist) * 0.15;
