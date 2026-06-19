@@ -46,16 +46,41 @@ func InitEnv() {
 		os.Exit(0)
 	}
 
-	if os.Getenv("SESSION_SECRET") != "" {
-		ss := os.Getenv("SESSION_SECRET")
-		if ss == "random_string" {
-			log.Println("WARNING: SESSION_SECRET is set to the default value 'random_string', please change it to a random string.")
-			log.Println("警告：SESSION_SECRET被设置为默认值'random_string'，请修改为随机字符串。")
-			log.Fatal("Please set SESSION_SECRET to a random string.")
-		} else {
+	// resolveSessionSecret 从环境变量或持久化文件加载 SessionSecret
+	resolveSessionSecret := func() {
+		// 优先级 1: 环境变量
+		if os.Getenv("SESSION_SECRET") != "" {
+			ss := os.Getenv("SESSION_SECRET")
+			if ss == "random_string" {
+				log.Println("WARNING: SESSION_SECRET is set to the default value 'random_string', please change it to a random string.")
+				log.Println("警告：SESSION_SECRET被设置为默认值'random_string'，请修改为随机字符串。")
+				log.Fatal("Please set SESSION_SECRET to a random string.")
+			}
 			SessionSecret = ss
+			return
+		}
+
+		// 优先级 2: 从持久化文件加载（默认路径为 SQLite 所在目录）
+		// 确保 Zeabur 等容器化环境中容器重建后 session 不失效
+		dbPath := SQLitePath
+		if idx := strings.Index(dbPath, "?"); idx > 0 {
+			dbPath = dbPath[:idx]
+		}
+		secretDir := filepath.Dir(dbPath)
+		secretFile := filepath.Join(secretDir, ".session_secret")
+		if data, err := os.ReadFile(secretFile); err == nil && len(data) > 0 {
+			SessionSecret = strings.TrimSpace(string(data))
+			return
+		}
+
+		// 首次启动：将当前随机生成的 SessionSecret 写入持久化文件
+		if err := os.MkdirAll(secretDir, 0755); err == nil {
+			_ = os.WriteFile(secretFile, []byte(SessionSecret), 0644)
+			log.Printf("SessionSecret persisted to %s for container restart survival", secretFile)
 		}
 	}
+	// resolveSessionSecret() 延迟调用，等 SQLITE_PATH 环境变量读取后执行
+
 	if os.Getenv("CRYPTO_SECRET") != "" {
 		CryptoSecret = os.Getenv("CRYPTO_SECRET")
 	} else {
@@ -64,6 +89,8 @@ func InitEnv() {
 	if os.Getenv("SQLITE_PATH") != "" {
 		SQLitePath = os.Getenv("SQLITE_PATH")
 	}
+	// 延迟调用：此时 SQLitePath 已从环境变量读取，确保 secret 文件写到持久化卷
+	resolveSessionSecret()
 	if *LogDir != "" {
 		var err error
 		*LogDir, err = filepath.Abs(*LogDir)
