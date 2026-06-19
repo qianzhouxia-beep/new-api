@@ -221,6 +221,7 @@ export function PaymentSettingsSection({
     [defaultValues, waffoDefaultValues, waffoPancakeDefaultValues]
   )
   const initialRef = React.useRef(initialFormValues)
+  const isSavingRef = React.useRef(false)
   const defaultsSignature = React.useMemo(
     () => JSON.stringify(initialFormValues),
     [initialFormValues]
@@ -393,6 +394,9 @@ export function PaymentSettingsSection({
   )
 
   React.useEffect(() => {
+    // Don't reset the form while mid-save — wait until all mutations finish
+    if (isSavingRef.current) return
+
     const parsedDefaults = JSON.parse(defaultsSignature) as PaymentFormValues
     initialRef.current = parsedDefaults
     form.reset({
@@ -749,9 +753,15 @@ export function PaymentSettingsSection({
       return
     }
 
+    isSavingRef.current = true
+
     for (const update of updates) {
       await updateOption.mutateAsync(update)
     }
+
+    isSavingRef.current = false
+    // Refresh form data once after all saves complete
+    await queryClient.invalidateQueries({ queryKey: ['system-options'] })
 
     if (!hasWaffoPancakeChanges) {
       return
