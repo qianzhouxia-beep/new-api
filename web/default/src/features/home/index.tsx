@@ -293,7 +293,7 @@ export function Home() {
       <style>{designSystemStyle}</style>
 
       {/* ─── Hero Section ─── */}
-      <section className="relative overflow-hidden pb-32 pt-48 bg-transparent">
+      <section className="relative overflow-hidden pb-32 pt-48" style={{ backgroundColor: 'var(--m3-surface)' }}>
         <canvas ref={canvasRef} id="hero-shader-canvas" />
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center px-10 relative z-10">
           <div className="lg:col-span-12 space-y-6 flex flex-col items-center text-center">
@@ -464,7 +464,7 @@ export function Home() {
       </section>
 
       {/* ─── Quick Start ─── */}
-      <section className="py-32 relative overflow-hidden">
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: 'var(--m3-surface)' }}>
         <div className="glow-radial absolute bottom-0 right-0 w-[800px] h-[800px] opacity-40"></div>
         <div className="max-w-[1440px] mx-auto px-6 px-10">
           <div className="flex flex-col lg:flex-row gap-10 items-center">
@@ -589,12 +589,12 @@ export function Home() {
       {/* ─── FAQ ─── */}
       <section className="py-10" style={{ backgroundColor: 'var(--m3-surface-container-low)' }}>
         <div className="max-w-4xl mx-auto px-6 px-10">
-          <h2 className="text-[32px] leading-10 -tracking-[0.01em] font-semibold text-center mb-10" style={{ fontFamily: 'Space Grotesk' }}>
+          <h2 className="text-[32px] leading-10 -tracking-[0.01em] font-semibold text-center mb-10" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
             {t('Common Questions')}
           </h2>
           <div className="space-y-4">
             <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }} open>
-              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk' }}>
+              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
                 {t('How does the billing work?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
@@ -603,7 +603,7 @@ export function Home() {
               </p>
             </details>
             <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk' }}>
+              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
                 {t('Is there a limit on API keys?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
@@ -612,7 +612,7 @@ export function Home() {
               </p>
             </details>
             <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk' }}>
+              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
                 {t('Which models are supported?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
