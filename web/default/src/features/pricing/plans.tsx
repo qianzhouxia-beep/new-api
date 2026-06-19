@@ -579,7 +579,7 @@ export function PricingPlansPage() {
       .get<TopupInfo>('/api/user/topup/info')
       .then((res) => {
         if (!cancelled) {
-          setTopupInfo(res.data as unknown as TopupInfo)
+          setTopupInfo((res.data as any).data as TopupInfo)
         }
       })
       .catch((err) => {
