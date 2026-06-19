@@ -326,24 +326,46 @@ function PaymentStatusBanner({
   const { t } = useTranslation()
   const isSuccess = status === 'success'
   return (
-    <div
-      className={`mx-auto mb-6 flex max-w-2xl items-center justify-between rounded-xl border px-5 py-4 ${
-        isSuccess
-          ? 'border-green-300 bg-green-50 text-green-800 dark:border-green-600 dark:bg-green-950 dark:text-green-300'
-          : 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-600 dark:bg-amber-950 dark:text-amber-300'
-      }`}
-    >
-      <span className='text-sm font-medium'>
-        {isSuccess
-          ? t('Payment successful! Balance has been added to your account.')
-          : t('Payment was cancelled. No charges were made.')}
-      </span>
-      <button
-        onClick={onDismiss}
-        className='ml-4 shrink-0 text-sm underline-offset-2 hover:underline'
+    <div className='mx-auto mb-6 max-w-lg animate-[tmpBannerIn_.5s_ease-out]'>
+      <div
+        className={`tmp-banner ${
+          isSuccess ? 'tmp-banner-success' : 'tmp-banner-cancel'
+        }`}
       >
-        {t('Dismiss')}
-      </button>
+        {/* icon */}
+        <div className={`tmp-banner-icon ${isSuccess ? 'tmp-banner-icon-success' : 'tmp-banner-icon-cancel'}`}>
+          {isSuccess ? (
+            <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+              <polyline points='20 6 9 17 4 12' />
+            </svg>
+          ) : (
+            <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+              <line x1='18' y1='6' x2='6' y2='18' />
+              <line x1='6' y1='6' x2='18' y2='18' />
+            </svg>
+          )}
+        </div>
+        {/* text */}
+        <div className='tmp-banner-body'>
+          <p className='tmp-banner-title'>
+            {isSuccess
+              ? t('Payment Successful')
+              : t('Payment Cancelled')}
+          </p>
+          <p className='tmp-banner-desc'>
+            {isSuccess
+              ? t('Your payment is being processed. Balance will be credited to your account shortly.')
+              : t('No charges were made. Feel free to try again when ready.')}
+          </p>
+        </div>
+        {/* dismiss */}
+        <button onClick={onDismiss} className='tmp-banner-dismiss' title={t('Dismiss')}>
+          <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+            <line x1='18' y1='6' x2='6' y2='18' />
+            <line x1='6' y1='6' x2='18' y2='18' />
+          </svg>
+        </button>
+      </div>
     </div>
   )
 }
@@ -552,10 +574,37 @@ export function PricingPlansPage() {
 
   useEffect(() => {
     if (paymentStatus && !dismissedStatus) {
-      const timeout = setTimeout(() => setDismissedStatus(true), 8000)
+      const timeout = setTimeout(() => setDismissedStatus(true), 10000)
       return () => clearTimeout(timeout)
     }
   }, [paymentStatus, dismissedStatus])
+
+  /* ── Refresh user balance after successful payment ── */
+  const [balanceRefreshed, setBalanceRefreshed] = useState(false)
+  useEffect(() => {
+    if (paymentStatus !== 'success' || !auth?.user || balanceRefreshed) return
+    // Poll for balance update with increasing delays
+    const delays = [3000, 6000, 12000]
+    const timeouts: ReturnType<typeof setTimeout>[] = []
+    delays.forEach((delay) => {
+      timeouts.push(setTimeout(async () => {
+        try {
+          const res = await api.get('/api/user/self')
+          const userData = (res.data as any)?.data
+          if (userData) {
+            const currentBalance = auth.user?.quota ?? 0
+            const newBalance = userData.quota ?? 0
+            if (newBalance > currentBalance) {
+              useAuthStore.getState().auth.setUser(userData)
+              setBalanceRefreshed(true)
+              timeouts.forEach(t => clearTimeout(t))
+            }
+          }
+        } catch { /* non-critical */ }
+      }, delay))
+    })
+    return () => timeouts.forEach(t => clearTimeout(t))
+  }, [paymentStatus, auth?.user, balanceRefreshed])
 
   /* ── State ── */
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
@@ -839,6 +888,47 @@ export function PricingPlansPage() {
         .tm-plans * { box-sizing: border-box; margin: 0; padding: 0; }
         .tm-plans a { color: #a43700; text-decoration: none; transition: color .2s; }
         .tm-plans a:hover { color: #cd4700; }
+
+        /* ── Payment Status Banner ── */
+        @keyframes tmpBannerIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes tmpBannerCheck { 0% { transform: scale(0) rotate(-45deg); } 60% { transform: scale(1.2) rotate(5deg); } 100% { transform: scale(1) rotate(0); } }
+        .tmp-banner {
+          display: flex; align-items: flex-start; gap: 14px; padding: 20px 20px 20px 24px;
+          border-radius: 16px; position: relative; overflow: hidden;
+          box-shadow: 0 4px 24px rgba(0,0,0,.06), 0 1px 4px rgba(0,0,0,.04);
+        }
+        .tmp-banner-success {
+          background: linear-gradient(135deg, #f0fdf4 0%, #e6f9ee 40%, #f0fdf4 100%);
+          border: 1px solid #bbf7d0;
+        }
+        .tmp-banner-cancel {
+          background: linear-gradient(135deg, #fff7ed 0%, #fff1e6 40%, #fff7ed 100%);
+          border: 1px solid #fed7aa;
+        }
+        .tmp-banner-icon {
+          width: 44px; height: 44px; border-radius: 12px; display: flex;
+          align-items: center; justify-content: center; flex-shrink: 0;
+          animation: tmpBannerCheck .4s .3s ease-out both;
+        }
+        .tmp-banner-icon-success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .tmp-banner-icon-cancel { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .tmp-banner-body { flex: 1; min-width: 0; padding-top: 2px; }
+        .tmp-banner-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px;
+          font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+        .tmp-banner-success .tmp-banner-title { color: #166534; }
+        .tmp-banner-cancel .tmp-banner-title { color: #92400e; }
+        .tmp-banner-desc { font-size: 13px; line-height: 1.55; }
+        .tmp-banner-success .tmp-banner-desc { color: #15803d; }
+        .tmp-banner-cancel .tmp-banner-desc { color: #a16207; }
+        .tmp-banner-dismiss {
+          flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          background: transparent; border: none; cursor: pointer;
+          transition: background .2s; margin-top: -2px;
+        }
+        .tmp-banner-success .tmp-banner-dismiss { color: #86b68a; }
+        .tmp-banner-cancel .tmp-banner-dismiss { color: #d4a96a; }
+        .tmp-banner-dismiss:hover { background: rgba(0,0,0,.06); }
 
         /* ── Hero ── */
         .tmp-hero { text-align: center; padding: 120px 24px 40px; max-width: 1440px; margin: 0 auto; }
