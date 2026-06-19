@@ -673,6 +673,21 @@ export function PricingPlansPage() {
         if (import.meta.env.DEV) console.warn('[PayPal] pay error response:', body)
         setPaying(null)
       } catch (err: any) {
+        setPaying(null)
+        // 401/403 → 清除假登录状态，引导用户重新登录
+        if (err?.response?.status === 401 || err?.response?.status === 403) {
+          const { auth } = useAuthStore.getState()
+          auth.reset()
+          setError(
+            zh
+              ? '登录已过期，正在跳转到登录页...'
+              : 'Session expired, redirecting to login...',
+          )
+          setTimeout(() => {
+            window.location.href = `/sign-in?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`
+          }, 1000)
+          return
+        }
         const netErr = err?.response?.data?.message || err?.message || JSON.stringify(err)
         setError(
           zh
@@ -680,7 +695,6 @@ export function PricingPlansPage() {
             : `Failed to initiate PayPal payment (network): ${netErr}`,
         )
         if (import.meta.env.DEV) console.warn('[PayPal] pay network error:', err)
-        setPaying(null)
       }
     },
     [zh],
