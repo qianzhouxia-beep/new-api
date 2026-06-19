@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -20,6 +21,65 @@ import (
 	"github.com/samber/lo"
 	"github.com/shopspring/decimal"
 )
+
+// DiagnosePayPal 诊断 PayPal 为什么没启用（无需认证，仅显示配置状态，不暴露密钥）
+func DiagnosePayPal(c *gin.Context) {
+	complianceConfirmed := operation_setting.IsPaymentComplianceConfirmed()
+	paymentSetting := operation_setting.GetPaymentSetting()
+
+	// 检查 PayPal 配置
+	hasClientId := strings.TrimSpace(setting.PayPalClientId) != ""
+	hasClientSecret := strings.TrimSpace(setting.PayPalClientSecret) != ""
+	paypalEnabled := hasClientId && hasClientSecret
+
+	// 检查是否在 pay_methods 列表中
+	inPayMethods := false
+	for _, method := range operation_setting.PayMethods {
+		if method["type"] == model.PaymentMethodPayPal {
+			inPayMethods = true
+			break
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"diagnose": "PayPal 支付方式诊断",
+		"compliance": gin.H{
+			"confirmed":             complianceConfirmed,
+			"terms_version":         paymentSetting.ComplianceTermsVersion,
+			"required_terms_version": operation_setting.CurrentComplianceTermsVersion,
+			"note": "如果 confirmed=false 或 terms_version ≠ required，所有支付方式都会被禁用",
+		},
+		"paypal_config": gin.H{
+			"has_client_id":     hasClientId,
+			"has_client_secret": hasClientSecret,
+			"enabled":          paypalEnabled,
+			"sandbox":          setting.PayPalSandbox,
+			"unit_price":       setting.PayPalUnitPrice,
+			"min_topup":        setting.PayPalMinTopUp,
+		},
+		"pay_methods_list": gin.H{
+			"contains_paypal": inPayMethods,
+			"all_methods":      operation_setting.PayMethods,
+			"note": "PayPal 必须在管理后台的「支付方式列表」中添加 {\"name\":\"PayPal\",\"type\":\"paypal\"}",
+		},
+		"final_result": gin.H{
+			"isPayPalTopUpEnabled": isPayPalTopUpEnabled(),
+			"will_show_in_plans":   complianceConfirmed && paypalEnabled && inPayMethods,
+			"reason": func() string {
+				if !complianceConfirmed {
+					return "支付合规确认未通过（compliance_confirmed=false 或 terms_version 不匹配）"
+				}
+				if !paypalEnabled {
+					return "PayPal 凭证未配置（需要 ClientId 和 ClientSecret）"
+				}
+				if !inPayMethods {
+					return "PayPal 不在支付方式列表中（需要在管理后台添加）"
+				}
+				return "OK - PayPal 应该显示"
+			}(),
+		},
+	})
+}
 
 func GetTopUpInfo(c *gin.Context) {
 	complianceConfirmed := operation_setting.IsPaymentComplianceConfirmed()
