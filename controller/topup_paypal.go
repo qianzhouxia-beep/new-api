@@ -128,7 +128,7 @@ func paypalCreateOrder(ctx context.Context, accessToken, referenceId string, amo
 	if err := json.Unmarshal(respBody, &order); err != nil {
 		return "", fmt.Errorf("decode order response: %w", err)
 	}
-	if order.Status != "CREATED" {
+	if order.Status != "CREATED" && order.Status != "PAYER_ACTION_REQUIRED" {
 		return "", fmt.Errorf("paypal order not created (status=%s body=%s)", order.Status, string(respBody))
 	}
 
