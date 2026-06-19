@@ -662,18 +662,24 @@ export function PricingPlansPage() {
           window.location.href = body.data.pay_link
           return
         }
+        // Show the actual error from server for debugging
+        const serverErr =
+          (body as any).message || (body as any).data || JSON.stringify(body)
         setError(
           zh
-            ? '拉起 PayPal 支付失败，请稍后重试。'
-            : 'Failed to initiate PayPal payment. Please try again.',
+            ? `拉起 PayPal 支付失败：${serverErr}`
+            : `Failed to initiate PayPal payment: ${serverErr}`,
         )
+        if (import.meta.env.DEV) console.warn('[PayPal] pay error response:', body)
         setPaying(null)
-      } catch {
+      } catch (err: any) {
+        const netErr = err?.response?.data?.message || err?.message || JSON.stringify(err)
         setError(
           zh
-            ? '拉起 PayPal 支付失败，请稍后重试。'
-            : 'Failed to initiate PayPal payment. Please try again.',
+            ? `拉起 PayPal 支付失败（网络）：${netErr}`
+            : `Failed to initiate PayPal payment (network): ${netErr}`,
         )
+        if (import.meta.env.DEV) console.warn('[PayPal] pay network error:', err)
         setPaying(null)
       }
     },
