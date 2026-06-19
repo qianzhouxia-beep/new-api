@@ -335,69 +335,63 @@ function PaymentStatusBanner({
   const infoMsg = hasInfo ? callbackStatus!.replace('info:', '') : ''
 
   return (
-    <div className='mx-auto mb-6 max-w-lg animate-[tmpBannerIn_.5s_ease-out]'>
-      <div
-        className={`tmp-banner ${
-          isSuccess
-            ? (credited ? 'tmp-banner-success' : pending ? 'tmp-banner-pending' : 'tmp-banner-success')
-            : 'tmp-banner-cancel'
-        }`}
-      >
-        {/* icon */}
-        <div className={`tmp-banner-icon ${isSuccess ? (credited ? 'tmp-banner-icon-success' : pending ? 'tmp-banner-icon-pending' : 'tmp-banner-icon-success') : 'tmp-banner-icon-cancel'}`}>
-          {isSuccess ? (
-            credited ? (
-              <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-                <polyline points='20 6 9 17 4 12' />
-              </svg>
-            ) : pending ? (
-              <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-                <circle cx='12' cy='12' r='10' />
-                <polyline points='12 6 12 12 16 14' />
-              </svg>
-            ) : (
-              <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-                <polyline points='20 6 9 17 4 12' />
-              </svg>
-            )
-          ) : (
-            <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-              <line x1='18' y1='6' x2='6' y2='18' />
-              <line x1='6' y1='6' x2='18' y2='18' />
+    <div className={`tmp-pay-banner ${isSuccess ? (credited ? 'tmp-pay--ok' : pending ? 'tmp-pay--pend' : 'tmp-pay--ok') : 'tmp-pay--cancel'}`}>
+      {/* bg decoration */}
+      <div className='tmp-pay-bg' />
+
+      {/* icon ring */}
+      <div className='tmp-pay-icon-ring'>
+        {isSuccess ? (
+          credited ? (
+            <svg width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+              <polyline points='20 6 9 17 4 12' />
             </svg>
-          )}
-        </div>
-        {/* text */}
-        <div className='tmp-banner-body'>
-          <p className='tmp-banner-title'>
-            {isSuccess
-              ? (credited
-                  ? t('Payment Successful — Balance Credited!')
-                  : pending
-                    ? t('Payment Confirmed')
-                    : t('Payment Successful'))
-              : t('Payment Cancelled')}
-          </p>
-          <p className='tmp-banner-desc'>
-            {isSuccess
-              ? (credited
-                  ? t('Your balance has been updated.')
-                  : pending
-                    ? t('Capturing payment… balance will be credited shortly.')
-                    : hasInfo
-                      ? infoMsg
-                      : t('Your payment is being processed. Balance will be credited to your account shortly.'))
-              : t('No charges were made. Feel free to try again when ready.')}
-          </p>
-        </div>
-        {/* dismiss */}
-        <button onClick={onDismiss} className='tmp-banner-dismiss' title={t('Dismiss')}>
-          <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-            <line x1='18' y1='6' x2='6' y2='18' />
-            <line x1='6' y1='6' x2='18' y2='18' />
+          ) : pending ? (
+            <svg width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+              <circle cx='12' cy='12' r='10' /><polyline points='12 6 12 12 16 14' />
+            </svg>
+          ) : (
+            <svg width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+              <polyline points='20 6 9 17 4 12' />
+            </svg>
+          )
+        ) : (
+          <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+            <line x1='18' y1='6' x2='6' y2='18' /><line x1='6' y1='6' x2='18' y2='18' />
           </svg>
-        </button>
+        )}
       </div>
+
+      {/* text */}
+      <div className='tmp-pay-text'>
+        <h3 className='tmp-pay-title'>
+          {isSuccess
+            ? (credited
+                ? t('Payment Successful — Balance Credited!')
+                : pending
+                  ? t('Payment Confirmed')
+                  : t('Payment Successful'))
+            : t('Payment Cancelled')}
+        </h3>
+        <p className='tmp-pay-desc'>
+          {isSuccess
+            ? (credited
+                ? t('Your balance has been updated.')
+                : pending
+                  ? t('Capturing payment… balance will be credited shortly.')
+                  : hasInfo
+                    ? infoMsg
+                    : t('Your payment is being processed. Balance will be credited shortly.'))
+            : t('No charges were made. Feel free to try again when ready.')}
+        </p>
+      </div>
+
+      {/* dismiss */}
+      <button onClick={onDismiss} className='tmp-pay-dismiss' title={t('Dismiss')}>
+        <svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+          <line x1='18' y1='6' x2='6' y2='18' /><line x1='6' y1='6' x2='18' y2='18' />
+        </svg>
+      </button>
     </div>
   )
 }
@@ -948,54 +942,97 @@ export function PricingPlansPage() {
         .tm-plans a { color: #a43700; text-decoration: none; transition: color .2s; }
         .tm-plans a:hover { color: #cd4700; }
 
+        /* ── Payment Result Overlay ── */
+        .tmp-pay-result {
+          display: flex; justify-content: center;
+          padding: 40px 24px 0;
+        }
+        .tmp-pay-result > * { width: 100%; max-width: 520px; }
+
         /* ── Payment Status Banner ── */
         @keyframes tmpBannerIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes tmpBannerCheck { 0% { transform: scale(0) rotate(-45deg); } 60% { transform: scale(1.2) rotate(5deg); } 100% { transform: scale(1) rotate(0); } }
-        .tmp-banner {
-          display: flex; align-items: flex-start; gap: 14px; padding: 20px 20px 20px 24px;
-          border-radius: 16px; position: relative; overflow: hidden;
-          box-shadow: 0 4px 24px rgba(0,0,0,.06), 0 1px 4px rgba(0,0,0,.04);
+        /* ── Payment Banner Card (centered, prominent) ── */
+        @keyframes tmpPayIn { from { opacity: 0; transform: translateY(-16px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes tmpPayIconPop { 0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1} }
+        @keyframes tmpPayShine { 0%{left:-120%}100%{left:220%} }
+
+        .tmp-pay-banner {
+          position: relative; display: flex; flex-direction: column; align-items: center;
+          gap: 16px; padding: 36px 32px 28px; border-radius: 20px;
+          text-align: center; overflow: hidden;
+          animation: tmpPayIn .5s cubic-bezier(.16,1,.3,1) both;
+          box-shadow:
+            0 8px 40px rgba(34,197,94,.14),
+            0 2px 12px rgba(0,0,0,.04);
+          border: 1px solid rgba(34,197,94,.25);
+          background: linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 50%, #f7fef9 100%);
         }
-        .tmp-banner-success {
-          background: linear-gradient(135deg, #f0fdf4 0%, #e6f9ee 40%, #f0fdf4 100%);
-          border: 1px solid #bbf7d0;
+        .tmp-pay-banner.tmp-pay--cancel {
+          border-color: rgba(245,158,11,.3);
+          background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 50%, #fffef8 100%);
+          box-shadow: 0 8px 40px rgba(245,158,11,.12), 0 2px 12px rgba(0,0,0,.04);
         }
-        .tmp-banner-cancel {
-          background: linear-gradient(135deg, #fff7ed 0%, #fff1e6 40%, #fff7ed 100%);
-          border: 1px solid #fed7aa;
+        .tmp-pay-banner.tmp-pay--pend {
+          border-color: rgba(59,130,246,.3);
+          background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 50%, #f5f9ff 100%);
+          box-shadow: 0 8px 40px rgba(59,130,246,.12), 0 2px 12px rgba(0,0,0,.04);
         }
-        .tmp-banner-pending {
-          background: linear-gradient(135deg, #eff6ff 0%, #e0effe 40%, #eff6ff 100%);
-          border: 1px solid #bfdbfe;
+
+        /* bg shine sweep */
+        .tmp-pay-bg {
+          position: absolute; top: -50%; left: -120%; width: 80%; height: 200%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+          transform: rotate(18deg);
+          animation: tmpPayShine 2.5s ease-in-out .6s both;
+          pointer-events: none;
         }
-        .tmp-banner-icon {
-          width: 44px; height: 44px; border-radius: 12px; display: flex;
-          align-items: center; justify-content: center; flex-shrink: 0;
-          animation: tmpBannerCheck .4s .3s ease-out both;
-        }
-        .tmp-banner-icon-success { background: linear-gradient(135deg, #22c55e, #16a34a); }
-        .tmp-banner-icon-cancel { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .tmp-banner-icon-pending { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .tmp-banner-body { flex: 1; min-width: 0; padding-top: 2px; }
-        .tmp-banner-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px;
-          font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-        .tmp-banner-success .tmp-banner-title { color: #166534; }
-        .tmp-banner-cancel .tmp-banner-title { color: #92400e; }
-        .tmp-banner-pending .tmp-banner-title { color: #1e40af; }
-        .tmp-banner-desc { font-size: 13px; line-height: 1.55; }
-        .tmp-banner-success .tmp-banner-desc { color: #15803d; }
-        .tmp-banner-cancel .tmp-banner-desc { color: #a16207; }
-        .tmp-banner-pending .tmp-banner-desc { color: #1d4ed8; }
-        .tmp-banner-dismiss {
-          flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+        .tmp-pay-bg { /* inherits */ }
+
+        /* icon ring */
+        .tmp-pay-icon-ring {
+          position: relative; width: 64px; height: 64px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
-          background: transparent; border: none; cursor: pointer;
-          transition: background .2s; margin-top: -2px;
+          flex-shrink: 0; z-index: 1;
+          animation: tmpPayIconPop .45s .2s cubic-bezier(.175,.885,.32,1.275) both;
         }
-        .tmp-banner-success .tmp-banner-dismiss { color: #86b68a; }
-        .tmp-banner-cancel .tmp-banner-dismiss { color: #d4a96a; }
-        .tmp-banner-pending .tmp-banner-dismiss { color: #93b9f5; }
-        .tmp-banner-dismiss:hover { background: rgba(0,0,0,.06); }
+        .tmp-pay--ok .tmp-pay-icon-ring {
+          background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+          box-shadow: 0 4px 20px rgba(34,197,94,.35), inset 0 1px 0 rgba(255,255,255,.2);
+        }
+        .tmp-pay--pend .tmp-pay-icon-ring {
+          background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+          box-shadow: 0 4px 20px rgba(59,130,246,.35), inset 0 1px 0 rgba(255,255,255,.2);
+        }
+        .tmp-pay--cancel .tmp-pay-icon-ring {
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+          box-shadow: 0 4px 20px rgba(245,158,11,.3), inset 0 1px 0 rgba(255,255,255,.2);
+        }
+
+        /* text */
+        .tmp-pay-text { z-index: 1; }
+        .tmp-pay-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px;
+          font-weight: 700; letter-spacing: -.01em; margin-bottom: 6px; }
+        .tmp-pay--ok .tmp-pay-title { color: #14532d; }
+        .tmp-pay--cancel .tmp-pay-title { color: #78350f; }
+        .tmp-pay--pend .tmp-pay-title { color: #1e3a5f; }
+        .tmp-pay-desc { font-size: 14px; line-height: 1.6; max-width: 380px; }
+        .tmp-pay--ok .tmp-pay-desc { color: #166534; opacity: .85; }
+        .tmp-pay--cancel .tmp-pay-desc { color: #92400e; opacity: .85; }
+        .tmp-pay--pend .tmp-pay-desc { color: #1d4ed8; opacity: .85; }
+
+        /* dismiss */
+        .tmp-pay-dismiss {
+          position: absolute; top: 10px; right: 10px; width: 30px; height: 30px;
+          border-radius: 8px; display: flex; align-items: center; justify-content: center;
+          background: transparent; border: none; cursor: pointer;
+          color: #86b68a; transition: all .2s; z-index: 2;
+        }
+        .tmp-pay--ok .tmp-pay-dismiss:hover { background: rgba(34,197,94,.1); color: #166534; }
+        .tmp-pay--cancel .tmp-pay-dismiss { color: #d4a96a; }
+        .tmp-pay--cancel .tmp-pay-dismiss:hover { background: rgba(245,158,11,.1); color: #92400e; }
+        .tmp-pay--pend .tmp-pay-dismiss { color: #93b9f5; }
+        .tmp-pay--pend .tmp-pay-dismiss:hover { background: rgba(59,130,246,.1); color: #2563eb; }
 
         /* ── Hero ── */
         .tmp-hero { text-align: center; padding: 120px 24px 40px; max-width: 1440px; margin: 0 auto; }
@@ -1267,7 +1304,7 @@ export function PricingPlansPage() {
       <div className="tm-plans">
         {/* ═══════ Payment Status Banner ═══════ */}
         {paymentStatus && !dismissedStatus && (
-          <div className="tmp-hero">
+          <div className='tmp-pay-result'>
             <PaymentStatusBanner
               status={paymentStatus}
               callbackStatus={callbackResult}
