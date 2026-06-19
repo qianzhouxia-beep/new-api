@@ -69,13 +69,6 @@ const designSystemStyle = `
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
-  #hero-shader-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-  }
 
   /* ─── M3 Color CSS Variables ─── */
   :root {
@@ -178,7 +171,6 @@ export function Home() {
   const navigate = useNavigate()
   const { auth } = useAuthStore()
   const isAuthenticated = !!auth.user
-  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [activeTab, setActiveTab] = useState<'python' | 'curl'>('python')
   const glowRef = useRef<HTMLDivElement>(null)
 
@@ -191,7 +183,7 @@ export function Home() {
   useEffect(() => {
     const glowEl = glowRef.current
     if (!glowEl) return
-    const section = canvasRef.current?.parentElement
+    const section = glowEl.parentElement
     if (!section) return
     const onMouseMove = (e: MouseEvent) => {
       const rect = section.getBoundingClientRect()
@@ -200,136 +192,6 @@ export function Home() {
     }
     window.addEventListener('mousemove', onMouseMove, { passive: true })
     return () => window.removeEventListener('mousemove', onMouseMove)
-  }, [])
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const gl = canvas.getContext('webgl')
-    if (!gl) return
-
-    let width: number, height: number
-    let mouseX = 0.5, mouseY = 0.5
-
-    const vertexShaderSource = `
-      attribute vec2 position;
-      void main() {
-        gl_Position = vec4(position, 0.0, 1.0);
-      }
-    `
-
-    const fragmentShaderSource = `
-      precision highp float;
-      uniform float time;
-      uniform vec2 resolution;
-      uniform vec2 mouse;
-
-      float hash(vec2 p) {
-        p = fract(p * vec2(123.34, 456.21));
-        p += dot(p, p + 45.32);
-        return fract(p.x * p.y);
-      }
-
-      float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
-        float a = hash(i);
-        float b = hash(i + vec2(1.0, 0.0));
-        float c = hash(i + vec2(0.0, 1.0));
-        float d = hash(i + vec2(1.0, 1.0));
-        vec2 u = f * f * (3.0 - 2.0 * f);
-        return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-      }
-
-      void main() {
-        vec2 uv = gl_FragCoord.xy / resolution.xy;
-        vec2 p = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-        float t = time * 0.15;
-        float n = 0.0;
-        for(float i = 1.0; i < 5.0; i++) {
-          p += vec2(0.15 * sin(t + p.y * i), 0.15 * cos(t + p.x * i));
-          n += noise(p * i + t) * (1.0 / i);
-        }
-        vec3 bgColor = vec3(0.10, 0.10, 0.11);
-        vec3 flowColor = vec3(0.94, 0.27, 0.27);
-        float intensity = smoothstep(0.35, 0.75, n);
-        float dist = length(uv - mouse);
-        intensity += smoothstep(0.25, 0.0, dist) * 0.15;
-        vec3 color = mix(bgColor, flowColor, intensity * 0.12);
-        float grid = (step(0.996, fract(uv.x * 25.0)) + step(0.996, fract(uv.y * 25.0))) * 0.015;
-        color += grid;
-        gl_FragColor = vec4(color, 1.0);
-      }
-    `
-
-    function createShader(g: WebGLRenderingContext, type: number, source: string) {
-      const shader = g.createShader(type)!
-      g.shaderSource(shader, source)
-      g.compileShader(shader)
-      if (!g.getShaderParameter(shader, g.COMPILE_STATUS)) {
-        console.error(g.getShaderInfoLog(shader))
-        g.deleteShader(shader)
-        return null
-      }
-      return shader
-    }
-
-    const program = gl.createProgram()!
-    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource))
-    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource))
-    gl.linkProgram(program)
-
-    const positionBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW)
-
-    const positionLocation = gl.getAttribLocation(program, 'position')
-    const timeLocation = gl.getUniformLocation(program, 'time')
-    const resLocation = gl.getUniformLocation(program, 'resolution')
-    const mouseLocation = gl.getUniformLocation(program, 'mouse')
-
-    function resize() {
-      const parent = canvas!.parentElement
-      if (!parent) return
-      width = parent.clientWidth
-      height = parent.clientHeight
-      canvas!.width = width
-      canvas!.height = height
-      gl!.viewport(0, 0, width, height)
-    }
-
-    function onMouseMove(e: MouseEvent) {
-      const rect = canvas!.getBoundingClientRect()
-      mouseX = (e.clientX - rect.left) / width
-      mouseY = 1.0 - ((e.clientY - rect.top) / height)
-    }
-
-    window.addEventListener('resize', resize)
-    window.addEventListener('mousemove', onMouseMove)
-
-    let animId: number
-    function render(time: number) {
-      gl!.clearColor(0, 0, 0, 0)
-      gl!.clear(gl!.COLOR_BUFFER_BIT)
-      gl!.useProgram(program)
-      gl!.enableVertexAttribArray(positionLocation)
-      gl!.bindBuffer(gl!.ARRAY_BUFFER, positionBuffer)
-      gl!.vertexAttribPointer(positionLocation, 2, gl!.FLOAT, false, 0, 0)
-      gl!.uniform1f(timeLocation, time * 0.001)
-      gl!.uniform2f(resLocation, width, height)
-      gl!.uniform2f(mouseLocation, mouseX, mouseY)
-      gl!.drawArrays(gl!.TRIANGLES, 0, 6)
-      animId = requestAnimationFrame(render)
-    }
-
-    resize()
-    animId = requestAnimationFrame(render)
-
-    return () => {
-      cancelAnimationFrame(animId)
-      window.removeEventListener('resize', resize)
-      window.removeEventListener('mousemove', onMouseMove)
-    }
   }, [])
 
   /* ─── Intersection Observer for card animations ─── */
@@ -357,7 +219,6 @@ export function Home() {
 
       {/* ─── Hero Section ─── */}
       <section className="relative overflow-hidden pb-32 pt-48" style={{ backgroundColor: 'var(--m3-surface)' }}>
-        <canvas ref={canvasRef} id="hero-shader-canvas" />
         <div className="hero-tech-grid" />
         <div ref={glowRef} className="hero-glow" />
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center px-10 relative z-10">
