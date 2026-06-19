@@ -318,26 +318,48 @@ function ExpandMoreIcon() {
 /* ── Payment Status Banner ── */
 function PaymentStatusBanner({
   status,
+  callbackStatus,
   onDismiss,
 }: {
   status: 'success' | 'cancel'
+  callbackStatus?: string | null
   onDismiss: () => void
 }) {
   const { t } = useTranslation()
   const isSuccess = status === 'success'
+
+  // Callback status: 'credited' | 'pending' | 'error' | 'info:...' | null
+  const credited = callbackStatus === 'credited'
+  const pending = callbackStatus === 'pending'
+  const hasInfo = callbackStatus?.startsWith('info:')
+  const infoMsg = hasInfo ? callbackStatus!.replace('info:', '') : ''
+
   return (
     <div className='mx-auto mb-6 max-w-lg animate-[tmpBannerIn_.5s_ease-out]'>
       <div
         className={`tmp-banner ${
-          isSuccess ? 'tmp-banner-success' : 'tmp-banner-cancel'
+          isSuccess
+            ? (credited ? 'tmp-banner-success' : pending ? 'tmp-banner-pending' : 'tmp-banner-success')
+            : 'tmp-banner-cancel'
         }`}
       >
         {/* icon */}
-        <div className={`tmp-banner-icon ${isSuccess ? 'tmp-banner-icon-success' : 'tmp-banner-icon-cancel'}`}>
+        <div className={`tmp-banner-icon ${isSuccess ? (credited ? 'tmp-banner-icon-success' : pending ? 'tmp-banner-icon-pending' : 'tmp-banner-icon-success') : 'tmp-banner-icon-cancel'}`}>
           {isSuccess ? (
-            <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
-              <polyline points='20 6 9 17 4 12' />
-            </svg>
+            credited ? (
+              <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+                <polyline points='20 6 9 17 4 12' />
+              </svg>
+            ) : pending ? (
+              <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+                <circle cx='12' cy='12' r='10' />
+                <polyline points='12 6 12 12 16 14' />
+              </svg>
+            ) : (
+              <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
+                <polyline points='20 6 9 17 4 12' />
+              </svg>
+            )
           ) : (
             <svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'>
               <line x1='18' y1='6' x2='6' y2='18' />
@@ -349,12 +371,22 @@ function PaymentStatusBanner({
         <div className='tmp-banner-body'>
           <p className='tmp-banner-title'>
             {isSuccess
-              ? t('Payment Successful')
+              ? (credited
+                  ? t('Payment Successful — Balance Credited!')
+                  : pending
+                    ? t('Payment Confirmed')
+                    : t('Payment Successful'))
               : t('Payment Cancelled')}
           </p>
           <p className='tmp-banner-desc'>
             {isSuccess
-              ? t('Your payment is being processed. Balance will be credited to your account shortly.')
+              ? (credited
+                  ? t('Your balance has been updated.')
+                  : pending
+                    ? t('Capturing payment… balance will be credited shortly.')
+                    : hasInfo
+                      ? infoMsg
+                      : t('Your payment is being processed. Balance will be credited to your account shortly.'))
               : t('No charges were made. Feel free to try again when ready.')}
           </p>
         </div>
@@ -570,6 +602,7 @@ export function PricingPlansPage() {
   /* ── Payment status from URL ── */
   const urlParams = new URLSearchParams(window.location.search)
   const paymentStatus = (urlParams.get('status') || '') as 'success' | 'cancel' | ''
+  const paypalToken = urlParams.get('token') || '' // PayPal order ID from return URL
   const [dismissedStatus, setDismissedStatus] = useState(false)
 
   useEffect(() => {
@@ -579,12 +612,38 @@ export function PricingPlansPage() {
     }
   }, [paymentStatus, dismissedStatus])
 
-  /* ── Refresh user balance after successful payment ── */
+  /* ── PayPal callback: capture & credit when user returns with token ── */
+  const [callbackResult, setCallbackResult] = useState<string | null>(null)
+  useEffect(() => {
+    if (paymentStatus !== 'success' || !paypalToken || callbackResult) return
+    // Call PayPal callback API to complete capture + recharge
+    ;(async () => {
+      try {
+        const res = await api.get(`/api/user/paypal/callback?token=${encodeURIComponent(paypalToken)}`)
+        const body = res.data as any
+        if (body.message === 'success') {
+          setCallbackResult('credited')
+          if (import.meta.env.DEV) console.log('[PayPal] Callback success:', body.data)
+        } else if (body.message === 'warning') {
+          setCallbackResult('pending')
+          if (import.meta.env.DEV) console.warn('[PayPal] Callback warning:', body.data)
+        } else {
+          setCallbackResult(`info:${(body as any).data || body.message}`)
+          if (import.meta.env.DEV) console.info('[PayPal] Callback info:', body.data)
+        }
+      } catch (err: any) {
+        setCallbackResult('error')
+        if (import.meta.env.DEV) console.error('[PayPal] Callback error:', err)
+      }
+    })()
+  }, [paymentStatus, paypalToken, callbackResult])
+
+  /* ── Refresh user balance after successful payment / callback ── */
   const [balanceRefreshed, setBalanceRefreshed] = useState(false)
   useEffect(() => {
     if (paymentStatus !== 'success' || !auth?.user || balanceRefreshed) return
     // Poll for balance update with increasing delays
-    const delays = [3000, 6000, 12000]
+    const delays = [2000, 5000, 10000]
     const timeouts: ReturnType<typeof setTimeout>[] = []
     delays.forEach((delay) => {
       timeouts.push(setTimeout(async () => {
@@ -905,6 +964,10 @@ export function PricingPlansPage() {
           background: linear-gradient(135deg, #fff7ed 0%, #fff1e6 40%, #fff7ed 100%);
           border: 1px solid #fed7aa;
         }
+        .tmp-banner-pending {
+          background: linear-gradient(135deg, #eff6ff 0%, #e0effe 40%, #eff6ff 100%);
+          border: 1px solid #bfdbfe;
+        }
         .tmp-banner-icon {
           width: 44px; height: 44px; border-radius: 12px; display: flex;
           align-items: center; justify-content: center; flex-shrink: 0;
@@ -912,14 +975,17 @@ export function PricingPlansPage() {
         }
         .tmp-banner-icon-success { background: linear-gradient(135deg, #22c55e, #16a34a); }
         .tmp-banner-icon-cancel { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .tmp-banner-icon-pending { background: linear-gradient(135deg, #3b82f6, #2563eb); }
         .tmp-banner-body { flex: 1; min-width: 0; padding-top: 2px; }
         .tmp-banner-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px;
           font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
         .tmp-banner-success .tmp-banner-title { color: #166534; }
         .tmp-banner-cancel .tmp-banner-title { color: #92400e; }
+        .tmp-banner-pending .tmp-banner-title { color: #1e40af; }
         .tmp-banner-desc { font-size: 13px; line-height: 1.55; }
         .tmp-banner-success .tmp-banner-desc { color: #15803d; }
         .tmp-banner-cancel .tmp-banner-desc { color: #a16207; }
+        .tmp-banner-pending .tmp-banner-desc { color: #1d4ed8; }
         .tmp-banner-dismiss {
           flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
           display: flex; align-items: center; justify-content: center;
@@ -928,6 +994,7 @@ export function PricingPlansPage() {
         }
         .tmp-banner-success .tmp-banner-dismiss { color: #86b68a; }
         .tmp-banner-cancel .tmp-banner-dismiss { color: #d4a96a; }
+        .tmp-banner-pending .tmp-banner-dismiss { color: #93b9f5; }
         .tmp-banner-dismiss:hover { background: rgba(0,0,0,.06); }
 
         /* ── Hero ── */
@@ -1203,6 +1270,7 @@ export function PricingPlansPage() {
           <div className="tmp-hero">
             <PaymentStatusBanner
               status={paymentStatus}
+              callbackStatus={callbackResult}
               onDismiss={() => setDismissedStatus(true)}
             />
           </div>

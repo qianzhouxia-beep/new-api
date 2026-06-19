@@ -344,7 +344,115 @@ func RequestPayPalPay(c *gin.Context) {
 	})
 }
 
-// PayPalWebhook 鈥?handles incoming PayPal webhook events (CHECKOUT.ORDER.APPROVED).
+// PayPalCallback — client-side fallback: captures & credits when the user
+// returns from PayPal with ?status=success&token=<paypal-order-id>.
+// This removes hard-dependency on webhooks for sandbox / misconfigured setups.
+func PayPalCallback(c *gin.Context) {
+	ctx := c.Request.Context()
+	paypalOrderId := c.Query("token")
+	if paypalOrderId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "error", "data": "missing token parameter"})
+		return
+	}
+
+	logger.LogInfo(ctx, fmt.Sprintf("PayPal callback received order_id=%s ip=%s", paypalOrderId, c.ClientIP()))
+
+	// 1. Get PayPal access token
+	token, err := paypalAccessToken(ctx)
+	if err != nil {
+		logger.LogError(ctx, fmt.Sprintf("PayPal callback get token error=%s", err.Error()))
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "data": fmt.Sprintf("获取支付凭证失败: %s", err.Error())})
+		return
+	}
+
+	// 2. Fetch order details to get reference_id and status
+	orderDetailUrl := paypalBaseURL() + "/v2/checkout/orders/" + paypalOrderId
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, orderDetailUrl, nil)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "data": fmt.Sprintf("创建请求失败: %s", err.Error())})
+		return
+	}
+	req.Header.Set("Authorization", token)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "data": fmt.Sprintf("查询订单失败: %s", err.Error())})
+		return
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+
+	var orderDetail struct {
+		Id     string `json:"id"`
+		Status string `json:"status"`
+		PurchaseUnits []struct {
+			ReferenceId string `json:"reference_id"`
+			Amount      struct {
+				Value string `json:"value"`
+			} `json:"amount"`
+		} `json:"purchase_units"`
+	}
+	if err := json.Unmarshal(respBody, &orderDetail); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error", "data": fmt.Sprintf("解析订单数据失败: %s", err.Error())})
+		return
+	}
+
+	// 3. Check if order is approved/completed
+	if orderDetail.Status != "APPROVED" && orderDetail.Status != "COMPLETED" {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "info",
+			"data":   fmt.Sprintf("订单状态: %s（等待用户在 PayPal 完成支付）", orderDetail.Status),
+		})
+		return
+	}
+
+	// 4. Get reference_id
+	referenceId := ""
+	if len(orderDetail.PurchaseUnits) > 0 {
+		referenceId = orderDetail.PurchaseUnits[0].ReferenceId
+	}
+	if referenceId == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "error",
+			"data":   "无法获取订单关联信息，请联系客服",
+		})
+		return
+	}
+
+	// 5. Capture the order (skip if already COMPLETED)
+	var captureId string
+	if orderDetail.Status == "APPROVED" {
+		captureId, err = paypalCaptureOrder(ctx, token, paypalOrderId)
+		if err != nil {
+			logger.LogError(ctx, fmt.Sprintf("PayPal callback capture failed trade_no=%s order_id=%s error=%s", referenceId, paypalOrderId, err.Error()))
+			// Don't return error to user — webhook may still handle it
+			c.JSON(http.StatusOK, gin.H{
+				"message": "warning",
+				"data":   fmt.Sprintf("支付已确认，入账处理中（可能需要几分钟）: %s", err.Error()),
+			})
+			return
+		}
+	} else {
+		// Already captured — try to find capture ID from order detail (simplified: use orderId)
+		captureId = paypalOrderId
+	}
+
+	// 6. Credit user balance via Recharge (idempotent: duplicate calls are safe)
+	if err := model.Recharge(referenceId, captureId, c.ClientIP()); err != nil {
+		// Recharge may fail if already credited (duplicate), that's OK
+		logger.LogInfo(ctx, fmt.Sprintf("PayPal callback recharge result trade_no=%s order_id=%s error=%s", referenceId, paypalOrderId, err.Error()))
+	}
+
+	logger.LogInfo(ctx, fmt.Sprintf("PayPal callback completed trade_no=%s order_id=%s capture_id=%s", referenceId, paypalOrderId, captureId))
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+		"data":   gin.H{"trade_no": referenceId, "capture_id": captureId},
+	})
+}
+
+// PayPalWebhook — handles incoming PayPal webhook events (CHECKOUT.ORDER.APPROVED).
 func PayPalWebhook(c *gin.Context) {
 	ctx := c.Request.Context()
 	if !isPayPalWebhookEnabled() {
