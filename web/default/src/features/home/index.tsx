@@ -24,20 +24,13 @@ const designSystemStyle = `
   }
   .card-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
   }
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
   #hero-shader-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.9;
+    display: none;
   }
 
   /* ─── M3 Color CSS Variables ─── */
@@ -321,21 +314,21 @@ export function Home() {
             <div className="pt-2 space-y-4 flex flex-col items-center">
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>DeepSeek:</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Flash</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Pro</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>Chat</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>Reasoner</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Flash</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Pro</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>Chat</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>Reasoner</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>GLM:</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>4.7-Flash</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>4.5-Air</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>4.7-Flash</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>4.5-Air</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>Qwen:</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Max</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Plus</span>
-                <span className="px-2 py-1 bg-white border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.5 Series</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Max</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Plus</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.5 Series</span>
               </div>
             </div>
             <div className="flex gap-4 pt-4 justify-center">
@@ -346,7 +339,7 @@ export function Home() {
               >
                 {t('Get API Key')} <span className="material-symbols-outlined">arrow_forward</span>
               </button>
-              <Link to="/pricing" className="bg-white border border-outline-variant text-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold hover:bg-surface-container transition-all" style={{ fontFamily: 'Space Grotesk' }}>
+              <Link to="/pricing" className="bg-surface-container border border-outline-variant text-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold hover:bg-surface-container-high transition-all" style={{ fontFamily: 'Space Grotesk' }}>
                 {t('Documentation')}
               </Link>
             </div>
@@ -367,7 +360,7 @@ export function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {/* Unified API Gateway */}
-            <div className="md:col-span-2 lg:col-span-2 bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col justify-between">
+            <div className="md:col-span-2 lg:col-span-2 bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 text-primary mb-4">
                   <span className="material-symbols-outlined">hub</span>
@@ -393,7 +386,7 @@ export function Home() {
             </div>
 
             {/* Enterprise Security */}
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
               <div className="bg-primary/10 p-4 rounded-full mb-4">
                 <span className="material-symbols-outlined text-primary">security</span>
               </div>
@@ -406,7 +399,7 @@ export function Home() {
             </div>
 
             {/* Low Latency */}
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
               <div className="bg-secondary-container/20 p-4 rounded-full mb-4">
                 <span className="material-symbols-outlined text-secondary">speed</span>
               </div>
@@ -419,7 +412,7 @@ export function Home() {
             </div>
 
             {/* Analytics */}
-            <div className="lg:col-span-2 bg-white p-6 border border-surface-variant rounded-xl card-lift flex items-center gap-6">
+            <div className="lg:col-span-2 bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex items-center gap-6">
               <div className="flex-1">
                 <div className="flex items-center gap-2 text-primary mb-4">
                   <span className="material-symbols-outlined">analytics</span>
@@ -442,7 +435,7 @@ export function Home() {
             </div>
 
             {/* Smart Key Management */}
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
               <div className="bg-tertiary-container/20 p-4 rounded-full mb-4">
                 <span className="material-symbols-outlined text-tertiary">key</span>
               </div>
@@ -455,7 +448,7 @@ export function Home() {
             </div>
 
             {/* Full Audit Logging */}
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-start">
               <div className="bg-error-container/20 p-4 rounded-full mb-4">
                 <span className="material-symbols-outlined text-error">monitoring</span>
               </div>
@@ -499,7 +492,7 @@ export function Home() {
             </div>
             {/* Dual Pane Code Block */}
             <div className="lg:w-1/2 w-full">
-              <div className="bg-white rounded-xl shadow-xl border border-surface-variant overflow-hidden">
+              <div className="bg-surface-container rounded-xl shadow-xl border border-surface-variant overflow-hidden">
                 <div className="flex border-b border-surface-variant" style={{ backgroundColor: 'var(--m3-surface-container-low)' }}>
                   <button
                     onClick={() => setActiveTab('python')}
@@ -516,7 +509,7 @@ export function Home() {
                     cURL
                   </button>
                 </div>
-                <div className="p-6 bg-white min-h-[300px]" style={{ fontFamily: 'JetBrains Mono' }}>
+                <div className="p-6 bg-surface-container-low min-h-[300px]" style={{ fontFamily: 'JetBrains Mono' }}>
                   {activeTab === 'python' ? (
                     <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}><span className="text-primary">import</span> tokenmaster{'\n\n'}client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">&quot;tm_...&quot;</span>){'\n\n'}response = client.chat.completions.create({'\n'}    model=<span className="text-on-tertiary-fixed-variant">&quot;deepseek-reasoner&quot;</span>,{'\n'}    messages=[{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, content<span className="text-on-tertiary-fixed-variant">&quot;: &quot;Hello!&quot;</span>{'}'}]{'\n'}){'\n\n'}print(response.choices[<span className="text-secondary">0</span>].message.content)</code></pre>
                   ) : (
@@ -541,7 +534,7 @@ export function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
               <div className="w-16 h-16 bg-primary/5 rounded-xl flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-primary text-3xl">bolt</span>
               </div>
@@ -549,7 +542,7 @@ export function Home() {
               <div className="bg-primary-fixed text-on-primary-fixed px-2 py-1 rounded-full text-xs font-semibold mb-4" style={{ fontFamily: 'Space Grotesk' }}>+$1</div>
               <div className="text-base" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Get')} $11.00 {t('balance')}</div>
             </div>
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
               <div className="w-16 h-16 bg-secondary-container/20 rounded-xl flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-secondary text-3xl">rocket_launch</span>
               </div>
@@ -557,7 +550,7 @@ export function Home() {
               <div className="text-on-secondary-container px-2 py-1 rounded-full text-xs font-semibold mb-4" style={{ fontFamily: 'Space Grotesk', backgroundColor: 'color-mix(in srgb, var(--m3-secondary-container) 40%, transparent)' }}>+$8</div>
               <div className="text-base" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Get')} $58.00 {t('balance')}</div>
             </div>
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
               <div className="w-16 h-16 bg-tertiary-container/20 rounded-xl flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-tertiary text-3xl">diamond</span>
               </div>
@@ -565,7 +558,7 @@ export function Home() {
               <div className="text-tertiary px-2 py-1 rounded-full text-xs font-semibold mb-4" style={{ fontFamily: 'Space Grotesk', backgroundColor: 'color-mix(in srgb, var(--m3-tertiary-container) 20%, transparent)' }}>+$20</div>
               <div className="text-base" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Get')} $120.00 {t('balance')}</div>
             </div>
-            <div className="bg-white p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col items-center text-center">
               <div className="w-16 h-16 bg-surface-container-high rounded-xl flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-3xl" style={{ color: 'var(--m3-on-surface-variant)' }}>tune</span>
               </div>
@@ -594,7 +587,7 @@ export function Home() {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="py-10 bg-white">
+      <section className="py-10" style={{ backgroundColor: 'var(--m3-surface-container-low)' }}>
         <div className="max-w-4xl mx-auto px-6 px-10">
           <h2 className="text-[32px] leading-10 -tracking-[0.01em] font-semibold text-center mb-10" style={{ fontFamily: 'Space Grotesk' }}>
             {t('Common Questions')}
