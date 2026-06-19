@@ -19,6 +19,46 @@ const designSystemStyle = `
   .glow-radial {
     background: radial-gradient(circle at center, rgba(239, 68, 68, 0.08) 0%, transparent 70%);
   }
+  /* ─── Hero Tech Grid Background ─── */
+  .hero-tech-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-tech-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-drift 20s linear infinite;
+  }
+  .hero-tech-grid::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(239,68,68,0.06) 0%, transparent 70%);
+  }
+  @keyframes grid-drift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(40px, 40px); }
+  }
+  /* mouse-follow glow */
+  .hero-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(239,68,68,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    transition: left 0.15s ease, top 0.15s ease;
+  }
   .card-lift {
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
   }
@@ -30,7 +70,11 @@ const designSystemStyle = `
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
   #hero-shader-canvas {
-    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
   }
 
   /* ─── M3 Color CSS Variables ─── */
@@ -136,8 +180,27 @@ export function Home() {
   const isAuthenticated = !!auth.user
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [activeTab, setActiveTab] = useState<'python' | 'curl'>('python')
+  const glowRef = useRef<HTMLDivElement>(null)
 
-  /* ─── WebGL Shader ─── */
+  /* ─── Force dark mode ─── */
+  useEffect(() => {
+    document.documentElement.classList.add('dark')
+  }, [])
+
+  /* ─── Hero Tech Grid Background (mouse glow) ─── */
+  useEffect(() => {
+    const glowEl = glowRef.current
+    if (!glowEl) return
+    const section = canvasRef.current?.parentElement
+    if (!section) return
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect()
+      glowEl.style.left = `${e.clientX - rect.left}px`
+      glowEl.style.top = `${e.clientY - rect.top}px`
+    }
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    return () => window.removeEventListener('mousemove', onMouseMove)
+  }, [])
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -295,6 +358,8 @@ export function Home() {
       {/* ─── Hero Section ─── */}
       <section className="relative overflow-hidden pb-32 pt-48" style={{ backgroundColor: 'var(--m3-surface)' }}>
         <canvas ref={canvasRef} id="hero-shader-canvas" />
+        <div className="hero-tech-grid" />
+        <div ref={glowRef} className="hero-glow" />
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center px-10 relative z-10">
           <div className="lg:col-span-12 space-y-6 flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2 bg-[var(--m3-primary-fixed)] text-[var(--m3-on-primary-fixed)] px-2 py-1 rounded-full">
