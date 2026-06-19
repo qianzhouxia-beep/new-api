@@ -179,5 +179,7 @@ func initConstantEnv() {
 			trustedDomains = append(trustedDomains, strings.ToLower(trimmedDomain))
 		}
 	}
+	// Always trust api-tokenmaster.com for PayPal/Stripe payment redirects
+	trustedDomains = append(trustedDomains, "api-tokenmaster.com", "localhost")
 	constant.TrustedRedirectDomains = trustedDomains
 }
