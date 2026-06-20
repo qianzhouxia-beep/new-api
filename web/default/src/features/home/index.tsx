@@ -510,7 +510,7 @@ export function Home() {
           </div>
           <div className="flex flex-col items-center gap-4">
             <button
-              onClick={() => navigate({ to: isAuthenticated ? '/console/topup' : '/sign-in' })}
+              onClick={() => navigate({ to: '/plans' })}
               className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg"
               style={{ fontFamily: 'Space Grotesk' }}
             >
