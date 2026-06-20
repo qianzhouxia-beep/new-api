@@ -192,25 +192,7 @@ export function About() {
             <div className='tm-mission-grid'>
               <div>
                 <div className='tm-mission-img-wrap'>
-                  <svg viewBox='0 0 400 225' width='100%' height='100%' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'>
-                    <defs>
-                      <linearGradient id='mg' x1='0%' y1='0%' x2='100%' y2='100%'>
-                        <stop offset='0%' stopColor='#ef4444' stopOpacity='.12'/>
-                        <stop offset='50%' stopColor='#6b7280' stopOpacity='.08'/>
-                        <stop offset='100%' stopColor='#374151' stopOpacity='.18'/>
-                      </linearGradient>
-                    </defs>
-                    <rect width='400' height='225' fill='url(#mg)' rx='12'/>
-                    <g fill='#ef4444' opacity='.25' text-anchor='middle' dominant-baseline='middle'>
-                      <circle cx='120' cy='90' r='40' stroke='#ef4444' stroke-width='1.5' fill='none'/>
-                      <circle cx='280' cy='135' r='30' stroke='#ef4444' stroke-width='1.5' fill='none'/>
-                      <line x1='150' y1='110' x2='255' y2='130' stroke='#ef4444' stroke-width='1.5' stroke-dasharray='4 3'/>
-                      <circle cx='200' cy='170' r='20' stroke='#6b7280' stroke-width='1.5' fill='none'/>
-                      <line x1='140' y1='115' x2='185' y2='160' stroke='#6b7280' stroke-width='1' stroke-dasharray='3 3'/>
-                      <line x1='295' y1='140' x2='215' y2='168' stroke='#6b7280' stroke-width='1' stroke-dasharray='3 3'/>
-                      <text x='200' y='45' font-family='Space Grotesk,sans-serif' font-size='13' font-weight='600' fill='#ef4444' opacity='.35'>TOKENMASTER ARCHITECTURE</text>
-                    </g>
-                  </svg>
+                  <img src='/about-architecture.png' alt='TokenMaster Architecture' />
                 </div>
               </div>
               <div className='tm-mission-content'>
