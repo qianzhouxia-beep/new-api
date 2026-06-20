@@ -513,36 +513,36 @@ export function Home() {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="py-10" style={{ backgroundColor: 'var(--m3-surface-container-low)' }}>
+      <section className="py-8" style={{ backgroundColor: 'var(--m3-surface-container-low)' }}>
         <div className="max-w-4xl mx-auto px-6 px-10">
-          <h2 className="text-[32px] leading-10 -tracking-[0.01em] font-semibold text-center mb-10" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+          <h2 className="text-[22px] leading-8 -tracking-[0.01em] font-semibold text-center mb-8" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
             {t('Common Questions')}
           </h2>
           <div className="space-y-4">
-            <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }} open>
-              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+            <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }} open>
+              <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
                 {t('How does the billing work?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
-              <p className="mt-4 text-base leading-6" style={{ color: 'var(--m3-on-surface-variant)' }}>
+              <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 {t('We use a unified credit system. You purchase TM-Tokens, and we handle the conversion to the specific costs of each provider. You only pay for your actual usage across all models.')}
               </p>
             </details>
-            <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+            <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
+              <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
                 {t('Is there a limit on API keys?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
-              <p className="mt-4 text-base leading-6" style={{ color: 'var(--m3-on-surface-variant)' }}>
+              <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 {t('On our Starter plan, you can create up to 10 keys. Pro and Enterprise plans offer unlimited keys with granular permission settings.')}
               </p>
             </details>
-            <details className="group rounded-xl border p-4 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-              <summary className="flex items-center justify-between text-xl leading-7 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+            <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
+              <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
                 {t('Which models are supported?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
-              <p className="mt-4 text-base leading-6" style={{ color: 'var(--m3-on-surface-variant)' }}>
+              <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 {t('We currently support the full series of DeepSeek, GLM (Zhipu), and Qwen (Tongyi Qianwen) models. We integrate new models within 24 hours of their public beta release.')}
               </p>
             </details>
@@ -552,10 +552,10 @@ export function Home() {
 
       {/* ─── Footer ─── */}
       <footer className="border-t" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-6 py-10 max-w-[1440px] mx-auto px-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-6 py-6 max-w-[1440px] mx-auto px-10">
           <div className="col-span-1 space-y-4">
-            <span className="text-2xl font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>TokenMaster</span>
-            <p className="text-base leading-6" style={{ color: 'var(--m3-on-surface-variant)' }}>
+            <span className="text-lg font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>TokenMaster</span>
+            <p className="text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
               {t('An industrial-grade bridge connecting the world\'s most advanced AI models.')}
             </p>
           </div>

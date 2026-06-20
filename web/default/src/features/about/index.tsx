@@ -20,7 +20,7 @@ import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 
-/* ─── TokenMaster About Page — Kinetic Forge Light Design System ─── */
+/* ─── TokenMaster About Page — Red+Black+White Dark Theme ─── */
 /* All styles are self-contained; no Tailwind config dependency.       */
 
 export function About() {
@@ -31,94 +31,94 @@ export function About() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
-        .tm-about { font-family: 'Inter', -apple-system, sans-serif; color: #191c1d; background: #f8f9fa; line-height: 1.6; }
+        .tm-about { font-family: 'Inter', -apple-system, sans-serif; color: #e5e7eb; background: #1a1a1a; line-height: 1.6; }
         .tm-about * { box-sizing: border-box; margin: 0; padding: 0; }
-        .tm-about a { color: #a43700; text-decoration: none; transition: color .2s; }
-        .tm-about a:hover { color: #cd4700; }
+        .tm-about a { color: #ef4444; text-decoration: none; transition: color .2s; }
+        .tm-about a:hover { color: #fca5a5; }
 
         /* ── Hero ── */
-        .tm-hero { position: relative; overflow: hidden; background: #f3f4f5; padding: 40px 24px;
-          background-image: radial-gradient(#e3bfb2 .5px, transparent .5px); background-size: 24px 24px; }
+        .tm-hero { position: relative; overflow: hidden; background: #1a1a1a; padding: 40px 24px;
+          background-image: radial-gradient(rgba(239,68,68,.08) .5px, transparent .5px); background-size: 24px 24px; }
         .tm-hero-inner { max-width: 1440px; margin: 0 auto; position: relative; z-index: 1; }
-        .tm-hero-badge { display: flex; align-items: center; gap: 8px; color: #a43700; margin-bottom: 24px; }
-        .tm-hero-badge-line { width: 48px; height: 1px; background: #a43700; }
+        .tm-hero-badge { display: flex; align-items: center; gap: 8px; color: #ef4444; margin-bottom: 24px; }
+        .tm-hero-badge-line { width: 48px; height: 1px; background: #ef4444; }
         .tm-hero-badge-text { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
           letter-spacing: .15em; text-transform: uppercase; }
         .tm-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px,5vw,48px);
-          line-height: 1.15; letter-spacing: -.02em; font-weight: 700; color: #191c1d; margin-bottom: 24px; max-width: 768px; }
-        .tm-hero p { font-size: clamp(16px,1.6vw,18px); line-height: 1.7; color: #5a4138; max-width: 640px; }
+          line-height: 1.15; letter-spacing: -.02em; font-weight: 700; color: #ffffff; margin-bottom: 24px; max-width: 768px; }
+        .tm-hero p { font-size: clamp(16px,1.6vw,18px); line-height: 1.7; color: #9ca3af; max-width: 640px; }
         .tm-hero-deco { position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
-          opacity: .06; pointer-events: none; font-size: 400px; line-height: 1; user-select: none; }
+          opacity: .06; pointer-events: none; font-size: 400px; line-height: 1; user-select: none; color: #ef4444; }
 
         /* ── Section base ── */
         .tm-section { padding: 80px 24px; }
         .tm-section-inner { max-width: 1440px; margin: 0 auto; }
 
         /* ── Mission (image + text) ── */
-        .tm-mission { background: #f8f9fa; }
+        .tm-mission { background: #1a1a1a; }
         .tm-mission-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
         .tm-mission-img-wrap { aspect-ratio: 16/9; overflow: hidden; border-radius: 12px;
-          border: 1px solid #e3bfb2; background: #e7e8e9;
-          box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+          border: 1px solid #374151; background: #222222;
+          box-shadow: 0 1px 3px rgba(0,0,0,.3); }
         .tm-mission-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .tm-mission-content h2 { font-family: 'Space Grotesk', sans-serif;
           font-size: clamp(24px,3vw,32px); line-height: 1.25; letter-spacing: -.01em;
-          font-weight: 600; color: #191c1d; margin-bottom: 20px; }
-        .tm-mission-content p { font-size: 16px; line-height: 1.6; color: #5a4138; margin-bottom: 14px; }
-        .tm-mission-content strong { color: #a43700; font-weight: 600; }
+          font-weight: 600; color: #ffffff; margin-bottom: 20px; }
+        .tm-mission-content p { font-size: 16px; line-height: 1.6; color: #9ca3af; margin-bottom: 14px; }
+        .tm-mission-content strong { color: #ef4444; font-weight: 600; }
 
         /* ── Values cards ── */
-        .tm-values { background: #f3f4f5; border-top: 1px solid #e3bfb2; border-bottom: 1px solid #e3bfb2; }
+        .tm-values { background: #222222; border-top: 1px solid #374151; border-bottom: 1px solid #374151; }
         .tm-values-header { text-align: center; margin-bottom: 56px; }
         .tm-values-header h2 { font-family: 'Space Grotesk', sans-serif;
           font-size: clamp(24px,3vw,32px); line-height: 1.25; letter-spacing: -.01em;
-          font-weight: 600; color: #191c1d; margin-bottom: 8px; }
-        .tm-values-header p { font-size: 16px; line-height: 1.5; color: #5a4138; }
+          font-weight: 600; color: #ffffff; margin-bottom: 8px; }
+        .tm-values-header p { font-size: 16px; line-height: 1.5; color: #9ca3af; }
         .tm-values-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .tm-value-card { background: #fff; padding: 28px; border-radius: 10px;
-          border: 1px solid #e3bfb2; transition: border-color .3s; }
-        .tm-value-card:hover { border-color: #a43700; }
+        .tm-value-card { background: #2a2a2a; padding: 28px; border-radius: 10px;
+          border: 1px solid #374151; transition: border-color .3s; }
+        .tm-value-card:hover { border-color: #ef4444; }
         .tm-value-icon { width: 64px; height: 64px; margin-bottom: 22px; display: flex;
-          align-items: center; justify-content: center; background: #ffdbcf; border-radius: 50%;
+          align-items: center; justify-content: center; background: rgba(239,68,68,.15); border-radius: 50%;
           overflow: hidden; flex-shrink: 0; }
         .tm-value-icon svg { width: 36px; height: 36px; }
         .tm-value-card h3 { font-family: 'Space Grotesk', sans-serif;
-          font-size: 20px; line-height: 1.4; font-weight: 500; color: #191c1d;
+          font-size: 20px; line-height: 1.4; font-weight: 500; color: #ffffff;
           margin-bottom: 14px; padding-bottom: 14px; position: relative; }
         .tm-value-card h3::after { content: ''; position: absolute; bottom: 0; left: 0;
-          width: 40px; height: 2px; background: #a43700; }
-        .tm-value-card p { font-size: 15px; line-height: 1.65; color: #5a4138; }
+          width: 40px; height: 2px; background: #ef4444; }
+        .tm-value-card p { font-size: 15px; line-height: 1.65; color: #9ca3af; }
 
         /* ── Story / Timeline ── */
-        .tm-story { background: #f8f9fa; overflow: hidden; }
+        .tm-story { background: #1a1a1a; overflow: hidden; }
         .tm-story-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
-        .tm-story-tag { display: inline-block; padding: 8px 16px; border: 1px solid #a43700;
-          color: #a43700; font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+        .tm-story-tag { display: inline-block; padding: 8px 16px; border: 1px solid #ef4444;
+          color: #ef4444; font-family: 'Space Grotesk', sans-serif; font-size: 13px;
           font-weight: 600; border-radius: 9999px; margin-bottom: 20px; letter-spacing: .04em; }
         .tm-story h2 { font-family: 'Space Grotesk', sans-serif;
           font-size: clamp(32px,5vw,48px); line-height: 1.15; letter-spacing: -.02em;
-          font-weight: 700; color: #191c1d; margin-bottom: 20px; }
+          font-weight: 700; color: #ffffff; margin-bottom: 20px; }
         .tm-story-quote { font-size: clamp(15px,1.7vw,18px); line-height: 1.65;
-          color: #5a4138; font-style: italic; border-left: 4px solid #a43700; padding-left: 20px; }
-        .tm-timeline { position: relative; padding-left: 24px; border-left: 1px solid #e3bfb2; }
+          color: #9ca3af; font-style: italic; border-left: 4px solid #ef4444; padding-left: 20px; }
+        .tm-timeline { position: relative; padding-left: 24px; border-left: 1px solid #374151; }
         .tm-tl-item { position: relative; margin-bottom: 36px; }
         .tm-tl-item:last-child { margin-bottom: 0; }
         .tm-tl-dot { position: absolute; left: -33px; top: 4px; width: 14px; height: 14px;
-          border-radius: 50%; background: #e3bfb2; border: 4px solid #f8f9fa; }
-        .tm-tl-item:first-child .tm-tl-dot { background: #a43700; }
+          border-radius: 50%; background: #374151; border: 4px solid #1a1a1a; }
+        .tm-tl-item:first-child .tm-tl-dot { background: #ef4444; }
         .tm-tl-item h4 { font-family: 'Space Grotesk', sans-serif; font-size: 13px;
-          font-weight: 600; color: #a43700; margin-bottom: 8px; letter-spacing: .06em; }
-        .tm-tl-item:not(:first-child) h4 { color: #5a4138; }
-        .tm-tl-item p { font-size: 15px; line-height: 1.65; color: #191c1d; }
+          font-weight: 600; color: #ef4444; margin-bottom: 8px; letter-spacing: .06em; }
+        .tm-tl-item:not(:first-child) h4 { color: #9ca3af; }
+        .tm-tl-item p { font-size: 15px; line-height: 1.65; color: #e5e7eb; }
 
         /* ── CTA ── */
-        .tm-cta { background: #f3f4f5; }
-        .tm-cta-box { background: #191c1d; color: #ffffff; border-radius: 12px;
+        .tm-cta { background: #222222; }
+        .tm-cta-box { background: #111111; color: #ffffff; border-radius: 12px;
           padding: 56px 28px; text-align: center; position: relative; overflow: hidden; }
         .tm-cta-glow1 { position: absolute; top: 0; right: 0; width: 256px; height: 256px;
-          background: rgba(164,55,0,.2); filter: blur(100px); pointer-events: none; }
+          background: rgba(239,68,68,.12); filter: blur(100px); pointer-events: none; }
         .tm-cta-glow2 { position: absolute; bottom: 0; left: 0; width: 256px; height: 256px;
-          background: rgba(76,86,175,.1); filter: blur(100px); pointer-events: none; }
+          background: rgba(239,68,68,.06); filter: blur(100px); pointer-events: none; }
         .tm-cta-content { position: relative; z-index: 10; max-width: 640px; margin: 0 auto; }
         .tm-cta h2 { font-family: 'Space Grotesk', sans-serif;
           font-size: clamp(26px,4vw,40px); line-height: 1.2; font-weight: 600; margin-bottom: 20px; }
@@ -126,30 +126,30 @@ export function About() {
           opacity: .8; margin-bottom: 36px; }
         .tm-cta-btns { display: flex; flex-direction: column; gap: 14px;
           align-items: center; justify-content: center; flex-wrap: wrap; }
-        .tm-cta-btn-primary { display: inline-block; background: #a43700; color: #ffffff !important;
+        .tm-cta-btn-primary { display: inline-block; background: #ef4444; color: #ffffff !important;
           padding: 15px 38px; font-family: 'Space Grotesk', sans-serif; font-size: 14px;
           font-weight: 600; border-radius: 8px; border: none; cursor: pointer;
           transition: all .2s; text-decoration: none !important;
-          box-shadow: 0 10px 25px rgba(164,55,0,.2); }
-        .tm-cta-btn-primary:hover { background: #cd4700; transform: scale(1.04); color: #ffffff !important; }
+          box-shadow: 0 10px 25px rgba(239,68,68,.25); }
+        .tm-cta-btn-primary:hover { background: #dc2626; transform: scale(1.04); color: #ffffff !important; }
         .tm-cta-btn-primary span { color: #ffffff !important; }
         .tm-cta-btn-secondary { display: inline-block; background: transparent; color: #ffffff !important;
           padding: 15px 38px; font-family: 'Space Grotesk', sans-serif; font-size: 14px;
-          font-weight: 600; border-radius: 8px; border: 1px solid #e3bfb2; cursor: pointer;
+          font-weight: 600; border-radius: 8px; border: 1px solid #4b5563; cursor: pointer;
           transition: all .2s; text-decoration: none !important; }
         .tm-cta-btn-secondary:hover { background: rgba(255,255,255,.05); color: #ffffff !important; }
 
         /* ── Footer ── */
-        .tm-footer { background: #f3f4f5; border-top: 1px solid #e3bfb2;
+        .tm-footer { background: #1a1a1a; border-top: 1px solid #374151;
           padding: 40px 24px; margin-top: 40px; }
         .tm-footer-inner { max-width: 1440px; margin: 0 auto;
           display: flex; flex-direction: column; gap: 16px; align-items: center; }
         .tm-footer-name { font-family: 'Space Grotesk', sans-serif; font-size: 22px;
-          font-weight: 600; color: #a43700; }
-        .tm-footer-copy { font-size: 15px; color: #5a4138; text-align: center; }
+          font-weight: 600; color: #ef4444; }
+        .tm-footer-copy { font-size: 15px; color: #9ca3af; text-align: center; }
         .tm-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .tm-footer-links a { font-size: 15px; color: #5a4138; transition: color .2s; }
-        .tm-footer-links a:hover { color: #a43700; }
+        .tm-footer-links a { font-size: 15px; color: #9ca3af; transition: color .2s; }
+        .tm-footer-links a:hover { color: #ef4444; }
 
         /* ── Responsive md (768px+) ── */
         @media (min-width: 768px) {
@@ -195,20 +195,20 @@ export function About() {
                   <svg viewBox='0 0 400 225' width='100%' height='100%' preserveAspectRatio='xMidYMid slice' xmlns='http://www.w3.org/2000/svg'>
                     <defs>
                       <linearGradient id='mg' x1='0%' y1='0%' x2='100%' y2='100%'>
-                        <stop offset='0%' stopColor='#a43700' stopOpacity='.12'/>
-                        <stop offset='50%' stopColor='#4c56af' stopOpacity='.08'/>
-                        <stop offset='100%' stopColor='#e3bfb2' stopOpacity='.18'/>
+                        <stop offset='0%' stopColor='#ef4444' stopOpacity='.12'/>
+                        <stop offset='50%' stopColor='#6b7280' stopOpacity='.08'/>
+                        <stop offset='100%' stopColor='#374151' stopOpacity='.18'/>
                       </linearGradient>
                     </defs>
                     <rect width='400' height='225' fill='url(#mg)' rx='12'/>
-                    <g fill='#a43700' opacity='.25' text-anchor='middle' dominant-baseline='middle'>
-                      <circle cx='120' cy='90' r='40' stroke='#a43700' stroke-width='1.5' fill='none'/>
-                      <circle cx='280' cy='135' r='30' stroke='#a43700' stroke-width='1.5' fill='none'/>
-                      <line x1='150' y1='110' x2='255' y2='130' stroke='#a43700' stroke-width='1.5' stroke-dasharray='4 3'/>
-                      <circle cx='200' cy='170' r='20' stroke='#4c56af' stroke-width='1.5' fill='none'/>
-                      <line x1='140' y1='115' x2='185' y2='160' stroke='#4c56af' stroke-width='1' stroke-dasharray='3 3'/>
-                      <line x1='295' y1='140' x2='215' y2='168' stroke='#4c56af' stroke-width='1' stroke-dasharray='3 3'/>
-                      <text x='200' y='45' font-family='Space Grotesk,sans-serif' font-size='13' font-weight='600' fill='#a43700' opacity='.35'>TOKENMASTER ARCHITECTURE</text>
+                    <g fill='#ef4444' opacity='.25' text-anchor='middle' dominant-baseline='middle'>
+                      <circle cx='120' cy='90' r='40' stroke='#ef4444' stroke-width='1.5' fill='none'/>
+                      <circle cx='280' cy='135' r='30' stroke='#ef4444' stroke-width='1.5' fill='none'/>
+                      <line x1='150' y1='110' x2='255' y2='130' stroke='#ef4444' stroke-width='1.5' stroke-dasharray='4 3'/>
+                      <circle cx='200' cy='170' r='20' stroke='#6b7280' stroke-width='1.5' fill='none'/>
+                      <line x1='140' y1='115' x2='185' y2='160' stroke='#6b7280' stroke-width='1' stroke-dasharray='3 3'/>
+                      <line x1='295' y1='140' x2='215' y2='168' stroke='#6b7280' stroke-width='1' stroke-dasharray='3 3'/>
+                      <text x='200' y='45' font-family='Space Grotesk,sans-serif' font-size='13' font-weight='600' fill='#ef4444' opacity='.35'>TOKENMASTER ARCHITECTURE</text>
                     </g>
                   </svg>
                 </div>
@@ -235,7 +235,7 @@ export function About() {
               {/* Value 1 — Universal Access */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
-                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#a43700' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
                     <circle cx='12' cy='12' r='10' />
                     <path d='M2 12h20' />
                     <path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' />
@@ -248,9 +248,9 @@ export function About() {
               {/* Value 2 — High-Precision */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
-                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#a43700' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
                     <circle cx='12' cy='12' r='3' />
-                    <path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' />
+                    <path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' />
                   </svg>
                 </div>
                 <h3>{t('High-Precision', 'High-Precision')}</h3>
@@ -260,7 +260,7 @@ export function About() {
               {/* Value 3 — Transparent Economics */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
-                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#a43700' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+                  <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
                     <rect x='2' y='4' width='20' height='16' rx='2' ry='2' />
                     <line x1='2' y1='10' x2='22' y2='10' />
                     <line x1='6' y1='14' x2='14' y2='14' />
