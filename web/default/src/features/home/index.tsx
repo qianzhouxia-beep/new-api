@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 import { DotFieldBackground } from './DotFieldBackground'
+import { AnalyticsViz } from './AnalyticsViz'
 
 /* ─── M3 Color System + Tailwind Extensions ─── */
 const designSystemStyle = `
@@ -297,10 +298,8 @@ export function Home() {
                   {t('Monitor token consumption, costs, and response times across all models in a unified dashboard.')}
                 </p>
               </div>
-              <div className="hidden sm:block w-32 h-32 relative">
-                <div className="absolute inset-0 bg-primary/5 rounded-full flex items-center justify-center">
-                  <div className="w-20 h-20 border-4 rounded-full animate-spin" style={{ borderTopColor: 'var(--m3-primary)', borderRightColor: 'var(--m3-primary)', borderBottomColor: 'color-mix(in srgb, var(--m3-primary) 20%, transparent)', borderLeftColor: 'color-mix(in srgb, var(--m3-primary) 20%, transparent)' }}></div>
-                </div>
+              <div className="hidden sm:block">
+                <AnalyticsViz />
               </div>
             </div>
 
