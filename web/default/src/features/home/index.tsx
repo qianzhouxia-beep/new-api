@@ -135,11 +135,6 @@ export function Home() {
   const isAuthenticated = !!auth.user
   const [activeTab, setActiveTab] = useState<'python' | 'curl'>('python')
 
-  /* ─── Force dark mode ─── */
-  useEffect(() => {
-    document.documentElement.classList.add('dark')
-  }, [])
-
   /* ─── Intersection Observer for card animations ─── */
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {

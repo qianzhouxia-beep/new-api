@@ -69,11 +69,9 @@ function resolveTheme(theme: Theme): ResolvedTheme {
   return theme === 'system' ? getSystemTheme() : theme
 }
 
-function getStoredTheme(storageKey: string, fallback: Theme): Theme {
-  const storedTheme = getCookie(storageKey) as Theme | undefined
-  // Migration: ignore stale 'light' cookie from upstream code — we are dark-only now
-  if (storedTheme === 'light') return fallback
-  return storedTheme && THEMES.has(storedTheme) ? storedTheme : fallback
+function getStoredTheme(_storageKey: string, fallback: Theme): Theme {
+  // We are dark-only — ignore any stored cookie (whether 'light', 'system', or anything else)
+  return fallback
 }
 
 export function ThemeProvider({
@@ -90,6 +88,9 @@ export function ThemeProvider({
   )
 
   useEffect(() => {
+    // Clean up stale theme cookie — we are permanently dark now
+    removeCookie(storageKey)
+
     const root = window.document.documentElement
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
