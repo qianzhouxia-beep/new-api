@@ -165,8 +165,8 @@ export function About() {
               <span className='tm-hero-badge-line' />
               <span className='tm-hero-badge-text'>{t('about.hero.badge', 'The Kinetic Foundation')}</span>
             </div>
-            <h1>Engineering Universal AI Access</h1>
-            <p>{t('TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.', 'TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.')}</p>
+            <h1>{t('about.hero.title', 'Engineering Universal AI Access')}</h1>
+            <p>{t('about.hero.description', 'TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.')}</p>
           </div>
           <div className='tm-hero-deco' aria-hidden='true'>*</div>
         </header>

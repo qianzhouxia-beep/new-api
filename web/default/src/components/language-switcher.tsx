@@ -21,7 +21,7 @@ import {
   INTERFACE_LANGUAGE_OPTIONS,
   normalizeInterfaceLanguage,
 } from '@/i18n/languages'
-import { Languages, Check } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth-store'
 import { api } from '@/lib/api'
@@ -38,6 +38,7 @@ export function LanguageSwitcher() {
   const { i18n, t } = useTranslation()
   const user = useAuthStore((s) => s.auth.user)
   const currentLanguage = normalizeInterfaceLanguage(i18n.language)
+  const isZh = currentLanguage === 'zh'
 
   const handleChangeLanguage = useCallback(
     async (code: string) => {
@@ -58,7 +59,26 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger
         render={<Button variant='ghost' size='icon' className='h-9 w-9' />}
       >
-        <Languages className='size-[1.2rem]' />
+        <span className='flex items-center justify-center'>
+          <svg
+            width='18'
+            height='18'
+            viewBox='0 0 24 24'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+            className='size-[1.2rem]'
+          >
+            <circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='1.5' />
+            <path d='M2 12h20' stroke='currentColor' strokeWidth='1.5' />
+            <path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' stroke='currentColor' strokeWidth='1.5' />
+          </svg>
+          <span className={cn(
+            'ml-0.5 text-[11px] font-semibold leading-none',
+            isZh ? 'text-[#ef4444]' : 'text-[#60a5fa]'
+          )}>
+            {isZh ? '中' : 'EN'}
+          </span>
+        </span>
         <span className='sr-only'>{t('Change language')}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
