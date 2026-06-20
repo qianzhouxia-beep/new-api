@@ -164,33 +164,73 @@ export function Home() {
 
         {/* ─── Top-Right Decorative Icon ─── */}
         <div aria-hidden className="absolute top-0 right-0 z-[1] pointer-events-none select-none hidden lg:block">
-          <svg width="280" height="320" viewBox="0 0 280 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-40 dark:opacity-30">
-            {/* Large central ring */}
-            <circle cx="200" cy="60" r="95" stroke="#ef4444" strokeWidth="1" strokeDasharray="4 6" opacity="0.25" />
-            {/* Inner ring */}
-            <circle cx="200" cy="60" r="65" stroke="#ef4444" strokeWidth="0.8" strokeDasharray="3 5" opacity="0.18" />
-            {/* Small accent circles */}
-            <circle cx="200" cy="60" r="4" fill="#ef4444" opacity="0.5" />
-            <circle cx="200" cy="60" r="8" stroke="#ef4444" strokeWidth="0.5" opacity="0.2" />
-            {/* Radiating connection lines */}
-            <line x1="200" y1="60" x2="260" y2="20" stroke="#ef4444" strokeWidth="0.5" opacity="0.15" />
-            <line x1="200" y1="60" x2="270" y2="90" stroke="#ef4444" strokeWidth="0.5" opacity="0.15" />
-            <line x1="200" y1="60" x2="250" y2="140" stroke="#ef4444" strokeWidth="0.5" opacity="0.12" />
-            <line x1="200" y1="60" x2="140" y2="120" stroke="#ef4444" strokeWidth="0.5" opacity="0.12" />
-            <line x1="200" y1="60" x2="130" y2="20" stroke="#ef4444" strokeWidth="0.5" opacity="0.12" />
-            {/* Node points on network */}
-            <circle cx="260" cy="20" r="2.5" fill="#ef4444" opacity="0.3" />
-            <circle cx="270" cy="90" r="2.5" fill="#ef4444" opacity="0.3" />
-            <circle cx="250" cy="140" r="2" fill="#ef4444" opacity="0.25" />
-            <circle cx="140" cy="120" r="2" fill="#ef4444" opacity="0.25" />
-            <circle cx="130" cy="20" r="2" fill="#ef4444" opacity="0.25" />
-            {/* Extra decorative dots along right edge */}
-            <circle cx="270" cy="170" r="1.5" fill="#ef4444" opacity="0.15" />
-            <circle cx="275" cy="200" r="1" fill="#ef4444" opacity="0.1" />
-            <circle cx="265" cy="240" r="2" fill="#ef4444" opacity="0.12" />
-            {/* Cross/asterisk accent at top-right */}
-            <path d="M276 8 L280 12 M280 8 L276 12" stroke="#ef4444" strokeWidth="1.2" strokeLinecap="round" opacity="0.35" />
-            <path d="M278 6 L278 14" stroke="#ef4444" strokeWidth="0.6" strokeLinecap="round" opacity="0.2" />
+          <svg width="300" height="340" viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-[0.38] dark:opacity-[0.28]">
+            <defs>
+              {/* Primary glow gradient */}
+              <radialGradient id="decor-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity="0.18" />
+                <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+              </radialGradient>
+              {/* Secondary warm gradient */}
+              <linearGradient id="decor-line" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity="0.45" />
+                <stop offset="50%" stopColor="#f97316" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#ef4444" stopOpacity="0.08" />
+              </linearGradient>
+              {/* Node pulse filter */}
+            </defs>
+
+            {/* Ambient glow behind everything */}
+            <circle cx="220" cy="80" r="110" fill="url(#decor-glow)" />
+
+            {/* ── Hexagonal hub (core) ── */}
+            <g transform="translate(220, 80)" opacity="0.5">
+              <polygon points="0,-36 31,-18 31,18 0,36 -31,18 -31,-18"
+                       stroke="#ef4444" strokeWidth="1" fill="none" strokeDasharray="3 4" opacity="0.35" />
+              <polygon points="0,-24 21,-12 21,12 0,24 -21,12 -21,-12"
+                       stroke="#ef4444" strokeWidth="0.7" fill="none" opacity="0.22" />
+              <circle cx="0" cy="0" r="6" fill="#ef4444" opacity="0.25" />
+              <circle cx="0" cy="0" r="14" stroke="#ef4444" strokeWidth="0.5" fill="none" opacity="0.15" />
+            </g>
+
+            {/* ── Radiating data streams (curved paths) ── */}
+            <path d="M220 80 Q260 40 275 10" stroke="url(#decor-line)" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+            <path d="M220 80 Q265 90 280 130" stroke="#ef4444" strokeWidth="0.55" fill="none" opacity="0.18" strokeLinecap="round" />
+            <path d="M220 80 Q255 125 270 180" stroke="#f97316" strokeWidth="0.45" fill="none" opacity="0.15" strokeLinecap="round" />
+            <path d="M220 80 Q185 120 160 155" stroke="#ef4444" strokeWidth="0.5" fill="none" opacity="0.14" strokeLinecap="round" />
+            <path d="M220 80 Q175 55 140 30" stroke="#ef4444" strokeWidth="0.55" fill="none" opacity="0.16" strokeLinecap="round" />
+
+            {/* ── Outer orbit ring ── */}
+            <circle cx="220" cy="80" r="85" stroke="#ef4444" strokeWidth="0.6"
+                    fill="none" strokeDasharray="1 7" opacity="0.13" transform="rotate(-15 220 80)" />
+
+            {/* ── Data nodes on stream endpoints ── */}
+            <circle cx="275" cy="10" r="3.5" fill="#ef4444" opacity="0.32" />
+            <circle cx="280" cy="130" r="2.8" fill="#ef4444" opacity="0.24" />
+            <circle cx="270" cy="180" r="2.2" fill="#f97316" opacity="0.2" />
+            <circle cx="160" cy="155" r="2.5" fill="#ef4444" opacity="0.2" />
+            <circle cx="140" cy="30" r="3" fill="#ef4444" opacity="0.26" />
+
+            {/* Tiny floating particles */}
+            <circle cx="255" cy="48" r="1.3" fill="#ef4444" opacity="0.2" />
+            <circle cx="195" cy="145" r="1.5" fill="#f97316" opacity="0.16" />
+            <circle cx="245" cy="158" r="1.1" fill="#ef4444" opacity="0.14" />
+            <circle cx="178" cy="42" r="1.2" fill="#ef4444" opacity="0.17" />
+            <circle cx="290" cy="70" r="1" fill="#f97316" opacity="0.12" />
+
+            {/* ── Subtle circuit trace along bottom-right edge ── */}
+            <polyline points="270,210 285,225 285,250 275,265 275,290 292,305"
+                      stroke="#ef4444" strokeWidth="0.45" fill="none"
+                      opacity="0.1" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="292" cy="305" r="1.3" fill="#ef4444" opacity="0.12" />
+
+            {/* ── Top accent: small spark/diamond ── */}
+            <g transform="translate(278, 5)" opacity="0.3">
+              <rect x="-4" y="-4" width="8" height="8" rx="1.5"
+                    stroke="#ef4444" strokeWidth="0.7" fill="none"
+                    transform="rotate(45)" />
+              <circle cx="0" cy="0" r="1.2" fill="#ef4444" opacity="0.4" />
+            </g>
           </svg>
         </div>
 
