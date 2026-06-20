@@ -4708,6 +4708,25 @@
     "Pricing Plans": "定价方案",
     "Changelog": "更新日志",
     "System Status": "系统状态",
-    "© 2024 TokenMaster AI. All systems operational.": "© 2024 TokenMaster AI. 所有系统运行正常。"
+    "© 2024 TokenMaster AI. All systems operational.": "© 2024 TokenMaster AI. 所有系统运行正常。",
+    "Simple, usage-based pricing": "简洁的按用量计费",
+    "All prices in USD. No subscriptions. Pay only for tokens you use. High-precision infrastructure for industrial-grade AI development.": "以美元计价，无订阅。按量计费，精确到 token。面向工业级 AI 开发的高精度基础设施。",
+    "V4 Flash, V4 Pro, R1": "V4 Flash、V4 Pro、R1",
+    "4.7-Flash, 4.5-Air": "4.7-Flash、4.5-Air",
+    "3.7-Max, 3.7-Plus": "3.7-Max、3.7-Plus",
+    "Most Popular": "最受欢迎",
+    "Input (per 1M tokens)": "输入（每 1M tokens）",
+    "Output (per 1M tokens)": "输出（每 1M tokens）",
+    "Simple three-step engineering workflow.": "简单的三步工程流程。",
+    "1. Sign up": "1. 注册",
+    "Create your TokenMaster account and instantly generate your unique API gateway key.": "创建 TokenMaster 账户，立即生成您专属的 API 网关密钥。",
+    "2. Top up": "2. 充值",
+    "Add USD balance to your account. No minimums, no expiration dates. Your funds stay yours.": "充值美元到您的账户。无最低限额、无过期时间。您的资金始终属于您。",
+    "3. Use": "3. 使用",
+    "Start making requests. Balance is deducted in real-time based on the exact token usage.": "开始调用 API。系统根据实际 token 用量实时扣除余额。",
+    "Billing FAQ": "计费常见问题",
+    "Ready to start building?": "准备好开始构建了吗？",
+    "Join 5,000+ developers scaling their applications with TokenMaster's high-precision API gateway.": "加入 5,000+ 位开发者，使用 TokenMaster 高精度 API 网关扩展您的应用。",
+    "Get Started for Free": "免费开始"
   }
 }

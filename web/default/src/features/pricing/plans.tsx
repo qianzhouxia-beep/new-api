@@ -156,12 +156,14 @@ interface PricingTableRow {
 
 interface PricingTableGroup {
   group: string
+  groupZh: string
   rows: PricingTableRow[]
 }
 
 const PRICING_TABLE_GROUPS: PricingTableGroup[] = [
   {
     group: 'DEEPSEEK ECOSYSTEM',
+    groupZh: 'DeepSeek 生态',
     rows: [
       { name: 'DeepSeek V4 Flash', input: '$0.07', output: '$0.21' },
       { name: 'DeepSeek V4 Pro', input: '$0.14', output: '$0.28' },
@@ -171,6 +173,7 @@ const PRICING_TABLE_GROUPS: PricingTableGroup[] = [
   },
   {
     group: 'GLM (GENERAL LANGUAGE MODEL)',
+    groupZh: 'GLM（智谱）',
     rows: [
       { name: 'GLM 4.7-Flash', input: '$0.08', output: '$0.16' },
       { name: 'GLM 4.5-Air', input: '$0.12', output: '$0.24' },
@@ -179,6 +182,7 @@ const PRICING_TABLE_GROUPS: PricingTableGroup[] = [
   },
   {
     group: 'QWEN (ALIBABA CLOUD)',
+    groupZh: '千问（阿里云）',
     rows: [
       { name: 'Qwen Max 3.7', input: '$1.20', output: '$4.00' },
       { name: 'Qwen Plus 3.7', input: '$0.40', output: '$1.20' },
@@ -1534,7 +1538,7 @@ export function PricingPlansPage() {
                   {PRICING_TABLE_GROUPS.map((group, gi) => (
                     <>
                       <tr key={`group-${gi}`} className="tmp-table-group">
-                        <td colSpan={3}>{group.group}</td>
+                        <td colSpan={3}>{zh ? group.groupZh : group.group}</td>
                       </tr>
                       {group.rows.map((row, ri) => (
                         <tr key={`row-${gi}-${ri}`} className={ri % 2 === 1 ? 'tmp-table-zebra' : ''}>
