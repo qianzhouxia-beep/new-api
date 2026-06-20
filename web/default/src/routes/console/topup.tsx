@@ -26,7 +26,7 @@ export const Route = createFileRoute('/console/topup')({
   beforeLoad: ({ search }) => {
     throw redirect({
       to: '/wallet',
-      search: { show_history: true, ...search },
+      search: { ...search },
     })
   },
 })
