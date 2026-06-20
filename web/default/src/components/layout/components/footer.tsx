@@ -188,14 +188,6 @@ export function Footer(props: FooterProps) {
             text: t('footer.columns.resources.links.security', 'Security'),
             href: '/security',
           },
-          {
-            text: t('footer.columns.resources.links.privacy', 'Privacy Policy'),
-            href: '/privacy-policy',
-          },
-          {
-            text: t('footer.columns.resources.links.userAgreement', 'User Agreement'),
-            href: '/user-agreement',
-          },
         ],
       },
     ],

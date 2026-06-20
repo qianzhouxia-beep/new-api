@@ -590,8 +590,6 @@ export function Home() {
               <ul className="space-y-1.5">
                 <li><Link to="/about" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('About')}</Link></li>
                 <li><Link to="/security" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</Link></li>
-                <li><Link to="/privacy-policy" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Privacy Policy')}</Link></li>
-                <li><Link to="/user-agreement" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('User Agreement')}</Link></li>
               </ul>
             </div>
           </div>
