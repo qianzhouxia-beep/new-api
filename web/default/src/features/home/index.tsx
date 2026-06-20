@@ -575,9 +575,10 @@ export function Home() {
               {t('Product')}
             </h4>
             <ul className="space-y-1.5">
-              <li><Link to="/pricing" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
               <li><Link to="/plans" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Pricing Plans')}</Link></li>
               <li><Link to="/pricing" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Model Library')}</Link></li>
+              <li><span className="text-xs tracking-wider font-normal opacity-50 cursor-default" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>{t('Changelog')}</span></li>
+              <li><a href="https://status.tokenmaster.com" target="_blank" rel="noopener noreferrer" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('System Status')}</a></li>
             </ul>
           </div>
           <div className="col-span-1">
