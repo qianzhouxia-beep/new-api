@@ -563,52 +563,50 @@ export function Home() {
 
       {/* ─── Footer ─── */}
       <footer className="border-t" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-[1440px] mx-auto px-6 py-10">
-          <div className="col-span-1 space-y-3">
-            <span className="text-base font-normal" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>TokenMaster</span>
-            <p className="text-xs leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
-              {t('An industrial-grade bridge connecting the world\'s most advanced AI models.')}
+        <div className="max-w-[1440px] mx-auto px-6 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* Brand column */}
+            <div className="col-span-1 space-y-3">
+              <span className="text-base font-normal" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>TokenMaster</span>
+              <p className="text-xs leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('An industrial-grade bridge connecting the world\'s most advanced AI models.')}
+              </p>
+            </div>
+            {/* Product column */}
+            <div className="col-span-1">
+              <h4 className="text-xs tracking-wider font-light uppercase mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+                {t('Product')}
+              </h4>
+              <ul className="space-y-1.5">
+                <li><Link to="/pricing" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Pricing')}</Link></li>
+                <li><Link to="/plans" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Plans')}</Link></li>
+              </ul>
+            </div>
+            {/* Resources column */}
+            <div className="col-span-1">
+              <h4 className="text-xs tracking-wider font-light uppercase mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+                {t('Resources')}
+              </h4>
+              <ul className="space-y-1.5">
+                <li><Link to="/about" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('About')}</Link></li>
+                <li><Link to="/security" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</Link></li>
+                <li><Link to="/privacy-policy" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Privacy Policy')}</Link></li>
+                <li><Link to="/user-agreement" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('User Agreement')}</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t flex flex-col md:flex-row justify-between items-center gap-2 pt-4" style={{ borderColor: 'var(--m3-surface-variant)' }}>
+            <p className="text-xs tracking-wider font-light" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
+              &copy; {new Date().getFullYear()} TokenMaster. {t('All rights reserved.')}
             </p>
-          </div>
-          <div className="col-span-1">
-            <h4 className="text-xs tracking-wider font-light uppercase mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
-              {t('Product')}
-            </h4>
-            <ul className="space-y-1.5">
-              <li><Link to="/pricing" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Pricing')}</Link></li>
-              <li><Link to="/plans" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Plans')}</Link></li>
-              <li><Link to="/rankings" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Rankings')}</Link></li>
-            </ul>
-          </div>
-          <div className="col-span-1">
-            <h4 className="text-xs tracking-wider font-light uppercase mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
-              {t('Resources')}
-            </h4>
-            <ul className="space-y-1.5">
-              <li><Link to="/about" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('About')}</Link></li>
-              <li><Link to="/security" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Security')}</Link></li>
-              <li><Link to="/privacy-policy" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Privacy Policy')}</Link></li>
-              <li><Link to="/user-agreement" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('User Agreement')}</Link></li>
-            </ul>
-          </div>
-          <div className="col-span-1">
-            <h4 className="text-xs tracking-wider font-light uppercase mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
-              {t('Legal')}
-            </h4>
-            <ul className="space-y-1.5">
-              <li><a href="https://status.tokenmaster.com" target="_blank" rel="noopener noreferrer" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('System Status')}</a></li>
-              <li><a href="mailto:support@tokenmaster.com" className="text-xs tracking-wider font-normal hover:underline transition-opacity" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)', textDecorationColor: 'var(--m3-primary)' }}>{t('Contact Support')}</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="max-w-[1440px] mx-auto px-6 py-3 border-t flex flex-col md:flex-row justify-between items-center gap-2 px-10" style={{ borderColor: 'var(--m3-surface-variant)' }}>
-          <p className="text-xs tracking-wider font-light" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>
-            &copy; {new Date().getFullYear()} TokenMaster. {t('All rights reserved.')}
-          </p>
-          <div className="flex gap-4">
-            <a href="mailto:support@tokenmaster.com" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
-              <span className="material-symbols-outlined">mail</span>
-            </a>
+            <div className="flex gap-4">
+              <a href="mailto:support@tokenmaster.com" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
+                <span className="material-symbols-outlined">mail</span>
+              </a>
+              <a href="https://status.tokenmaster.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
+                <span className="material-symbols-outlined">signal_cellular_alt</span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>

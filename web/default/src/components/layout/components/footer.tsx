@@ -175,10 +175,6 @@ export function Footer(props: FooterProps) {
             text: t('footer.columns.product.links.plans', 'Plans'),
             href: '/plans',
           },
-          {
-            text: t('footer.columns.product.links.rankings', 'Rankings'),
-            href: '/rankings',
-          },
         ],
       },
       {
@@ -195,6 +191,10 @@ export function Footer(props: FooterProps) {
           {
             text: t('footer.columns.resources.links.privacy', 'Privacy Policy'),
             href: '/privacy-policy',
+          },
+          {
+            text: t('footer.columns.resources.links.userAgreement', 'User Agreement'),
+            href: '/user-agreement',
           },
         ],
       },
