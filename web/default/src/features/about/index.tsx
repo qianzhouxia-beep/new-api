@@ -20,7 +20,7 @@ import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 
-/* ─── TokenMaster About Page — Red+Black+White Dark Theme ─── */
+/* ─── TokenMaster About Page �?Red+Black+White Dark Theme ─── */
 /* All styles are self-contained; no Tailwind config dependency.       */
 
 export function About() {
@@ -139,18 +139,6 @@ export function About() {
           transition: all .2s; text-decoration: none !important; }
         .tm-cta-btn-secondary:hover { background: rgba(255,255,255,.05); color: #ffffff !important; }
 
-        /* ── Footer ── */
-        .tm-footer { background: #1a1a1a; border-top: 1px solid #374151;
-          padding: 40px 24px; margin-top: 40px; }
-        .tm-footer-inner { max-width: 1440px; margin: 0 auto;
-          display: flex; flex-direction: column; gap: 16px; align-items: center; }
-        .tm-footer-name { font-family: 'Space Grotesk', sans-serif; font-size: 22px;
-          font-weight: 600; color: #ef4444; }
-        .tm-footer-copy { font-size: 15px; color: #9ca3af; text-align: center; }
-        .tm-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .tm-footer-links a { font-size: 15px; color: #9ca3af; transition: color .2s; }
-        .tm-footer-links a:hover { color: #ef4444; }
-
         /* ── Responsive md (768px+) ── */
         @media (min-width: 768px) {
           .tm-hero { padding: 128px 96px; }
@@ -165,15 +153,12 @@ export function About() {
           .tm-story-grid { grid-template-columns: 5fr 7fr; }
           .tm-cta-box { padding: 96px 80px; }
           .tm-cta-btns { flex-direction: row; }
-          .tm-footer-inner { flex-direction: row; justify-content: space-between; }
-          .tm-footer-inner > div:first-child { align-items: flex-start; }
-          .tm-footer-copy { text-align: left; }
         }
       `}</style>
 
       <div className='tm-about'>
 
-        {/* ═══════ Hero ═══════ */}
+        {/* ══════�?Hero ══════�?*/}
         <header className='tm-hero'>
           <div className='tm-hero-inner'>
             <div className='tm-hero-badge'>
@@ -183,10 +168,10 @@ export function About() {
             <h1>Engineering Universal AI Access</h1>
             <p>{t('TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.', 'TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.')}</p>
           </div>
-          <div className='tm-hero-deco' aria-hidden='true'>⚙</div>
+          <div className='tm-hero-deco' aria-hidden='true'>�?/div>
         </header>
 
-        {/* ═══════ Mission ═══════ */}
+        {/* ══════�?Mission ══════�?*/}
         <section className='tm-section tm-mission'>
           <div className='tm-section-inner'>
             <div className='tm-mission-grid'>
@@ -205,7 +190,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ═══════ Core Values ═══════ */}
+        {/* ══════�?Core Values ══════�?*/}
         <section className='tm-section tm-values'>
           <div className='tm-section-inner'>
             <div className='tm-values-header'>
@@ -214,7 +199,7 @@ export function About() {
             </div>
             <div className='tm-values-grid'>
 
-              {/* Value 1 — Universal Access */}
+              {/* Value 1 �?Universal Access */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
                   <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
@@ -227,7 +212,7 @@ export function About() {
                 <p>{t('A single integration key unlocks the world\'s most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.', "A single integration key unlocks the world's most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.")}</p>
               </div>
 
-              {/* Value 2 — High-Precision */}
+              {/* Value 2 �?High-Precision */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
                   <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
@@ -239,7 +224,7 @@ export function About() {
                 <p>{t('Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.', 'Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.')}</p>
               </div>
 
-              {/* Value 3 — Transparent Economics */}
+              {/* Value 3 �?Transparent Economics */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
                   <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
@@ -257,7 +242,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ═══════ Story / Philosophy ═══════ */}
+        {/* ══════�?Story / Philosophy ══════�?*/}
         <section className='tm-section tm-story'>
           <div className='tm-section-inner'>
             <div className='tm-story-grid'>
@@ -289,7 +274,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ═══════ CTA ═══════ */}
+        {/* ══════�?CTA ══════�?*/}
         <section className='tm-section tm-cta'>
           <div className='tm-section-inner'>
             <div className='tm-cta-box'>
@@ -311,22 +296,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ═══════ Footer ═══════ */}
-        <footer className='tm-footer'>
-          <div className='tm-footer-inner'>
-            <div>
-              <span className='tm-footer-name'>TokenMaster</span>
-              <p className='tm-footer-copy'>&copy; {new Date().getFullYear()} TokenMaster. {t('Engineering universal AI access.', 'Engineering universal AI access.')}</p>
-            </div>
-            <nav className='tm-footer-links' aria-label='Footer navigation'>
-              <Link to='/privacy-policy'>{t('Privacy Policy', 'Privacy Policy')}</Link>
-              <Link to='/user-agreement'>{t('Terms of Service', 'Terms of Service')}</Link>
-              <a href='https://status.tokenmaster.com' target='_blank' rel='noopener noreferrer'>{t('Status', 'Status')}</a>
-              <a href='mailto:support@tokenmaster.com'>{t('Contact', 'Contact')}</a>
-            </nav>
-          </div>
-        </footer>
-
+        {/* ══════�?Footer ══════�?*/}
       </div>
     </PublicLayout>
   )

@@ -1217,17 +1217,6 @@ export function PricingPlansPage() {
           box-shadow: 0 10px 25px rgba(239,68,68,.2); }
         .tmp-cta-btn:hover { background: #dc2626; transform: scale(1.04); }
 
-        /* ── Footer ── */
-        .tmp-footer { background: #161616; border-top: 1px solid rgba(255,255,255,.08); padding: 40px 24px; }
-        .tmp-footer-inner { max-width: 1440px; margin: 0 auto;
-          display: flex; flex-direction: column; gap: 16px; align-items: center; }
-        .tmp-footer-brand { font-family: 'Space Grotesk', sans-serif;
-          font-size: 24px; font-weight: 600; color: #ffffff; }
-        .tmp-footer-copy { font-size: 15px; color: #6b7280; text-align: center; }
-        .tmp-footer-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .tmp-footer-nav a { font-size: 15px; color: #6b7280; transition: color .2s; }
-        .tmp-footer-nav a:hover { color: #ef4444; }
-
         /* ── Topup Panel ── */
         .tmp-topup-section { max-width: 768px; margin: 0 auto 40px; padding: 24px;
           background: #222222; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; }
@@ -1398,9 +1387,6 @@ export function PricingPlansPage() {
           .tmp-how { padding: 40px 96px; }
           .tmp-faq { padding: 40px 96px; }
           .tmp-cta { padding: 0 96px; }
-          .tmp-footer-inner { flex-direction: row; justify-content: space-between; }
-          .tmp-footer-inner > div:first-child { align-items: flex-start; }
-          .tmp-footer-copy { text-align: left; }
         }
       `}</style>
 
@@ -1632,7 +1618,9 @@ export function PricingPlansPage() {
         </section>
 
         {/* ═══════ Footer ═══════ */}
-        <footer className="tmp-footer">
+        </section>
+
+      </div>
           <div className="tmp-footer-inner">
             <div>
               <div className="tmp-footer-brand">TokenMaster</div>
