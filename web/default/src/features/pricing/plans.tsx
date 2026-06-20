@@ -1617,23 +1617,6 @@ export function PricingPlansPage() {
           </div>
         </section>
 
-        {/* ═══════ Footer ═══════ */}
-        </section>
-
-      </div>
-          <div className="tmp-footer-inner">
-            <div>
-              <div className="tmp-footer-brand">TokenMaster</div>
-              <p className="tmp-footer-copy">&copy; {new Date().getFullYear()} TokenMaster. {t('High-Precision Engineering for APIs.')}</p>
-            </div>
-            <nav className="tmp-footer-nav" aria-label="Footer navigation">
-              <Link to="/privacy-policy">{t('Privacy Policy')}</Link>
-              <Link to="/user-agreement">{t('Terms of Service')}</Link>
-              <a href="https://status.tokenmaster.com" target="_blank" rel="noopener noreferrer">{t('API Status')}</a>
-              <a href="mailto:support@tokenmaster.com">{t('Contact Support')}</a>
-            </nav>
-          </div>
-        </footer>
       </div>
     </PublicLayout>
   )
