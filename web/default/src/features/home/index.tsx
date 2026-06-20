@@ -514,7 +514,7 @@ export function Home() {
               className="bg-primary text-on-primary px-10 py-4 rounded-lg text-sm tracking-wider font-semibold flex items-center gap-2 hover:opacity-95 transition-all shadow-lg"
               style={{ fontFamily: 'Space Grotesk' }}
             >
-              {t('Top Up Now')} <span className="material-symbols-outlined">arrow_forward</span>
+              {t('View Plans')} <span className="material-symbols-outlined">arrow_forward</span>
             </button>
             <p className="text-base leading-6" style={{ color: 'var(--m3-on-surface-variant)' }}>
               {t('No monthly fees, no subscriptions. Only pay for what you use.')}
