@@ -163,7 +163,7 @@ export function About() {
           <div className='tm-hero-inner'>
             <div className='tm-hero-badge'>
               <span className='tm-hero-badge-line' />
-              <span className='tm-hero-badge-text'>The Kinetic Foundation</span>
+              <span className='tm-hero-badge-text'>{t('about.hero.badge', 'The Kinetic Foundation')}</span>
             </div>
             <h1>Engineering Universal AI Access</h1>
             <p>{t('TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.', 'TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.')}</p>
@@ -181,10 +181,10 @@ export function About() {
                 </div>
               </div>
               <div className='tm-mission-content'>
-                <h2>The Architecture of Connectivity</h2>
-                <p>{t('At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation---disparate APIs, inconsistent billing models, and unpredictable latency profiles.', 'At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation---disparate APIs, inconsistent billing models, and unpredictable latency profiles.')}</p>
-                <p>{t('Our mission is to provide a single, high-precision gateway that abstracts this complexity away. We handle the orchestration, the model fallback logic, and the unified metering so that engineers can focus on what actually matters: building the next generation of intelligent software.', 'Our mission is to provide a single, high-precision gateway that abstracts this complexity away. We handle the orchestration, the model fallback logic, and the unified metering so that engineers can focus on what actually matters: building the next generation of intelligent software.')}</p>
-                <p><strong>{t("Reliability isn't just a feature; it's our core architecture.", "Reliability isn't just a feature; it's our core architecture.")}</strong></p>
+                <h2>{t('about.mission.title', 'The Architecture of Connectivity')}</h2>
+                <p>{t('about.mission.p1', 'At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation---disparate APIs, inconsistent billing models, and unpredictable latency profiles.')}</p>
+                <p>{t('about.mission.p2', 'Our mission is to provide a single, high-precision gateway that abstracts this complexity away. We handle the orchestration, the model fallback logic, and the unified metering so that engineers can focus on what actually matters: building the next generation of intelligent software.')}</p>
+                <p><strong>{t('about.mission.p3', "Reliability isn't just a feature; it's our core architecture.")}</strong></p>
               </div>
             </div>
           </div>
@@ -194,8 +194,8 @@ export function About() {
         <section className='tm-section tm-values'>
           <div className='tm-section-inner'>
             <div className='tm-values-header'>
-              <h2>{t('Our Engineering Principles', 'Our Engineering Principles')}</h2>
-              <p>{t('Guided by the philosophy of high-precision performance.', 'Guided by the philosophy of high-precision performance.')}</p>
+              <h2>{t('about.values.title', 'Our Engineering Principles')}</h2>
+              <p>{t('about.values.subtitle', 'Guided by the philosophy of high-precision performance.')}</p>
             </div>
             <div className='tm-values-grid'>
 
@@ -208,8 +208,8 @@ export function About() {
                     <path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' />
                   </svg>
                 </div>
-                <h3>{t('Universal Access', 'Universal Access')}</h3>
-                <p>{t('A single integration key unlocks the world\'s most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.', "A single integration key unlocks the world's most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.")}</p>
+                <h3>{t('about.values.universal.title', 'Universal Access')}</h3>
+                <p>{t('about.values.universal.description', "A single integration key unlocks the world's most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.")}</p>
               </div>
 
               {/* Value 2 - High-Precision */}
@@ -220,8 +220,8 @@ export function About() {
                     <path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z' />
                   </svg>
                 </div>
-                <h3>{t('High-Precision', 'High-Precision')}</h3>
-                <p>{t('Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.', 'Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.')}</p>
+                <h3>{t('about.values.precision.title', 'High-Precision')}</h3>
+                <p>{t('about.values.precision.description', 'Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.')}</p>
               </div>
 
               {/* Value 3 - Transparent Economics */}
@@ -234,8 +234,8 @@ export function About() {
                     <line x1='6' y1='17' x2='18' y2='17' />
                   </svg>
                 </div>
-                <h3>{t('Transparent Economics', 'Transparent Economics')}</h3>
-                <p>{t('No obscure tier systems or hidden fees. We operate on a pure pay-per-use model, ensuring your costs scale linearly with your success.', 'No obscure tier systems or hidden fees. We operate on a pure pay-per-use model, ensuring your costs scale linearly with your success.')}</p>
+                <h3>{t('about.values.economics.title', 'Transparent Economics')}</h3>
+                <p>{t('about.values.economics.description', 'No obscure tier systems or hidden fees. We operate on a pure pay-per-use model, ensuring your costs scale linearly with your success.')}</p>
               </div>
 
             </div>
@@ -247,27 +247,27 @@ export function About() {
           <div className='tm-section-inner'>
             <div className='tm-story-grid'>
               <div>
-                <span className='tm-story-tag'>{t('OUR PHILOSOPHY', 'OUR PHILOSOPHY')}</span>
-                <h2>The Kinetic Forge Philosophy</h2>
+                <span className='tm-story-tag'>{t('about.story.tag', 'OUR PHILOSOPHY')}</span>
+                <h2>{t('about.story.title', 'The Kinetic Forge Philosophy')}</h2>
                 <p className='tm-story-quote'>
-                  &ldquo;{t('In engineering, kinetic energy is defined by mass and velocity. In software, it is defined by precision and execution.', 'In engineering, kinetic energy is defined by mass and velocity. In software, it is defined by precision and execution.')}&rdquo;
+                  &ldquo;{t('about.story.quote', 'In engineering, kinetic energy is defined by mass and velocity. In software, it is defined by precision and execution.')}&rdquo;
                 </p>
               </div>
               <div className='tm-timeline'>
                 <div className='tm-tl-item'>
                   <div className='tm-tl-dot' />
-                  <h4>{t('PRECISION', 'PRECISION')}</h4>
-                  <p>{t('Every line of code in our gateway is audited for efficiency. We treat token management as a structural science, ensuring zero loss and maximum clarity.', 'Every line of code in our gateway is audited for efficiency. We treat token management as a structural science, ensuring zero loss and maximum clarity.')}</p>
+                  <h4>{t('about.story.timeline.precision.title', 'PRECISION')}</h4>
+                  <p>{t('about.story.timeline.precision.description', 'Every line of code in our gateway is audited for efficiency. We treat token management as a structural science, ensuring zero loss and maximum clarity.')}</p>
                 </div>
                 <div className='tm-tl-item'>
                   <div className='tm-tl-dot' />
-                  <h4>{t('POWER', 'POWER')}</h4>
-                  <p>{t("The forge isn't just about shaping---it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.", "The forge isn't just about shaping---it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.")}</p>
+                  <h4>{t('about.story.timeline.power.title', 'POWER')}</h4>
+                  <p>{t('about.story.timeline.power.description', "The forge isn't just about shaping---it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.")}</p>
                 </div>
                 <div className='tm-tl-item'>
                   <div className='tm-tl-dot' />
-                  <h4>{t('MOVEMENT', 'MOVEMENT')}</h4>
-                  <p>{t('We move at the speed of the industry. As new models emerge, they are forged into our ecosystem within hours, not weeks.', 'We move at the speed of the industry. As new models emerge, they are forged into our ecosystem within hours, not weeks.')}</p>
+                  <h4>{t('about.story.timeline.movement.title', 'MOVEMENT')}</h4>
+                  <p>{t('about.story.timeline.movement.description', 'We move at the speed of the industry. As new models emerge, they are forged into our ecosystem within hours, not weeks.')}</p>
                 </div>
               </div>
             </div>
@@ -281,14 +281,14 @@ export function About() {
               <div className='tm-cta-glow1' aria-hidden='true' />
               <div className='tm-cta-glow2' aria-hidden='true' />
               <div className='tm-cta-content'>
-                <h2>{t('Join the Future of AI Integration', 'Join the Future of AI Integration')}</h2>
-                <p>{t('Ready to simplify your tech stack? Get your single API key today and start building with the world\'s best models in minutes.', "Ready to simplify your tech stack? Get your single API key today and start building with the world's best models in minutes.")}</p>
+                <h2>{t('about.cta.title', 'Join the Future of AI Integration')}</h2>
+                <p>{t('about.cta.description', "Ready to simplify your tech stack? Get your single API key today and start building with the world's best models in minutes.")}</p>
                 <div className='tm-cta-btns'>
                   <Link to='/sign-up' className='tm-cta-btn-primary'>
-                    {t('Get Started Now', 'Get Started Now')}
+                    {t('about.cta.button.primary', 'Get Started Now')}
                   </Link>
                   <a href='mailto:support@tokenmaster.com' className='tm-cta-btn-secondary'>
-                    {t('Talk to Engineering', 'Talk to Engineering')}
+                    {t('about.cta.button.secondary', 'Talk to Engineering')}
                   </a>
                 </div>
               </div>
