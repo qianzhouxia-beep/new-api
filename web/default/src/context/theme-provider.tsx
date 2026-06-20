@@ -71,6 +71,8 @@ function resolveTheme(theme: Theme): ResolvedTheme {
 
 function getStoredTheme(storageKey: string, fallback: Theme): Theme {
   const storedTheme = getCookie(storageKey) as Theme | undefined
+  // Migration: ignore stale 'light' cookie from upstream code — we are dark-only now
+  if (storedTheme === 'light') return fallback
   return storedTheme && THEMES.has(storedTheme) ? storedTheme : fallback
 }
 
