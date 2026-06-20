@@ -20,7 +20,7 @@ import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { PublicLayout } from '@/components/layout'
 
-/* ─── TokenMaster About Page �?Red+Black+White Dark Theme ─── */
+/* ======== TokenMaster About Page - Red+Black+White Dark Theme ======== */
 /* All styles are self-contained; no Tailwind config dependency.       */
 
 export function About() {
@@ -36,7 +36,7 @@ export function About() {
         .tm-about a { color: #ef4444; text-decoration: none; transition: color .2s; }
         .tm-about a:hover { color: #fca5a5; }
 
-        /* ── Hero ── */
+        /* ---- Hero ---- */
         .tm-hero { position: relative; overflow: hidden; background: #1a1a1a; padding: 40px 24px;
           background-image: radial-gradient(rgba(239,68,68,.08) .5px, transparent .5px); background-size: 24px 24px; }
         .tm-hero-inner { max-width: 1440px; margin: 0 auto; position: relative; z-index: 1; }
@@ -50,11 +50,11 @@ export function About() {
         .tm-hero-deco { position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
           opacity: .06; pointer-events: none; font-size: 400px; line-height: 1; user-select: none; color: #ef4444; }
 
-        /* ── Section base ── */
+        /* ---- Section base ---- */
         .tm-section { padding: 80px 24px; }
         .tm-section-inner { max-width: 1440px; margin: 0 auto; }
 
-        /* ── Mission (image + text) ── */
+        /* ---- Mission (image + text) ---- */
         .tm-mission { background: #1a1a1a; }
         .tm-mission-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
         .tm-mission-img-wrap { aspect-ratio: 16/9; overflow: hidden; border-radius: 12px;
@@ -67,7 +67,7 @@ export function About() {
         .tm-mission-content p { font-size: 16px; line-height: 1.6; color: #9ca3af; margin-bottom: 14px; }
         .tm-mission-content strong { color: #ef4444; font-weight: 600; }
 
-        /* ── Values cards ── */
+        /* ---- Values cards ---- */
         .tm-values { background: #222222; border-top: 1px solid #374151; border-bottom: 1px solid #374151; }
         .tm-values-header { text-align: center; margin-bottom: 56px; }
         .tm-values-header h2 { font-family: 'Space Grotesk', sans-serif;
@@ -89,7 +89,7 @@ export function About() {
           width: 40px; height: 2px; background: #ef4444; }
         .tm-value-card p { font-size: 15px; line-height: 1.65; color: #9ca3af; }
 
-        /* ── Story / Timeline ── */
+        /* ---- Story / Timeline ---- */
         .tm-story { background: #1a1a1a; overflow: hidden; }
         .tm-story-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
         .tm-story-tag { display: inline-block; padding: 8px 16px; border: 1px solid #ef4444;
@@ -111,7 +111,7 @@ export function About() {
         .tm-tl-item:not(:first-child) h4 { color: #9ca3af; }
         .tm-tl-item p { font-size: 15px; line-height: 1.65; color: #e5e7eb; }
 
-        /* ── CTA ── */
+        /* ---- CTA ---- */
         .tm-cta { background: #222222; }
         .tm-cta-box { background: #111111; color: #ffffff; border-radius: 12px;
           padding: 56px 28px; text-align: center; position: relative; overflow: hidden; }
@@ -139,7 +139,7 @@ export function About() {
           transition: all .2s; text-decoration: none !important; }
         .tm-cta-btn-secondary:hover { background: rgba(255,255,255,.05); color: #ffffff !important; }
 
-        /* ── Responsive md (768px+) ── */
+        /* ---- Responsive md (768px+) ---- */
         @media (min-width: 768px) {
           .tm-hero { padding: 128px 96px; }
           .tm-hero-deco { display: block; }
@@ -158,7 +158,7 @@ export function About() {
 
       <div className='tm-about'>
 
-        {/* ══════�?Hero ══════�?*/}
+        {/* ======== Hero ======== */}
         <header className='tm-hero'>
           <div className='tm-hero-inner'>
             <div className='tm-hero-badge'>
@@ -168,10 +168,10 @@ export function About() {
             <h1>Engineering Universal AI Access</h1>
             <p>{t('TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.', 'TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.')}</p>
           </div>
-          <div className='tm-hero-deco' aria-hidden='true'>�?/div>
+          <div className='tm-hero-deco' aria-hidden='true'>*</div>
         </header>
 
-        {/* ══════�?Mission ══════�?*/}
+        {/* ======== Mission ======== */}
         <section className='tm-section tm-mission'>
           <div className='tm-section-inner'>
             <div className='tm-mission-grid'>
@@ -182,7 +182,7 @@ export function About() {
               </div>
               <div className='tm-mission-content'>
                 <h2>The Architecture of Connectivity</h2>
-                <p>{t('At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation—disparate APIs, inconsistent billing models, and unpredictable latency profiles.', 'At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation—disparate APIs, inconsistent billing models, and unpredictable latency profiles.')}</p>
+                <p>{t('At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation---disparate APIs, inconsistent billing models, and unpredictable latency profiles.', 'At TokenMaster, we believe that the complexity of the AI landscape shouldn\'t be a barrier to innovation. The current state of the industry is defined by fragmentation---disparate APIs, inconsistent billing models, and unpredictable latency profiles.')}</p>
                 <p>{t('Our mission is to provide a single, high-precision gateway that abstracts this complexity away. We handle the orchestration, the model fallback logic, and the unified metering so that engineers can focus on what actually matters: building the next generation of intelligent software.', 'Our mission is to provide a single, high-precision gateway that abstracts this complexity away. We handle the orchestration, the model fallback logic, and the unified metering so that engineers can focus on what actually matters: building the next generation of intelligent software.')}</p>
                 <p><strong>{t("Reliability isn't just a feature; it's our core architecture.", "Reliability isn't just a feature; it's our core architecture.")}</strong></p>
               </div>
@@ -190,7 +190,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ══════�?Core Values ══════�?*/}
+        {/* ======== Core Values ======== */}
         <section className='tm-section tm-values'>
           <div className='tm-section-inner'>
             <div className='tm-values-header'>
@@ -199,7 +199,7 @@ export function About() {
             </div>
             <div className='tm-values-grid'>
 
-              {/* Value 1 �?Universal Access */}
+              {/* Value 1 - Universal Access */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
                   <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
@@ -212,7 +212,7 @@ export function About() {
                 <p>{t('A single integration key unlocks the world\'s most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.', "A single integration key unlocks the world's most powerful LLMs including DeepSeek, GLM, Qwen, and beyond. One interface, infinite potential.")}</p>
               </div>
 
-              {/* Value 2 �?High-Precision */}
+              {/* Value 2 - High-Precision */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
                   <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
@@ -224,7 +224,7 @@ export function About() {
                 <p>{t('Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.', 'Engineered for massive scale with millisecond latency targets. Our infrastructure is a precision instrument designed for enterprise-grade workloads.')}</p>
               </div>
 
-              {/* Value 3 �?Transparent Economics */}
+              {/* Value 3 - Transparent Economics */}
               <div className='tm-value-card'>
                 <div className='tm-value-icon'>
                   <svg viewBox='0 0 24 24' width='36' height='36' fill='none' stroke='#ef4444' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
@@ -242,7 +242,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ══════�?Story / Philosophy ══════�?*/}
+        {/* ======== Story / Philosophy ======== */}
         <section className='tm-section tm-story'>
           <div className='tm-section-inner'>
             <div className='tm-story-grid'>
@@ -262,7 +262,7 @@ export function About() {
                 <div className='tm-tl-item'>
                   <div className='tm-tl-dot' />
                   <h4>{t('POWER', 'POWER')}</h4>
-                  <p>{t("The forge isn't just about shaping—it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.", "The forge isn't just about shaping—it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.")}</p>
+                  <p>{t("The forge isn't just about shaping---it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.", "The forge isn't just about shaping---it's about tempering. We stress-test our routing algorithms to withstand the highest volatility in provider performance.")}</p>
                 </div>
                 <div className='tm-tl-item'>
                   <div className='tm-tl-dot' />
@@ -274,7 +274,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ══════�?CTA ══════�?*/}
+        {/* ======== CTA ======== */}
         <section className='tm-section tm-cta'>
           <div className='tm-section-inner'>
             <div className='tm-cta-box'>
@@ -296,7 +296,7 @@ export function About() {
           </div>
         </section>
 
-        {/* ══════�?Footer ══════�?*/}
+        {/* ======== Footer ======== */}
       </div>
     </PublicLayout>
   )
