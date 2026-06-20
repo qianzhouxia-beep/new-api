@@ -47,8 +47,9 @@ export function About() {
         .tm-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px,5vw,48px);
           line-height: 1.15; letter-spacing: -.02em; font-weight: 700; color: #ffffff; margin-bottom: 24px; max-width: 768px; }
         .tm-hero p { font-size: clamp(16px,1.6vw,18px); line-height: 1.7; color: #9ca3af; max-width: 640px; }
-        .tm-hero-deco { position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
-          opacity: .06; pointer-events: none; font-size: 400px; line-height: 1; user-select: none; color: #ef4444; }
+        .tm-hero-deco { position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+          opacity: .35; pointer-events: none; user-select: none; color: #ef4444; }
+        .tm-hero-deco svg { width: 340px; height: 340px; }
 
         /* ---- Section base ---- */
         .tm-section { padding: 80px 24px; }
@@ -168,7 +169,65 @@ export function About() {
             <h1>{t('about.hero.title', 'Engineering Universal AI Access')}</h1>
             <p>{t('about.hero.description', 'TokenMaster was founded to bridge the gap between complex AI ecosystems and the developers who build with them. We engineer the conduits that power modern intelligence.')}</p>
           </div>
-          <div className='tm-hero-deco' aria-hidden='true'>*</div>
+          <div className='tm-hero-deco' aria-hidden='true'>
+            <svg viewBox='0 0 340 340' fill='none' xmlns='http://www.w3.org/2000/svg'>
+              <defs>
+                <linearGradient id='aboutDecoGrad' x1='0%' y1='0%' x2='100%' y2='100%'>
+                  <stop offset='0%' stopColor='#ef4444' stopOpacity='0.5' />
+                  <stop offset='100%' stopColor='#f97316' stopOpacity='0.2' />
+                </linearGradient>
+                <radialGradient id='aboutDecoGlow' cx='50%' cy='50%' r='50%'>
+                  <stop offset='0%' stopColor='#ef4444' stopOpacity='0.1' />
+                  <stop offset='100%' stopColor='#ef4444' stopOpacity='0' />
+                </radialGradient>
+              </defs>
+
+              {/* Subtle background glow */}
+              <circle cx='170' cy='170' r='160' fill='url(#aboutDecoGlow)' />
+
+              {/* Outer rotating ring - dashed */}
+              <circle cx='170' cy='170' r='140' stroke='url(#aboutDecoGrad)' strokeWidth='0.8' strokeDasharray='4 8' opacity='0.3' />
+
+              {/* Inner geometric frame - diamond */}
+              <rect x='170' y='30' width='140' height='140' rx='8' transform='rotate(45 170 100)' fill='none' stroke='#ef4444' strokeWidth='1' opacity='0.2' />
+
+              {/* Central hub - hexagon */}
+              <polygon points='170,90 205,110 205,145 170,165 135,145 135,110' fill='url(#aboutDecoGrad)' opacity='0.12' stroke='#ef4444' strokeWidth='1.2' />
+
+              {/* Node dots around center */}
+              <circle cx='170' cy='90' r='3' fill='#ef4444' opacity='0.6' />
+              <circle cx='205' cy='110' r='2.5' fill='#ef4444' opacity='0.4' />
+              <circle cx='205' cy='145' r='2.5' fill='#f97316' opacity='0.4' />
+              <circle cx='170' cy='165' r='3' fill='#ef4444' opacity='0.6' />
+              <circle cx='135' cy='145' r='2.5' fill='#f97316' opacity='0.4' />
+              <circle cx='135' cy='110' r='2.5' fill='#ef4444' opacity='0.4' />
+
+              {/* Connecting lines from center to nodes */}
+              <line x1='170' y1='127' x2='170' y2='90' stroke='#ef4444' strokeWidth='0.6' opacity='0.25' />
+              <line x1='183' y1='133' x2='205' y2='110' stroke='#ef4444' strokeWidth='0.6' opacity='0.25' />
+              <line x1='183' y1='137' x2='205' y2='145' stroke='#f97316' strokeWidth='0.6' opacity='0.2' />
+              <line x1='170' y1='143' x2='170' y2='165' stroke='#ef4444' strokeWidth='0.6' opacity='0.25' />
+              <line x1='157' y1='137' x2='135' y2='145' stroke='#f97316' strokeWidth='0.6' opacity='0.2' />
+              <line x1='157' y1='133' x2='135' y2='110' stroke='#ef4444' strokeWidth='0.6' opacity='0.25' />
+
+              {/* Flow particles - small dots suggesting data movement */}
+              <circle cx='188' cy='105' r='1.5' fill='#ef4444' opacity='0.5' />
+              <circle cx='210' cy='128' r='1.5' fill='#f97316' opacity='0.4' />
+              <circle cx='188' cy='160' r='1.5' fill='#ef4444' opacity='0.5' />
+              <circle cx='152' cy='160' r='1.5' fill='#f97316' opacity='0.4' />
+              <circle cx='130' cy='128' r='1.5' fill='#ef4444' opacity='0.5' />
+              <circle cx='152' cy='105' r='1.5' fill='#f97316' opacity='0.4' />
+
+              {/* Corner accents */}
+              <path d='M40 40 L70 40 M40 40 L40 70' stroke='#ef4444' strokeWidth='1.2' strokeLinecap='round' opacity='0.2' />
+              <path d='M300 40 L270 40 M300 40 L300 70' stroke='#ef4444' strokeWidth='1.2' strokeLinecap='round' opacity='0.2' />
+              <path d='M40 300 L70 300 M40 300 L40 270' stroke='#ef4444' strokeWidth='1.2' strokeLinecap='round' opacity='0.2' />
+              <path d='M300 300 L270 300 M300 300 L300 270' stroke='#ef4444' strokeWidth='1.2' strokeLinecap='round' opacity='0.2' />
+
+              {/* Top-right spark */}
+              <path d='M305 35 L310 25 M310 35 L305 25' stroke='#ef4444' strokeWidth='1' strokeLinecap='round' opacity='0.3' />
+            </svg>
+          </div>
         </header>
 
         {/* ======== Mission ======== */}
