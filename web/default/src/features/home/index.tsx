@@ -161,6 +161,39 @@ export function Home() {
       {/* ─── Hero Section ─── */}
       <section className="relative overflow-hidden pb-32 pt-48" style={{ backgroundColor: 'var(--m3-surface)' }}>
         <DotFieldBackground />
+
+        {/* ─── Top-Right Decorative Icon ─── */}
+        <div aria-hidden className="absolute top-0 right-0 z-[1] pointer-events-none select-none hidden lg:block">
+          <svg width="280" height="320" viewBox="0 0 280 320" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-40 dark:opacity-30">
+            {/* Large central ring */}
+            <circle cx="200" cy="60" r="95" stroke="#ef4444" strokeWidth="1" strokeDasharray="4 6" opacity="0.25" />
+            {/* Inner ring */}
+            <circle cx="200" cy="60" r="65" stroke="#ef4444" strokeWidth="0.8" strokeDasharray="3 5" opacity="0.18" />
+            {/* Small accent circles */}
+            <circle cx="200" cy="60" r="4" fill="#ef4444" opacity="0.5" />
+            <circle cx="200" cy="60" r="8" stroke="#ef4444" strokeWidth="0.5" opacity="0.2" />
+            {/* Radiating connection lines */}
+            <line x1="200" y1="60" x2="260" y2="20" stroke="#ef4444" strokeWidth="0.5" opacity="0.15" />
+            <line x1="200" y1="60" x2="270" y2="90" stroke="#ef4444" strokeWidth="0.5" opacity="0.15" />
+            <line x1="200" y1="60" x2="250" y2="140" stroke="#ef4444" strokeWidth="0.5" opacity="0.12" />
+            <line x1="200" y1="60" x2="140" y2="120" stroke="#ef4444" strokeWidth="0.5" opacity="0.12" />
+            <line x1="200" y1="60" x2="130" y2="20" stroke="#ef4444" strokeWidth="0.5" opacity="0.12" />
+            {/* Node points on network */}
+            <circle cx="260" cy="20" r="2.5" fill="#ef4444" opacity="0.3" />
+            <circle cx="270" cy="90" r="2.5" fill="#ef4444" opacity="0.3" />
+            <circle cx="250" cy="140" r="2" fill="#ef4444" opacity="0.25" />
+            <circle cx="140" cy="120" r="2" fill="#ef4444" opacity="0.25" />
+            <circle cx="130" cy="20" r="2" fill="#ef4444" opacity="0.25" />
+            {/* Extra decorative dots along right edge */}
+            <circle cx="270" cy="170" r="1.5" fill="#ef4444" opacity="0.15" />
+            <circle cx="275" cy="200" r="1" fill="#ef4444" opacity="0.1" />
+            <circle cx="265" cy="240" r="2" fill="#ef4444" opacity="0.12" />
+            {/* Cross/asterisk accent at top-right */}
+            <path d="M276 8 L280 12 M280 8 L276 12" stroke="#ef4444" strokeWidth="1.2" strokeLinecap="round" opacity="0.35" />
+            <path d="M278 6 L278 14" stroke="#ef4444" strokeWidth="0.6" strokeLinecap="round" opacity="0.2" />
+          </svg>
+        </div>
+
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center px-10 relative z-10">
           <div className="lg:col-span-12 space-y-6 flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2 bg-[var(--m3-primary-fixed)] text-[var(--m3-on-primary-fixed)] px-2 py-1 rounded-full">
