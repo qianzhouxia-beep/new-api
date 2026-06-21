@@ -171,23 +171,11 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 		return
 	}
 
-	// Get estimate for USDT (TRC-20)
-	estimate, err := getNowPaymentsEstimate(c.Request.Context(), "usd", "usdttrc20", float64(req.Amount))
-	if err != nil {
-		logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments estimate failed (non-critical), using pay_currency=usdttrc20: %v", err))
-	}
-
-	payCurrency := "usdttrc20"
-	if estimate != nil && estimate.PayAmount > 0 {
-		payCurrency = "usdttrc20"
-	}
-
-	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating payment: amount=$%d pay_currency=%s", req.Amount, payCurrency))
+	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating payment: amount=$%d", req.Amount))
 
 	apiPayload := map[string]interface{}{
 		"price_amount":      float64(req.Amount),
 		"price_currency":    "usd",
-		"pay_currency":      payCurrency,
 		"order_id":          tradeNo,
 		"order_description": fmt.Sprintf("TokenMaster top-up for user %s (#%d)", username, userId),
 		"ipn_callback_url":  system_setting.ServerAddress + "/api/nowpayments/notify",
