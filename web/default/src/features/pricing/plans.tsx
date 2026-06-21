@@ -1620,6 +1620,42 @@ export function PricingPlansPage() {
           </div>
         </section>
 
+        {/* ═══════ Why TokenMaster vs Direct API ═══════ */}
+        <section className="tmp-how" style={{ maxWidth: 1440, margin: '0 auto', padding: '40px 24px' }}>
+          <div className="tmp-how-header">
+            <h2>{t('Why TokenMaster vs Direct API')}</h2>
+            <p>{t('Enterprise-grade infrastructure beyond raw API access.')}</p>
+          </div>
+          <table className="tmp-table" style={{ borderRadius: 10, overflow: 'hidden' }}>
+            <thead>
+              <tr>
+                <th>{t('Capability')}</th>
+                <th style={{ color: '#9ca3af' }}>{t('Direct DeepSeek Official')}</th>
+                <th style={{ color: '#ef4444' }}>TokenMaster</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['API Access', 'Requires Chinese phone registration', 'Global email / GitHub login'],
+                ['Payment', 'Chinese payment channels only', 'Stripe (USD), $1 minimum top-up'],
+                ['Balance Expiry', 'Has expiration limits', 'Never expires'],
+                ['Data Retention', 'Retains request logs', 'Zero data retention policy'],
+                ['Compliance', 'No international compliance', 'SOC2 + end-to-end encryption'],
+                ['Multi-Model', 'Need multiple platforms', 'One API Key for DeepSeek/GLM/Qwen'],
+                ['Failover', 'Single point dependency', 'Auto failover via global edge nodes'],
+                ['Key Management', 'Single key', 'Multi-key with budgets & permissions'],
+                ['Audit Logs', 'Basic', 'Full audit log export'],
+              ].map(([cap, official, tm], i) => (
+                <tr key={i} className={i % 2 === 1 ? 'tmp-table-zebra' : ''}>
+                  <td className="tmp-model-name">{t(cap)}</td>
+                  <td style={{ color: '#9ca3af', fontSize: 14 }}>{t(official)}</td>
+                  <td style={{ color: '#22c55e', fontSize: 14, fontWeight: 500 }}>{t(tm)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
         {/* ═══════ How It Works ═══════ */}
         <section className="tmp-how">
           <div className="tmp-how-header">

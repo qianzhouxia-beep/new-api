@@ -541,11 +541,38 @@ export function Home() {
             </details>
             <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
               <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
-                {t('Is there a limit on API keys?')}
+                {t('Why is TokenMaster priced higher than the official API?')}
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
               <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
-                {t('On our Starter plan, you can create up to 10 keys. Pro and Enterprise plans offer unlimited keys with granular permission settings.')}
+                {t('We provide enterprise-grade infrastructure beyond basic API access: SOC2-compliant hosting, end-to-end encryption, global edge nodes (~50ms latency), automatic multi-model failover, smart key management with per-key budgets and permissions, full audit logs, and zero data retention. Our pricing reflects the value of a managed gateway vs. raw API access — we\'re an infrastructure partner, not a simple reseller.')}
+              </p>
+            </details>
+            <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
+              <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+                {t('Does my balance expire?')}
+                <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('No. Your paid balance never expires. Free trial credits expire after 30 days. Top up once and use it anytime.')}
+              </p>
+            </details>
+            <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
+              <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+                {t('Are there any hidden fees?')}
+                <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('No. We charge exactly what\'s shown. No top-up fees (unlike OpenRouter\'s 5.5%), no monthly minimums, no tier lock-in. Pay only for the tokens you use.')}
+              </p>
+            </details>
+            <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
+              <summary className="flex items-center justify-between text-base leading-6 font-normal list-none" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+                {t('Do you store or train on my data?')}
+                <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('No. We have a zero data retention policy. Prompts and completions are not logged, stored, or used for training. This is contractual and verified by our SOC2 compliance.')}
               </p>
             </details>
             <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
