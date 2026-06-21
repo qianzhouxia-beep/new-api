@@ -147,7 +147,7 @@ const PACKAGES: Plan[] = [
   },
 ]
 
-/* ── Pricing table data from design ── */
+/* ── Dynamic Pricing Table ── */
 interface PricingTableRow {
   name: string
   input: string
@@ -160,39 +160,75 @@ interface PricingTableGroup {
   rows: PricingTableRow[]
 }
 
-const PRICING_TABLE_GROUPS: PricingTableGroup[] = [
-  {
-    group: 'DEEPSEEK ECOSYSTEM',
-    groupZh: 'DeepSeek 生态',
-    rows: [
-      { name: 'DeepSeek V4 Flash', input: '$0.07', output: '$0.21' },
-      { name: 'DeepSeek V4 Pro', input: '$0.14', output: '$0.28' },
-      { name: 'DeepSeek Chat', input: '$0.10', output: '$0.20' },
-      { name: 'DeepSeek R1 (Reasoning)', input: '$0.55', output: '$2.19' },
-    ],
-  },
-  {
-    group: 'GLM (GENERAL LANGUAGE MODEL)',
-    groupZh: 'GLM（智谱）',
-    rows: [
-      { name: 'GLM 4.7-Flash', input: '$0.08', output: '$0.16' },
-      { name: 'GLM 4.5-Air', input: '$0.12', output: '$0.24' },
-      { name: 'GLM 4V-Vision', input: '$0.60', output: '$0.60' },
-    ],
-  },
-  {
-    group: 'QWEN (ALIBABA CLOUD)',
-    groupZh: '千问（阿里云）',
-    rows: [
-      { name: 'Qwen Max 3.7', input: '$1.20', output: '$4.00' },
-      { name: 'Qwen Plus 3.7', input: '$0.40', output: '$1.20' },
-      { name: 'Qwen 3.5-Plus', input: '$0.30', output: '$0.90' },
-      { name: 'Qwen Flash 3.5', input: '$0.05', output: '$0.10' },
-      { name: 'Qwen Turbo 3.5', input: '$0.15', output: '$0.45' },
-      { name: 'Qwen Long 3.5', input: '$0.25', output: '$0.75' },
-    ],
-  },
-]
+interface PricingModel {
+  model_name: string
+  model_ratio: number
+  model_price: number
+  completion_ratio: number
+  quota_type: number
+  vendor_id: number
+  enable_groups?: string[]
+}
+
+/** Format ratio-based price as USD per 1M tokens */
+function formatPlanPrice(ratio: number): string {
+  const price = ratio * 2 // ratio * 2 = USD per 1M tokens (1 ratio = $2/1M)
+  if (price >= 100) return '$' + price.toFixed(0)
+  if (price >= 10) return '$' + price.toFixed(2)
+  if (price >= 1) return '$' + price.toFixed(2)
+  if (price >= 0.01) return '$' + price.toFixed(2)
+  return '$' + price.toFixed(4)
+}
+
+/** Map pricing API data to display groups */
+function buildPricingTable(pricingModels: PricingModel[]): PricingTableGroup[] {
+  const modelMap = new Map<string, PricingModel>()
+  for (const m of pricingModels) {
+    modelMap.set(m.model_name, m)
+  }
+
+  function price(modelKey: string): PricingTableRow | null {
+    const m = modelMap.get(modelKey)
+    if (!m || m.quota_type !== 0) return null
+    const input = formatPlanPrice(m.model_ratio)
+    const output = formatPlanPrice(m.model_ratio * (m.completion_ratio || 1))
+    return { name: modelKey, input, output }
+  }
+
+  function row(modelKey: string, displayName: string): PricingTableRow | null {
+    const r = price(modelKey)
+    if (!r) return null
+    return { ...r, name: displayName }
+  }
+
+  const deepseek = [
+    row('deepseek-v4-flash', 'DeepSeek V4 Flash'),
+    row('deepseek-v4-pro', 'DeepSeek V4 Pro'),
+    row('deepseek-chat', 'DeepSeek Chat'),
+    row('deepseek-reasoner', 'DeepSeek R1 (Reasoning)'),
+  ].filter(Boolean) as PricingTableRow[]
+
+  const glm = [
+    row('zai-org/GLM-5.2', 'GLM 5.2'),
+    row('zai-org/GLM-5.1', 'GLM 5.1'),
+    row('zai-org/GLM-4.5-Air', 'GLM 4.5-Air'),
+    row('zai-org/GLM-4.5V', 'GLM 4.5V (Vision)'),
+  ].filter(Boolean) as PricingTableRow[]
+
+  const qwen = [
+    row('qwen3.7-max', 'Qwen 3.7-Max'),
+    row('qwen3.5-plus', 'Qwen 3.5-Plus'),
+    row('qwen3.6-flash', 'Qwen 3.6-Flash'),
+    row('qwen3.5-flash', 'Qwen 3.5-Flash'),
+    row('qwen-long', 'Qwen Long'),
+  ].filter(Boolean) as PricingTableRow[]
+
+  const groups: PricingTableGroup[] = []
+  if (deepseek.length) groups.push({ group: 'DEEPSEEK ECOSYSTEM', groupZh: 'DeepSeek 生态', rows: deepseek })
+  if (glm.length) groups.push({ group: 'GLM (ZHIPU AI)', groupZh: 'GLM（智谱）', rows: glm })
+  if (qwen.length) groups.push({ group: 'QWEN (ALIBABA CLOUD)', groupZh: '千问（阿里云）', rows: qwen })
+  return groups
+}
 
 /* ── Billing FAQ data (bilingual) ── */
 interface FaqItem {
@@ -716,6 +752,26 @@ export function PricingPlansPage() {
     })
     return () => timeouts.forEach(t => clearTimeout(t))
   }, [paymentStatus, auth?.user, balanceRefreshed])
+
+  /* ── Dynamic pricing table ── */
+  const [pricingTable, setPricingTable] = useState<PricingTableGroup[]>([])
+  const [pricingLoaded, setPricingLoaded] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    api.get('/api/pricing').then((res) => {
+      if (!cancelled) {
+        const models = (res.data as any)?.data as PricingModel[] | undefined
+        if (models && Array.isArray(models)) {
+          setPricingTable(buildPricingTable(models))
+        }
+        setPricingLoaded(true)
+      }
+    }).catch(() => {
+      if (!cancelled) setPricingLoaded(true)
+    })
+    return () => { cancelled = true }
+  }, [])
 
   /* ── State ── */
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
@@ -1535,7 +1591,8 @@ export function PricingPlansPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {PRICING_TABLE_GROUPS.map((group, gi) => (
+                  {pricingTable.length > 0
+                    ? pricingTable.map((group, gi) => (
                     <>
                       <tr key={`group-${gi}`} className="tmp-table-group">
                         <td colSpan={3}>{zh ? group.groupZh : group.group}</td>
@@ -1548,7 +1605,15 @@ export function PricingPlansPage() {
                         </tr>
                       ))}
                     </>
-                  ))}
+                  ))
+                    : (
+                      <tr>
+                        <td colSpan={3} style={{ textAlign: 'center', padding: '24px', color: '#9ca3af' }}>
+                          {pricingLoaded ? t('Unable to load pricing. Please visit the Pricing page.') : t('Loading pricing...')}
+                        </td>
+                      </tr>
+                    )
+                  }
                 </tbody>
               </table>
             </div>

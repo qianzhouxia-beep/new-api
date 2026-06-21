@@ -4754,6 +4754,8 @@
     "about.cta.title": "加入 AI 集成的未来",
     "about.cta.description": "准备好简化您的技术栈了吗？立即获取您的专属 API 密钥，几分钟内即可开始使用全球顶尖模型进行构建。",
     "about.cta.button.primary": "立即开始",
-    "about.cta.button.secondary": "联系工程团队"
+    "about.cta.button.secondary": "联系工程团队",
+    "Unable to load pricing. Please visit the Pricing page.": "无法加载定价数据，请访问定价页面。",
+    "Loading pricing...": "正在加载定价..."
   }
 }
