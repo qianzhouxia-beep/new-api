@@ -40,6 +40,40 @@ import type {
   WaffoPancakePaymentResponse,
 } from './types'
 
+/**
+ * NOWPayments create payment request
+ */
+interface NowPaymentsCreateRequest {
+  amount: number
+}
+
+/**
+ * NOWPayments create payment response
+ */
+interface NowPaymentsPaymentResponse {
+  trade_no: string
+  pay_address: string
+  pay_amount: string
+  pay_currency: string
+  payment_id: string
+  payment_status: string
+}
+
+/**
+ * PayPal create payment request
+ */
+export interface PayPalCreateRequest {
+  amount: number
+}
+
+/**
+ * PayPal create payment response
+ */
+export interface PayPalCreateResponse {
+  pay_link: string
+  order_id: string
+}
+
 // ============================================================================
 // Wallet API Functions
 // ============================================================================
@@ -231,5 +265,29 @@ export async function completeOrder(
   request: CompleteOrderRequest
 ): Promise<ApiResponse> {
   const res = await api.post('/api/user/topup/complete', request)
+  return res.data
+}
+
+/**
+ * Request NOWPayments payment
+ */
+export async function requestNowPaymentsPayment(
+  request: NowPaymentsCreateRequest
+): Promise<ApiResponse<NowPaymentsPaymentResponse>> {
+  const res = await api.post('/api/user/nowpayments/pay', request, {
+    skipBusinessError: true,
+  } as Record<string, unknown>)
+  return res.data
+}
+
+/**
+ * Request PayPal payment — creates a PayPal Order and returns approval URL
+ */
+export async function requestPayPalPayment(
+  request: PayPalCreateRequest
+): Promise<ApiResponse<PayPalCreateResponse>> {
+  const res = await api.post('/api/user/paypal/pay', request, {
+    skipBusinessError: true,
+  } as Record<string, unknown>)
   return res.data
 }

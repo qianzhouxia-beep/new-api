@@ -82,11 +82,11 @@ export function PaymentConfirmDialog({
               {t('Topup Amount')}
             </span>
             <span className='text-lg font-semibold'>
-              {formatLocalCurrencyAmount(topupAmount * usdExchangeRate, {
+              ${formatLocalCurrencyAmount(topupAmount * usdExchangeRate, {
                 digitsLarge: 2,
                 digitsSmall: 2,
                 abbreviate: false,
-              })}
+              })} USD
             </span>
           </div>
 
@@ -99,7 +99,7 @@ export function PaymentConfirmDialog({
             ) : (
               <div className='flex items-baseline gap-2'>
                 <span className='text-2xl font-semibold'>
-                  {formatCurrency(paymentAmount)}
+                  ${formatCurrency(paymentAmount)} USD
                 </span>
                 {hasDiscount && (
                   <span className='text-muted-foreground text-sm line-through'>

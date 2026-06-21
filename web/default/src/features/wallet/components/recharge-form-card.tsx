@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { useState, useEffect } from 'react'
-import { Gift, ExternalLink, Loader2, Receipt, WalletCards } from 'lucide-react'
+import { Gift, ExternalLink, Info, Loader2, Receipt, WalletCards } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { formatNumber } from '@/lib/format'
 import { cn } from '@/lib/utils'
@@ -61,6 +61,7 @@ interface RechargeFormCardProps {
   calculating: boolean
   onPaymentMethodSelect: (method: PaymentMethod) => void
   paymentLoading: string | null
+  selectedPaymentMethod?: PaymentMethod | null
   redemptionCode: string
   onRedemptionCodeChange: (code: string) => void
   onRedeem: () => void
@@ -91,6 +92,7 @@ export function RechargeFormCard({
   calculating,
   onPaymentMethodSelect,
   paymentLoading,
+  selectedPaymentMethod,
   redemptionCode,
   onRedemptionCodeChange,
   onRedeem,
@@ -112,6 +114,29 @@ export function RechargeFormCard({
   const { t } = useTranslation()
   const [localAmount, setLocalAmount] = useState(topupAmount.toString())
 
+  // Use NOWPayments-specific amount options when crypto payment is selected
+  const isNowPayments = selectedPaymentMethod?.type === 'nowpayments'
+  
+  // Debug log
+  useEffect(() => {
+    console.log('[RechargeFormCard] selectedPaymentMethod:', selectedPaymentMethod)
+    console.log('[RechargeFormCard] isNowPayments:', isNowPayments)
+    console.log('[RechargeFormCard] nowpayments_amount_options:', topupInfo?.nowpayments_amount_options)
+  }, [selectedPaymentMethod, isNowPayments, topupInfo?.nowpayments_amount_options])
+
+  // Compute directly (no useMemo) to ensure re-calculation on every render
+  const activePresetAmounts = (() => {
+    if (isNowPayments && topupInfo?.nowpayments_amount_options && topupInfo.nowpayments_amount_options.length > 0) {
+      console.log('[RechargeFormCard] Using NOWPayments amounts:', topupInfo.nowpayments_amount_options)
+      return topupInfo.nowpayments_amount_options.map((amount) => ({
+        value: amount,
+        discount: topupInfo.discount?.[amount] || 1.0,
+      }))
+    }
+    console.log('[RechargeFormCard] Using default presetAmounts:', presetAmounts)
+    return presetAmounts
+  })()
+
   useEffect(() => {
     setLocalAmount(topupAmount.toString())
   }, [topupAmount])
@@ -127,6 +152,8 @@ export function RechargeFormCard({
   const hasConfigurableTopup =
     topupInfo?.enable_online_topup ||
     topupInfo?.enable_stripe_topup ||
+    topupInfo?.enable_paypal_topup ||
+    topupInfo?.enable_nowpayments_topup ||
     enableWaffoTopup ||
     enableWaffoPancakeTopup
   const hasAnyTopup = hasConfigurableTopup || enableCreemTopup
@@ -212,13 +239,13 @@ export function RechargeFormCard({
         <div className='space-y-4 sm:space-y-6'>
           {hasConfigurableTopup && (
             <>
-              {presetAmounts.length > 0 && (
+              {activePresetAmounts.length > 0 && (
                 <div className='space-y-2.5 sm:space-y-3'>
                   <Label className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
-                    {t('Amount')}
+                    {isNowPayments ? t('Crypto Amount') : t('Amount')}
                   </Label>
                   <div className='grid grid-cols-2 gap-1.5 sm:gap-3 md:grid-cols-4'>
-                    {presetAmounts.map((preset, index) => {
+                    {activePresetAmounts.map((preset, index) => {
                       const discount =
                         preset.discount ||
                         topupInfo?.discount?.[preset.value] ||
@@ -248,7 +275,7 @@ export function RechargeFormCard({
                         >
                           <div className='flex w-full items-center justify-between'>
                             <div className='text-base font-semibold sm:text-lg'>
-                              {formatNumber(displayValue)}
+                              ${formatNumber(displayValue)}
                             </div>
                             {hasDiscount && (
                               <div className='text-xs font-medium text-green-600'>
@@ -257,7 +284,7 @@ export function RechargeFormCard({
                             )}
                           </div>
                           <div className='text-muted-foreground mt-1.5 w-full text-xs sm:mt-2'>
-                            Pay {formatCurrency(actualPrice)}
+                            Pay ${formatCurrency(actualPrice)}
                             {hasDiscount && savedAmount > 0 && (
                               <span className='text-green-600'>
                                 {' '}
@@ -269,6 +296,15 @@ export function RechargeFormCard({
                       )
                     })}
                   </div>
+                </div>
+              )}
+
+              {isNowPayments && (
+                <div className='flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-800/30 dark:bg-amber-950/20 dark:text-amber-300'>
+                  <Info className='mt-0.5 h-3.5 w-3.5 shrink-0' />
+                  <span>
+                    {t('Cryptocurrency payments require a minimum of $20 due to network transaction fees.')}
+                  </span>
                 </div>
               )}
 
@@ -297,7 +333,7 @@ export function RechargeFormCard({
                       <Skeleton className='h-5 w-16' />
                     ) : (
                       <span className='text-sm font-semibold'>
-                        {formatCurrency(paymentAmount)}
+                        ${formatCurrency(paymentAmount)}
                       </span>
                     )}
                   </div>
@@ -360,6 +396,13 @@ export function RechargeFormCard({
                       )}
                     </AlertDescription>
                   </Alert>
+                )}
+
+                {/* Show NOWPayments minimum amount note when crypto method exists */}
+                {topupInfo?.enable_nowpayments_topup && topupAmount < 20 && !isNowPayments && (
+                  <p className='text-muted-foreground mt-1 text-xs'>
+                    {t('For crypto payments (NOWPayments), a minimum of $20 is required.')}
+                  </p>
                 )}
               </div>
 

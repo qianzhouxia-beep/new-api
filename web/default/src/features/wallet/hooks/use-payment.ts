@@ -25,11 +25,14 @@ import {
   calculateWaffoPancakeAmount,
   requestPayment,
   requestStripePayment,
+  requestPayPalPayment,
+  requestNowPaymentsPayment,
   isApiSuccess,
 } from '../api'
 import {
   isStripePayment,
   isWaffoPancakePayment,
+  isNowPaymentsPayment,
   submitPaymentForm,
 } from '../lib'
 
@@ -82,8 +85,38 @@ export function usePayment() {
         setProcessing(true)
 
         const isStripe = isStripePayment(paymentType)
+        const isNowPayments = isNowPaymentsPayment(paymentType)
+        const isPayPal = paymentType === 'paypal'
         const amount = Math.floor(topupAmount)
 
+        // Handle NOWPayments payment
+        if (isNowPayments) {
+          const nowpaymentsResponse = await requestNowPaymentsPayment({ amount })
+          if (!isApiSuccess(nowpaymentsResponse) || !nowpaymentsResponse.data?.payment_id) {
+            toast.error(nowpaymentsResponse.message || i18next.t('Payment request failed'))
+            return false
+          }
+          // Redirect to NOWPayments payment page
+          const paymentId = nowpaymentsResponse.data.payment_id
+          window.open(`https://nowpayments.io/payment/?iid=${paymentId}`, '_blank')
+          toast.success(i18next.t('Redirecting to payment page...'))
+          return true
+        }
+
+        // Handle PayPal payment
+        if (isPayPal) {
+          const paypalResponse = await requestPayPalPayment({ amount })
+          if (!isApiSuccess(paypalResponse) || !paypalResponse.data?.pay_link) {
+            toast.error(paypalResponse.message || i18next.t('PayPal payment failed'))
+            return false
+          }
+          // Redirect to PayPal approval page
+          window.open(paypalResponse.data.pay_link, '_blank')
+          toast.success(i18next.t('Redirecting to PayPal...'))
+          return true
+        }
+
+        // Handle Stripe or Epay payment
         const response = isStripe
           ? await requestStripePayment({
               amount,
@@ -106,7 +139,7 @@ export function usePayment() {
           return true
         }
 
-        // Handle non-Stripe payment
+        // Handle non-Stripe payment (Epay etc.)
         if (!isStripe && response.data) {
           const url = (response as unknown as { url?: string }).url
           if (url) {
