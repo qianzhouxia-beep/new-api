@@ -152,6 +152,8 @@ export interface TopupInfo {
   waffo_pancake_min_topup?: number
   /** Whether redemption code usage is enabled */
   enable_redemption?: boolean
+  /** Whether NOWPayments topup is enabled */
+  enable_nowpayments_topup?: boolean
   /** Whether compliance confirmation has been completed */
   payment_compliance_confirmed?: boolean
   /** Current compliance terms version */

@@ -87,6 +87,13 @@ export function isWaffoPancakePayment(paymentType: string): boolean {
 }
 
 /**
+ * Check if payment method is NOWPayments
+ */
+export function isNowPaymentsPayment(paymentType: string): boolean {
+  return paymentType === PAYMENT_TYPES.NOWPAYMENTS
+}
+
+/**
  * Get default payment type from topup info
  */
 export function getDefaultPaymentType(topupInfo: TopupInfo | null): string {
