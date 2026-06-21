@@ -33,6 +33,7 @@ interface TopupInfo {
   enable_waffo_topup: boolean
   enable_waffo_pancake_topup: boolean
   enable_paypal_topup: boolean
+  enable_nowpayments_topup: boolean
   min_topup: number
   stripe_min_topup: number
   pay_methods: { name: string; type: string; min_topup?: string; icon?: string }[]
@@ -829,6 +830,9 @@ export function PricingPlansPage() {
   if (topupInfo?.enable_paypal_topup) {
     availableMethods.push({ id: 'paypal', name: 'PayPal' })
   }
+  if (topupInfo?.enable_nowpayments_topup) {
+    availableMethods.push({ id: 'nowpayments', name: 'NOWPayments (Crypto)' })
+  }
   if (availableMethods.length === 0) {
     availableMethods.push({
       id: 'manual',
@@ -916,6 +920,45 @@ export function PricingPlansPage() {
     [zh],
   )
 
+  const doNowPaymentsPayment = useCallback(
+    async (amount: number) => {
+      setPaying('nowpayments')
+      setError(null)
+      try {
+        const res = await api.post(
+          '/api/user/nowpayments/pay',
+          { amount: Math.round(amount) },
+          { skipBusinessError: true } as Record<string, unknown>,
+        )
+        const body = res.data as {
+          message?: string
+          data?: { payment_id?: string }
+        }
+        if (body.message === 'success' && body.data?.payment_id) {
+          window.open(`https://nowpayments.io/payment/?iid=${body.data.payment_id}`, '_blank')
+          return
+        }
+        const serverErr = (body as any).data || (body as any).message || JSON.stringify(body)
+        setError(zh ? `拉起 NOWPayments 支付失败：${serverErr}` : `Failed to initiate NOWPayments payment: ${serverErr}`)
+        setPaying(null)
+      } catch (err: any) {
+        setPaying(null)
+        if (err?.response?.status === 401 || err?.response?.status === 403) {
+          const { auth } = useAuthStore.getState()
+          auth.reset()
+          setError(zh ? '登录已过期，正在跳转到登录页...' : 'Session expired, redirecting to login...')
+          setTimeout(() => {
+            window.location.href = `/sign-in?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`
+          }, 1000)
+          return
+        }
+        const netErr = err?.response?.data?.message || err?.message || JSON.stringify(err)
+        setError(zh ? `拉起 NOWPayments 支付失败（网络）：${netErr}` : `Failed to initiate NOWPayments payment (network): ${netErr}`)
+      }
+    },
+    [zh],
+  )
+
   /* ── Entry point for plan button clicks ── */
   function handlePlanClick(plan: Plan) {
     setSelectedPlan(plan.id)
@@ -969,6 +1012,8 @@ export function PricingPlansPage() {
       doStripePayment(amount)
     } else if (selectedMethod === 'paypal') {
       doPayPalPayment(amount)
+    } else if (selectedMethod === 'nowpayments') {
+      doNowPaymentsPayment(amount)
     } else if (selectedMethod === 'epay') {
       setError(zh ? '支付宝/微信支付暂不支持套餐购买，请使用按量充值' : 'Alipay/WeChat not available for packages, please use Pay As You Go')
     } else if (selectedMethod === 'creem') {
@@ -1006,6 +1051,8 @@ export function PricingPlansPage() {
       doStripePayment(amount)
     } else if (selectedMethod === 'paypal') {
       doPayPalPayment(amount)
+    } else if (selectedMethod === 'nowpayments') {
+      doNowPaymentsPayment(amount)
     } else if (selectedMethod === 'epay') {
       // Epay (Alipay/WeChat) uses the legacy /api/user/topup endpoint
       setError(

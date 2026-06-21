@@ -237,15 +237,15 @@ export function Home() {
         <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center px-10 relative z-10">
           <div className="lg:col-span-12 space-y-6 flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2.5 rounded-full px-4 py-1.5" style={{
-              background: 'linear-gradient(135deg, rgba(239,68,68,0.18), rgba(239,68,68,0.08))',
-              border: '1px solid rgba(239,68,68,0.35)',
-              boxShadow: '0 0 18px rgba(239,68,68,0.12), 0 0 4px rgba(239,68,68,0.08)'
+              background: 'linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,197,94,0.08))',
+              border: '1px solid rgba(34,197,94,0.35)',
+              boxShadow: '0 0 18px rgba(34,197,94,0.12), 0 0 4px rgba(34,197,94,0.08)'
             }}>
-              <span className="material-symbols-outlined text-[16px]" style={{ color: '#ef4444', fontVariationSettings: "'FILL' 1" }}>new_releases</span>
-              <span className="text-[12px] tracking-[0.08em] uppercase font-bold" style={{ fontFamily: 'Space Grotesk', color: '#fca5a5' }}>
+              <span className="material-symbols-outlined text-[16px]" style={{ color: '#22c55e', fontVariationSettings: "'FILL' 1" }}>new_releases</span>
+              <span className="text-[12px] tracking-[0.08em] uppercase font-bold" style={{ fontFamily: 'Space Grotesk', color: '#86efac' }}>
                 {t('New Models Available')}
               </span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#ef4444', boxShadow: '0 0 6px #ef4444' }} />
+              <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
             </div>
             <h1 className="text-[48px] leading-[56px] -tracking-[0.02em] font-bold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
               {t('One line of code to access top AI models.')}<br />
@@ -640,7 +640,7 @@ export function Home() {
               <a href="mailto:support@tokenmaster.com" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
                 <span className="material-symbols-outlined">mail</span>
               </a>
-              <a href="https://status.tokenmaster.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
+              <a href="https://stats.uptimerobot.com/8WQOPxXfoF" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--m3-on-surface-variant)' }} className="hover:text-primary transition-colors">
                 <span className="material-symbols-outlined">signal_cellular_alt</span>
               </a>
             </div>
