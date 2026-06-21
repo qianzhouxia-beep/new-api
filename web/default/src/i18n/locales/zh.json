@@ -4756,6 +4756,7 @@
     "about.cta.button.primary": "立即开始",
     "about.cta.button.secondary": "联系工程团队",
     "Unable to load pricing. Please visit the Pricing page.": "无法加载定价数据，请访问定价页面。",
-    "Loading pricing...": "正在加载定价..."
+    "Loading pricing...": "正在加载定价...",
+    "$2 Free Trial — No credit card required. Start building today!": "$2 免费试用 —— 无需绑卡，立即开始！"
   }
 }
