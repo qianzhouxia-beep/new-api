@@ -513,6 +513,10 @@ function PackagePaymentModal({
   onClose: () => void
   zh: boolean
 }) {
+  const isNowPayments = selectedMethod === 'nowpayments'
+  const nowpaymentsMinAmount = 20
+  const isBelowCryptoMin = isNowPayments && pkg.fixedAmount < nowpaymentsMinAmount
+
   return (
     <div className='tmp-modal-overlay'>
       <div className='tmp-modal-box'>
@@ -530,6 +534,29 @@ function PackagePaymentModal({
         {pkg.receiveAmount > pkg.fixedAmount && (
           <div className='tmp-modal-bonus'>
             🎉 {zh ? `Bonus $${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}` : `Bonus $${(pkg.receiveAmount - pkg.fixedAmount).toFixed(1)}`}
+          </div>
+        )}
+
+        {/* Crypto minimum amount warning */}
+        {isBelowCryptoMin && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '8px',
+            padding: '12px',
+            borderRadius: '8px',
+            border: '1px solid #f59e0b',
+            backgroundColor: '#fffbeb',
+            fontSize: '13px',
+            color: '#b45309',
+            marginTop: '12px',
+            lineHeight: '1.5'
+          }}>
+            <span style={{ flexShrink: 0, marginTop: '1px' }}>&#x26A0;&#xFE0F;</span>
+            <span>{zh
+              ? `加密货币支付（NOWPayments）最低金额为 $${nowpaymentsMinAmount}。此套餐为 $${pkg.fixedAmount}，不满足最低要求。请选择更高金额的套餐，或前往钱包页面使用按量充值。`
+              : `Cryptocurrency payments (NOWPayments) require a minimum of $${nowpaymentsMinAmount}. This package is $${pkg.fixedAmount}. Please select a higher package, or use Pay-as-you-go top-up from the Wallet page.`}
+            </span>
           </div>
         )}
 
@@ -555,12 +582,12 @@ function PackagePaymentModal({
           <button className='tmp-modal-btn-cancel' onClick={onClose} disabled={paying !== null}>
             {zh ? '取消' : 'Cancel'}
           </button>
-          <button className='tmp-modal-btn-pay' onClick={onPay} disabled={paying !== null || !selectedMethod}>
-            {paying === 'stripe'
-              ? (zh ? '跳转支付中...' : 'Redirecting...')
-              : paying === 'paypal'
-                ? (zh ? '跳转 PayPal...' : 'Redirecting to PayPal...')
-                : (zh ? `支付 $${pkg.fixedAmount}` : `Pay $${pkg.fixedAmount}`)}
+          <button
+            className='tmp-modal-btn-pay'
+            onClick={onPay}
+            disabled={paying !== null || !selectedMethod || isBelowCryptoMin}
+            title={isBelowCryptoMin ? (zh ? `加密货币支付最低 $${nowpaymentsMinAmount}` : `Crypto min $${nowpaymentsMinAmount}`) : undefined}
+          >
           </button>
         </div>
       </div>
@@ -597,8 +624,26 @@ function PaygPaymentModal({
   onClose: () => void
   zh: boolean
 }) {
-  const presetAmounts = [5, 10, 25, 50, 100, 200]
+  const defaultPresetAmounts = [5, 10, 25, 50, 100, 200]
+  const nowpaymentsPresetAmounts = [20, 50, 100, 200, 500]
+
+  const isNowPayments = selectedMethod === 'nowpayments'
+  const nowpaymentsMinAmount = 20
+  const activePresetAmounts = isNowPayments ? nowpaymentsPresetAmounts : defaultPresetAmounts
+
+  const handleMethodSelect = (id: string) => {
+    setSelectedMethod(id)
+    if (id === 'nowpayments') {
+      const finalAmt = customAmount ? (parseInt(customAmount) || 0) : topupAmount
+      if (finalAmt < nowpaymentsMinAmount) {
+        setTopupAmount(nowpaymentsMinAmount)
+        setCustomAmount('')
+      }
+    }
+  }
+
   const finalAmount = customAmount ? (parseInt(customAmount) || 0) : topupAmount
+  const isBelowCryptoMin = isNowPayments && finalAmount < nowpaymentsMinAmount
 
   return (
     <div className='tmp-modal-overlay'>
@@ -607,9 +652,9 @@ function PaygPaymentModal({
         <p className='tmp-modal-desc'>{zh ? '充多少用多少，无需承诺' : 'Top up and use, no commitment'}</p>
 
         {/* Preset amounts */}
-        <div className='tmp-modal-method-label'>{zh ? '选择金额' : 'Select Amount'}</div>
+        <div className='tmp-modal-method-label'>{isNowPayments ? (zh ? '加密货币金额' : 'Crypto Amount') : (zh ? '选择金额' : 'Select Amount')}</div>
         <div className='tmp-payg-amounts'>
-          {presetAmounts.map((amt) => (
+          {activePresetAmounts.map((amt) => (
             <button
               key={amt}
               onClick={() => { setTopupAmount(amt); setCustomAmount('') }}
@@ -620,15 +665,38 @@ function PaygPaymentModal({
           ))}
         </div>
 
+        {/* Crypto minimum hint */}
+        {isNowPayments && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '6px',
+            padding: '8px 10px',
+            borderRadius: '6px',
+            border: '1px solid #f59e0b',
+            backgroundColor: '#fffbeb',
+            fontSize: '12px',
+            color: '#b45309',
+            marginTop: '4px',
+            lineHeight: '1.4'
+          }}>
+            <span style={{ flexShrink: 0 }}>&#x26A0;&#xFE0F;</span>
+            <span>{zh
+              ? `加密货币支付因网络手续费，最低充值 $${nowpaymentsMinAmount}`
+              : `Crypto payments require min $${nowpaymentsMinAmount} due to network fees`}
+            </span>
+          </div>
+        )}
+
         {/* Custom amount */}
         <div className='tmp-payg-custom-row'>
           <span className='tmp-payg-dollar'>$</span>
           <input
             type='number'
-            min={1}
+            min={isNowPayments ? nowpaymentsMinAmount : 1}
             value={customAmount}
             onChange={(e) => { setCustomAmount(e.target.value); setTopupAmount(0) }}
-            placeholder={zh ? '自定义金额' : 'Custom amount'}
+            placeholder={isNowPayments ? (zh ? `最低 $${nowpaymentsMinAmount}` : `Min $${nowpaymentsMinAmount}`) : (zh ? '自定义金额' : 'Custom amount')}
             className='tmp-payg-custom-input'
           />
           <span className='tmp-payg-balance-label'>{zh ? '到账' : 'You get'}:</span>
@@ -645,7 +713,7 @@ function PaygPaymentModal({
           {availableMethods.map((m) => (
             <button
               key={m.id}
-              onClick={() => setSelectedMethod(m.id)}
+              onClick={() => handleMethodSelect(m.id)}
               disabled={paying !== null}
               className={`tmp-modal-method-btn ${selectedMethod === m.id ? 'tmp-modal-method-active' : ''} ${paying !== null ? 'tmp-modal-disabled' : ''}`}
             >
@@ -666,12 +734,19 @@ function PaygPaymentModal({
           <button className='tmp-modal-btn-cancel' onClick={onClose} disabled={paying !== null}>
             {zh ? '取消' : 'Cancel'}
           </button>
-          <button className='tmp-modal-btn-pay' onClick={onPay} disabled={paying !== null || !selectedMethod || finalAmount < 1}>
+          <button
+            className='tmp-modal-btn-pay'
+            onClick={onPay}
+            disabled={paying !== null || !selectedMethod || finalAmount < 1 || isBelowCryptoMin}
+            title={isBelowCryptoMin ? (zh ? `加密货币支付最低 $${nowpaymentsMinAmount}` : `Crypto min $${nowpaymentsMinAmount}`) : undefined}
+          >
             {paying === 'stripe'
               ? (zh ? '跳转支付中...' : 'Redirecting...')
               : paying === 'paypal'
                 ? (zh ? '跳转 PayPal...' : 'Redirecting to PayPal...')
-                : (zh ? `支付 $${finalAmount}` : `Pay $${finalAmount}`)}
+                : paying === 'nowpayments'
+                  ? (zh ? '跳转 NOWPayments...' : 'Redirecting to NOWPayments...')
+                  : (zh ? `支付 $${finalAmount}` : `Pay $${finalAmount}`)}
           </button>
         </div>
       </div>
