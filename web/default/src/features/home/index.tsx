@@ -159,7 +159,7 @@ export function Home() {
       <style>{designSystemStyle}</style>
 
       {/* ─── Hero Section ─── */}
-      <section className="relative overflow-hidden flex items-center min-h-[calc(100vh-64px)] py-12" style={{ backgroundColor: 'var(--m3-surface)' }}>
+      <section className="relative overflow-hidden flex items-start min-h-[calc(100vh-64px)] pt-24 pb-16" style={{ backgroundColor: 'var(--m3-surface)' }}>
         <DotFieldBackground />
 
         {/* ─── Top-Right Decorative Icon ─── */}
