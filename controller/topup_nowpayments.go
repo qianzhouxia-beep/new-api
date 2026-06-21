@@ -63,8 +63,8 @@ type nowpaymentsMinAmountResponse struct {
 }
 
 // getNowPaymentsMinAmount calls GET /v1/min-amount to get the minimum payment amount
-func getNowPaymentsMinAmount(ctx context.Context, currencyFrom string) (float64, error) {
-	url := fmt.Sprintf("%s/min-amount?currency_from=%s", nowpaymentsBaseURL, currencyFrom)
+func getNowPaymentsMinAmount(ctx context.Context, currencyFrom, currencyTo string) (float64, error) {
+	url := fmt.Sprintf("%s/min-amount?currency_from=%s&currency_to=%s", nowpaymentsBaseURL, currencyFrom, currencyTo)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return 0, err
@@ -160,7 +160,7 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 	}
 
 	// Call NOWPayments API — first get min amount and estimate, then create payment
-	minAmount, err := getNowPaymentsMinAmount(c.Request.Context(), "usd")
+	minAmount, err := getNowPaymentsMinAmount(c.Request.Context(), "usd", "usdttrc20")
 	if err != nil {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("NOWPayments getMinAmount failed: %v", err))
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Payment service unavailable: cannot get min amount"})
@@ -234,11 +234,11 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 	}
 
 	var paymentResp struct {
-		PaymentID     string `json:"payment_id"`
-		PaymentStatus string `json:"payment_status"`
-		PayAddress    string `json:"pay_address"`
+		PaymentID     interface{} `json:"payment_id"`
+		PaymentStatus string      `json:"payment_status"`
+		PayAddress    string      `json:"pay_address"`
 		PayAmount     json.Number `json:"pay_amount"`
-		PayCurrency   string `json:"pay_currency"`
+		PayCurrency   string      `json:"pay_currency"`
 	}
 	if err := json.Unmarshal(respBody, &paymentResp); err != nil {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("NOWPayments response parse error: %v body=%s", err, string(respBody)))
@@ -246,7 +246,9 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 		return
 	}
 
-	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments payment created: tradeNo=%s paymentId=%s status=%s", tradeNo, paymentResp.PaymentID, paymentResp.PaymentStatus))
+	paymentID := fmt.Sprintf("%v", paymentResp.PaymentID)
+
+	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments payment created: tradeNo=%s paymentId=%s status=%s", tradeNo, paymentID, paymentResp.PaymentStatus))
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
@@ -255,7 +257,7 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 			PayAddress:    paymentResp.PayAddress,
 			PayAmount:     paymentResp.PayAmount.String(),
 			PayCurrency:   paymentResp.PayCurrency,
-			PaymentID:     paymentResp.PaymentID,
+			PaymentID:     paymentID,
 			PaymentStatus: paymentResp.PaymentStatus,
 		},
 	})
