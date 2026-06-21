@@ -175,10 +175,31 @@ func GetTopUpInfo(c *gin.Context) {
 		}
 	}
 
+	// 如果启用了 NOWPayments 支付，添加到支付方法列表
+	enableNowPayments := isNowPaymentsEnabled()
+	if enableNowPayments {
+		hasNowPayments := false
+		for _, method := range payMethods {
+			if method["type"] == model.PaymentMethodNowPayments {
+				hasNowPayments = true
+				break
+			}
+		}
+		if !hasNowPayments {
+			payMethods = append(payMethods, map[string]string{
+				"name":      "NOWPayments (Crypto)",
+				"type":      model.PaymentMethodNowPayments,
+				"color":     "rgba(var(--semi-green-5), 1)",
+				"min_topup": strconv.Itoa(setting.NowPaymentsMinTopUp),
+			})
+		}
+	}
+
 	data := gin.H{
 		"enable_online_topup":              isEpayTopUpEnabled(),
 		"enable_stripe_topup":              isStripeTopUpEnabled(),
 		"enable_paypal_topup":              enablePayPal,
+		"enable_nowpayments_topup":         isNowPaymentsEnabled(),
 		"enable_creem_topup":               isCreemTopUpEnabled(),
 		"enable_waffo_topup":               enableWaffo,
 		"enable_waffo_pancake_topup":       enableWaffoPancake,
