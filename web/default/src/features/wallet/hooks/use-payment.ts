@@ -92,13 +92,16 @@ export function usePayment() {
         // Handle NOWPayments payment
         if (isNowPayments) {
           const nowpaymentsResponse = await requestNowPaymentsPayment({ amount })
-          if (!isApiSuccess(nowpaymentsResponse) || !nowpaymentsResponse.data?.payment_id) {
+          // Check for both payment_id and url in response
+          const invoiceUrl = (nowpaymentsResponse as any)?.url || ''
+          const hasPaymentId = nowpaymentsResponse.data?.payment_id
+          if (!isApiSuccess(nowpaymentsResponse) || (!hasPaymentId && !invoiceUrl)) {
             toast.error(nowpaymentsResponse.message || i18next.t('Payment request failed'))
             return false
           }
-          // Redirect to NOWPayments payment page
-          const paymentId = nowpaymentsResponse.data.payment_id
-          window.open(`https://nowpayments.io/payment/?iid=${paymentId}`, '_blank')
+          // Redirect to NOWPayments payment page using invoice URL or fallback to iid
+          const targetUrl = invoiceUrl || `https://nowpayments.io/payment/?iid=${hasPaymentId}`
+          window.open(targetUrl, '_blank')
           toast.success(i18next.t('Redirecting to payment page...'))
           return true
         }

@@ -1015,9 +1015,12 @@ export function PricingPlansPage() {
         const body = res.data as {
           message?: string
           data?: { payment_id?: string }
+          url?: string
         }
-        if (body.message === 'success' && body.data?.payment_id) {
-          window.open(`https://nowpayments.io/payment/?iid=${body.data.payment_id}`, '_blank')
+        const invoiceUrl = (body as any).url || ''
+        if (body.message === 'success' && (body.data?.payment_id || invoiceUrl)) {
+          const targetUrl = invoiceUrl || `https://nowpayments.io/payment/?iid=${body.data?.payment_id}`
+          window.open(targetUrl, '_blank')
           return
         }
         const serverErr = (body as any).data || (body as any).message || JSON.stringify(body)

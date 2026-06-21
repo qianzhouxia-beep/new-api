@@ -171,7 +171,7 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 		return
 	}
 
-	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating payment: amount=$%d", req.Amount))
+	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating invoice: amount=$%d", req.Amount))
 
 	apiPayload := map[string]interface{}{
 		"price_amount":      float64(req.Amount),
@@ -179,6 +179,8 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 		"order_id":          tradeNo,
 		"order_description": fmt.Sprintf("TokenMaster top-up for user %s (#%d)", username, userId),
 		"ipn_callback_url":  system_setting.ServerAddress + "/api/nowpayments/notify",
+		"success_url":       system_setting.ServerAddress + "/wallet?status=success",
+		"cancel_url":        system_setting.ServerAddress + "/wallet?status=cancel",
 		"is_fixed_rate":     true,
 		"is_fee_paid_by_user": true,
 	}
@@ -186,9 +188,9 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 	body, _ := json.Marshal(apiPayload)
 
 	// Log the request for debugging
-	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating payment: url=%s/payment payload=%s", nowpaymentsBaseURL, string(body)))
+	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating invoice: url=%s/invoice payload=%s", nowpaymentsBaseURL, string(body)))
 
-	httpReq, err := http.NewRequestWithContext(c.Request.Context(), http.MethodPost, nowpaymentsBaseURL+"/payment", bytes.NewReader(body))
+	httpReq, err := http.NewRequestWithContext(c.Request.Context(), http.MethodPost, nowpaymentsBaseURL+"/invoice", bytes.NewReader(body))
 	if err != nil {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("NOWPayments create payment request failed: %v", err))
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to create payment"})
@@ -216,38 +218,49 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 		if json.Unmarshal(respBody, &npErr) == nil && npErr.Message != "" {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("NOWPayments error: %s", npErr.Message)})
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("Failed to create payment (HTTP %d)", resp.StatusCode)})
+			c.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("Failed to create invoice (HTTP %d)", resp.StatusCode)})
 		}
 		return
 	}
 
-	var paymentResp struct {
-		PaymentID     interface{} `json:"payment_id"`
-		PaymentStatus string      `json:"payment_status"`
-		PayAddress    string      `json:"pay_address"`
-		PayAmount     json.Number `json:"pay_amount"`
-		PayCurrency   string      `json:"pay_currency"`
+	var invoiceResp struct {
+		ID          interface{} `json:"id"`
+		InvoiceURL  string      `json:"invoice_url"`
+		PaymentID   interface{} `json:"payment_id"`
+		OrderID     string      `json:"order_id"`
+		PriceAmount string      `json:"price_amount"`
+		Status      string      `json:"payment_status"`
 	}
-	if err := json.Unmarshal(respBody, &paymentResp); err != nil {
-		logger.LogError(c.Request.Context(), fmt.Sprintf("NOWPayments response parse error: %v body=%s", err, string(respBody)))
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to parse payment response"})
+	if err := json.Unmarshal(respBody, &invoiceResp); err != nil {
+		logger.LogError(c.Request.Context(), fmt.Sprintf("NOWPayments invoice parse error: %v body=%s", err, string(respBody)))
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to parse invoice response"})
 		return
 	}
 
-	paymentID := fmt.Sprintf("%v", paymentResp.PaymentID)
+	paymentID := fmt.Sprintf("%v", invoiceResp.ID)
+	invoiceURL := invoiceResp.InvoiceURL
+	if invoiceURL == "" && invoiceResp.PaymentID != nil {
+		// Fallback: construct invoice URL from payment_id
+		paymentID = fmt.Sprintf("%v", invoiceResp.PaymentID)
+		invoiceURL = fmt.Sprintf("https://nowpayments.io/payment/?iid=%s", paymentID)
+	}
+	if invoiceURL == "" {
+		invoiceURL = fmt.Sprintf("https://nowpayments.io/payment/?iid=%s", paymentID)
+	}
 
-	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments payment created: tradeNo=%s paymentId=%s status=%s", tradeNo, paymentID, paymentResp.PaymentStatus))
+	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments invoice created: tradeNo=%s paymentId=%s url=%s", tradeNo, paymentID, invoiceURL))
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
 		"data": nowpaymentsCreateResponse{
 			TradeNo:       tradeNo,
-			PayAddress:    paymentResp.PayAddress,
-			PayAmount:     paymentResp.PayAmount.String(),
-			PayCurrency:   paymentResp.PayCurrency,
+			PayAddress:    "",
+			PayAmount:     "",
+			PayCurrency:   "",
 			PaymentID:     paymentID,
-			PaymentStatus: paymentResp.PaymentStatus,
+			PaymentStatus: "waiting",
 		},
+		"url": invoiceURL,
 	})
 }
 
