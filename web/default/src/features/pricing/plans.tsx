@@ -588,6 +588,13 @@ function PackagePaymentModal({
             disabled={paying !== null || !selectedMethod || isBelowCryptoMin}
             title={isBelowCryptoMin ? (zh ? `加密货币支付最低 $${nowpaymentsMinAmount}` : `Crypto min $${nowpaymentsMinAmount}`) : undefined}
           >
+            {paying === 'stripe'
+              ? (zh ? '跳转支付中...' : 'Redirecting...')
+              : paying === 'paypal'
+                ? (zh ? '跳转 PayPal...' : 'Redirecting to PayPal...')
+                : paying === 'nowpayments'
+                  ? (zh ? '跳转 NOWPayments...' : 'Redirecting to NOWPayments...')
+                  : (zh ? `支付 $${pkg.fixedAmount}` : `Pay $${pkg.fixedAmount}`)}
           </button>
         </div>
       </div>
