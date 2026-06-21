@@ -185,7 +185,7 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 	logger.LogInfo(c.Request.Context(), fmt.Sprintf("NOWPayments creating payment: amount=$%d pay_currency=%s", req.Amount, payCurrency))
 
 	apiPayload := map[string]interface{}{
-		"price_amount":      req.Amount,
+		"price_amount":      float64(req.Amount),
 		"price_currency":    "usd",
 		"pay_currency":      payCurrency,
 		"order_id":          tradeNo,
