@@ -471,6 +471,176 @@ export function Home() {
         </div>
       </section>
 
+      {/* ─── Quickstart Guide ─── */}
+      <section style={{ backgroundColor: 'var(--m3-surface-container-low)' }}>
+        <div className="max-w-[1440px] mx-auto px-6 py-20">
+          <div className="text-center mb-12">
+            <h2 className="text-[36px] leading-[44px] -tracking-[0.02em] font-bold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+              {t('3-Step Quickstart')}
+            </h2>
+            <p className="text-base leading-6 mt-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+              {t('Go from zero to your first API call in under 2 minutes.')}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {/* Step 1 */}
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary text-base font-bold">1</div>
+                <div>
+                  <h3 className="text-base font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Get Your API Key')}</h3>
+                  <p className="text-xs" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('One key for all models')}</p>
+                </div>
+              </div>
+              <p className="text-sm leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('Sign up at TokenMaster, go to Console → API Keys, and generate a new key.')}
+              </p>
+              <div className="mt-auto">
+                <button
+                  onClick={() => navigate({ to: isAuthenticated ? '/dashboard' : '/sign-in' })}
+                  className="w-full text-center bg-primary/10 text-primary px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/20 transition-all" style={{ fontFamily: 'Space Grotesk' }}
+                >
+                  {t('Get API Key')} →
+                </button>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary text-base font-bold">2</div>
+                <div>
+                  <h3 className="text-base font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Set Base URL')}</h3>
+                  <p className="text-xs" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('OpenAI-compatible endpoint')}</p>
+                </div>
+              </div>
+              <p className="text-sm leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('Configure your client with our universal API endpoint — works with any OpenAI-compatible tool.')}
+              </p>
+              <div className="mt-auto">
+                <div className="bg-surface-container-low rounded-lg p-3 text-center text-xs font-mono" style={{ color: 'var(--m3-primary)' }}>
+                  https://api-tokenmaster.com/v1
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="bg-surface-container p-6 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary text-base font-bold">3</div>
+                <div>
+                  <h3 className="text-base font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Start Chatting')}</h3>
+                  <p className="text-xs" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Drop into any client')}</p>
+                </div>
+              </div>
+              <p className="text-sm leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                {t('Use any OpenAI-compatible client — LobeChat, ChatBox, Cherry Studio, OpenCat, NextChat, or write your own code.')}
+              </p>
+              <div className="mt-auto">
+                <Link to="/pricing" className="block w-full text-center bg-primary/10 text-primary px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/20 transition-all" style={{ fontFamily: 'Space Grotesk' }}>
+                  {t('View Supported Models')} →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Client Configuration Cards */}
+          <div className="text-center mb-10">
+            <h3 className="text-[22px] leading-8 -tracking-[0.01em] font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+              {t('Popular Client Configurations')}
+            </h3>
+            <p className="text-sm leading-5 mt-2" style={{ color: 'var(--m3-on-surface-variant)' }}>
+              {t('Copy these settings into your favorite client and you\'re ready to go.')}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            {/* LobeChat */}
+            <div className="bg-surface-container p-5 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[18px] text-primary">hub</span>
+                </div>
+                <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>LobeChat</span>
+              </div>
+              <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                <div><span style={{ color: 'var(--m3-primary)' }}>地址</span>: api-tokenmaster.com/v1</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>密钥</span>: 你的 API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: deepseek-v4-flash</div>
+              </div>
+              <a href="https://lobehub.com" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>lobehub.com →</a>
+            </div>
+
+            {/* ChatBox */}
+            <div className="bg-surface-container p-5 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-secondary-container/20 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[18px] text-secondary">chat</span>
+                </div>
+                <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>ChatBox</span>
+              </div>
+              <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API 域名</span>: api-tokenmaster.com</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: 你的 API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: deepseek-reasoner</div>
+              </div>
+              <a href="https://chatbox.app" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>chatbox.app →</a>
+            </div>
+
+            {/* Cherry Studio */}
+            <div className="bg-surface-container p-5 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-tertiary-container/20 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[18px] text-tertiary">cognitive</span>
+                </div>
+                <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>Cherry Studio</span>
+              </div>
+              <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                <div><span style={{ color: 'var(--m3-primary)' }}>接口地址</span>: api-tokenmaster.com</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API 密钥</span>: 你的 API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: deepseek-v4-pro</div>
+              </div>
+              <a href="https://cherry-ai.com" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>cherry-ai.com →</a>
+            </div>
+
+            {/* OpenCat / NextChat */}
+            <div className="bg-surface-container p-5 border border-surface-variant rounded-xl card-lift flex flex-col">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary-fixed/20 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[18px] text-on-primary-fixed">terminal</span>
+                </div>
+                <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>OpenCat / NextChat</span>
+              </div>
+              <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Base URL</span>: api-tokenmaster.com</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: 你的 API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: qwen3.7-plus</div>
+              </div>
+              <a href="https://opencat.app" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>opencat.app →</a>
+            </div>
+          </div>
+
+          {/* Quick Connect Links */}
+          <div className="bg-surface-container p-5 border border-surface-variant rounded-xl card-lift text-center">
+            <p className="text-sm font-semibold mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+              {t('Or click to connect instantly:')}
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button className="bg-primary/10 text-primary px-4 py-2 rounded-lg text-xs font-semibold hover:bg-primary/20 transition-all" style={{ fontFamily: 'Space Grotesk' }}>
+                Lobe Chat ↵
+              </button>
+              <button className="bg-primary/10 text-primary px-4 py-2 rounded-lg text-xs font-semibold hover:bg-primary/20 transition-all" style={{ fontFamily: 'Space Grotesk' }}>
+                OpenCat ↵
+              </button>
+              <button className="bg-primary/10 text-primary px-4 py-2 rounded-lg text-xs font-semibold hover:bg-primary/20 transition-all" style={{ fontFamily: 'Space Grotesk' }}>
+                Cherry Studio ↵
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Recharge Packages ─── */}
       <section className="py-32" style={{ backgroundColor: 'var(--m3-surface-container-lowest)' }}>
         <div className="max-w-[1440px] mx-auto px-6 px-10">

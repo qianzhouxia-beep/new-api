@@ -4757,6 +4757,21 @@
     "about.cta.button.secondary": "联系工程团队",
     "Unable to load pricing. Please visit the Pricing page.": "无法加载定价数据，请访问定价页面。",
     "Loading pricing...": "正在加载定价...",
-    "$2 Free Trial — No credit card required. Start building today!": "$2 免费试用 —— 无需绑卡，立即开始！"
+    "$2 Free Trial — No credit card required. Start building today!": "$2 免费试用 —— 无需绑卡，立即开始！",
+    "3-Step Quickstart": "三步快速开始",
+    "Go from zero to your first API call in under 2 minutes.": "两分钟内从零到发出第一个 API 请求。",
+    "Get Your API Key": "获取 API 密钥",
+    "One key for all models": "一把密钥，畅享所有模型",
+    "Sign up at TokenMaster, go to Console → API Keys, and generate a new key.": "注册 TokenMaster，进入控制台 → API 密钥，生成一个新的密钥。",
+    "Set Base URL": "设置 API 地址",
+    "OpenAI-compatible endpoint": "OpenAI 兼容接口",
+    "Configure your client with our universal API endpoint — works with any OpenAI-compatible tool.": "使用通用 API 地址配置你的客户端，兼容所有 OpenAI 工具。",
+    "Start Chatting": "开始聊天",
+    "Drop into any client": "适配任意客户端",
+    "Use any OpenAI-compatible client — LobeChat, ChatBox, Cherry Studio, OpenCat, NextChat, or write your own code.": "使用任意 OpenAI 兼容客户端，如 LobeChat、ChatBox、Cherry Studio、OpenCat、NextChat，或自己写代码调用。",
+    "View Supported Models": "查看支持模型",
+    "Popular Client Configurations": "热门客户端配置",
+    "Copy these settings into your favorite client and you're ready to go.": "把这些配置复制到你的客户端即可使用。",
+    "Or click to connect instantly:": "或一键快速连接："
   }
 }
