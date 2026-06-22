@@ -592,7 +592,7 @@ export function Home() {
             <div className="bg-surface-container p-5 border border-surface-variant rounded-xl card-lift flex flex-col">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-lg bg-tertiary-container/20 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[18px] text-tertiary">cognitive</span>
+                  <span className="material-symbols-outlined text-[18px] text-tertiary">auto_awesome</span>
                 </div>
                 <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>Cherry Studio</span>
               </div>
