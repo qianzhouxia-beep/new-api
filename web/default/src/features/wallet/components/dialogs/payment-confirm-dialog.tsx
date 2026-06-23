@@ -82,11 +82,11 @@ export function PaymentConfirmDialog({
               {t('Topup Amount')}
             </span>
             <span className='text-lg font-semibold'>
-              ${formatLocalCurrencyAmount(topupAmount * usdExchangeRate, {
+              {formatLocalCurrencyAmount(topupAmount * usdExchangeRate, {
                 digitsLarge: 2,
                 digitsSmall: 2,
                 abbreviate: false,
-              })} USD
+              })}
             </span>
           </div>
 
