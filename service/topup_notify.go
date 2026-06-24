@@ -111,7 +111,7 @@ func sendFeishuNotify(record *model.TopUp, username string) error {
 					map[string]interface{}{
 						"tag":  "button",
 						"text": map[string]string{"tag": "plain_text", "content": "前往后台查看"},
-						"url":  common.ServerAddress + "/",
+						"url":  common.OptionMap["ServerAddress"] + "/",
 						"type": "primary",
 					},
 				},
@@ -211,7 +211,7 @@ func checkNewTopups(state *topupNotifyState) {
 
 		common.SysLog(fmt.Sprintf("topup notify: sending for trade_no=%s, user=%s, amount=$%.2f",
 			r.TradeNo, username, float64(r.Amount)/500000))
-		err := sendFeishuNotify(&r, username)
+		err := sendFeishuNotify(r, username)
 		if err != nil {
 			common.SysLog("topup notify: send failed: " + err.Error())
 		} else {
