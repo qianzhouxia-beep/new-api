@@ -236,6 +236,13 @@ func GetAllTopUps(pageInfo *common.PageInfo) (topups []*TopUp, total int64, err 
 	return topups, total, nil
 }
 
+// GetRecentTopUps 获取最近的充值记录（用于通知任务）
+func GetRecentTopUps(limit int) ([]*TopUp, error) {
+	var topups []*TopUp
+	err := DB.Order("id desc").Limit(limit).Find(&topups).Error
+	return topups, err
+}
+
 // searchTopUpCountHardLimit 搜索充值记录时 COUNT 的安全上限，
 // 防止对超大表执行无界 COUNT 触发 DoS。
 const searchTopUpCountHardLimit = 10000

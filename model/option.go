@@ -137,6 +137,11 @@ func InitOptionMap() {
 	common.OptionMap["QuotaForNewUser"] = strconv.Itoa(common.QuotaForNewUser)
 	common.OptionMap["QuotaForInviter"] = strconv.Itoa(common.QuotaForInviter)
 	common.OptionMap["QuotaForInvitee"] = strconv.Itoa(common.QuotaForInvitee)
+	common.OptionMap["FeishuNotifyEnabled"] = strconv.FormatBool(setting.FeishuNotifyEnabled)
+	common.OptionMap["FeishuAppId"] = setting.FeishuAppId
+	common.OptionMap["FeishuAppSecret"] = setting.FeishuAppSecret
+	common.OptionMap["FeishuChatId"] = setting.FeishuChatId
+	common.OptionMap["FeishuNotifyInterval"] = strconv.Itoa(setting.FeishuNotifyInterval)
 	common.OptionMap["QuotaRemindThreshold"] = strconv.Itoa(common.QuotaRemindThreshold)
 	common.OptionMap["PreConsumedQuota"] = strconv.Itoa(common.PreConsumedQuota)
 	common.OptionMap["ModelRequestRateLimitCount"] = strconv.Itoa(setting.ModelRequestRateLimitCount)
@@ -584,6 +589,16 @@ func updateOptionMap(key string, value string) (err error) {
 		// WaffoPayMethods is read directly from OptionMap via setting.GetWaffoPayMethods().
 		// The value is already stored in OptionMap at the top of this function (line: common.OptionMap[key] = value).
 		// No additional in-memory variable to update.
+	case "FeishuNotifyEnabled":
+		setting.FeishuNotifyEnabled = value == "true"
+	case "FeishuAppId":
+		setting.FeishuAppId = value
+	case "FeishuAppSecret":
+		setting.FeishuAppSecret = value
+	case "FeishuChatId":
+		setting.FeishuChatId = value
+	case "FeishuNotifyInterval":
+		setting.FeishuNotifyInterval, _ = strconv.Atoi(value)
 	}
 	return err
 }

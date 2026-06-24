@@ -131,6 +131,9 @@ func main() {
 	// Channel upstream model update check task
 	controller.StartChannelUpstreamModelUpdateTask()
 
+	// Topup notify task (Feishu)
+	service.StartTopupNotifyTask()
+
 	if common.IsMasterNode && constant.UpdateTask {
 		gopool.Go(func() {
 			controller.UpdateMidjourneyTaskBulk()
