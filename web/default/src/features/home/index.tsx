@@ -565,9 +565,9 @@ export function Home() {
                 <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>LobeChat</span>
               </div>
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
-                <div><span style={{ color: 'var(--m3-primary)' }}>地址</span>: api-tokenmaster.com/v1</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>密钥</span>: 你的 API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: deepseek-v4-flash</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Base URL</span>: api-tokenmaster.com/v1</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-v4-flash</div>
               </div>
               <a href="https://lobehub.com" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>lobehub.com →</a>
             </div>
@@ -581,9 +581,9 @@ export function Home() {
                 <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>ChatBox</span>
               </div>
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
-                <div><span style={{ color: 'var(--m3-primary)' }}>API 域名</span>: api-tokenmaster.com</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: 你的 API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: deepseek-reasoner</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Domain</span>: api-tokenmaster.com</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-reasoner</div>
               </div>
               <a href="https://chatbox.app" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>chatbox.app →</a>
             </div>
@@ -597,9 +597,9 @@ export function Home() {
                 <span className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>Cherry Studio</span>
               </div>
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
-                <div><span style={{ color: 'var(--m3-primary)' }}>接口地址</span>: api-tokenmaster.com</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>API 密钥</span>: 你的 API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: deepseek-v4-pro</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Endpoint</span>: api-tokenmaster.com</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-v4-pro</div>
               </div>
               <a href="https://cherry-ai.com" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>cherry-ai.com →</a>
             </div>
@@ -614,8 +614,8 @@ export function Home() {
               </div>
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 <div><span style={{ color: 'var(--m3-primary)' }}>Base URL</span>: api-tokenmaster.com</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: 你的 API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>模型</span>: qwen3.7-plus</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: qwen3.7-plus</div>
               </div>
               <a href="https://opencat.app" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>opencat.app →</a>
             </div>
