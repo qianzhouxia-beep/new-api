@@ -188,7 +188,7 @@ function VideoShowcase({ t }: { t: (key: string) => string }) {
         </div>
 
         {/* Two-column: Video (left) + Features (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-5 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-5 items-stretch">
           {/* Video Container — constrained width */}
           <div
             className="relative rounded-xl overflow-hidden group cursor-pointer"
@@ -261,8 +261,8 @@ function VideoShowcase({ t }: { t: (key: string) => string }) {
             )}
           </div>
 
-          {/* Feature highlights — vertical list on the right */}
-          <div className="flex flex-col gap-3">
+          {/* Feature highlights — evenly spaced to match video height */}
+          <div className="flex flex-col justify-between h-full py-1">
             <div className="flex items-start gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
               <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
                 <span className="material-symbols-outlined text-primary text-[18px]">key</span>
