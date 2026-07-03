@@ -124,6 +124,180 @@ const designSystemStyle = `
   .bg-white\\/80 { background-color: rgba(255, 255, 255, 0.8); }
 `
 
+/* ─── Video Showcase Component ─── */
+function VideoShowcase({ t }: { t: (key: string) => string }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(true)
+
+  const handlePlay = () => {
+    const video = videoRef.current
+    if (!video) return
+    if (video.paused) {
+      video.play()
+      setIsPlaying(true)
+      setShowOverlay(false)
+    } else {
+      video.pause()
+      setIsPlaying(false)
+    }
+  }
+
+  const handleVideoClick = () => {
+    const video = videoRef.current
+    if (!video) return
+    if (video.paused) {
+      video.play()
+      setIsPlaying(true)
+      setShowOverlay(false)
+    } else {
+      video.pause()
+      setIsPlaying(false)
+      setShowOverlay(true)
+    }
+  }
+
+  const handleEnded = () => {
+    setIsPlaying(false)
+    setShowOverlay(true)
+  }
+
+  return (
+    <section className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--m3-surface)' }}>
+      {/* Ambient glow */}
+      <div className="glow-radial absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] opacity-30 pointer-events-none" />
+
+      <div className="max-w-[1100px] mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 mb-5" style={{
+            background: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--m3-primary) 25%, transparent)'
+          }}>
+            <span className="material-symbols-outlined text-[16px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>play_circle</span>
+            <span className="text-[12px] tracking-[0.08em] uppercase font-bold text-primary" style={{ fontFamily: 'Space Grotesk' }}>
+              {t('Product Demo')}
+            </span>
+          </div>
+          <h2 className="text-[36px] leading-[44px] -tracking-[0.02em] font-bold mb-3" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
+            {t('See TokenMaster in Action')}
+          </h2>
+          <p className="text-[17px] leading-7 max-w-2xl mx-auto" style={{ color: 'var(--m3-on-surface-variant)' }}>
+            {t('Watch a quick walkthrough of how to set up your API key and make your first call in under 2 minutes.')}
+          </p>
+        </div>
+
+        {/* Video Container */}
+        <div
+          className="relative rounded-2xl overflow-hidden group cursor-pointer"
+          onClick={handleVideoClick}
+          style={{
+            border: '1px solid color-mix(in srgb, var(--m3-primary) 20%, transparent)',
+            boxShadow: '0 0 40px rgba(239, 68, 68, 0.08), 0 20px 50px -10px rgba(0, 0, 0, 0.5)',
+            background: 'var(--m3-surface-container-lowest)'
+          }}
+        >
+          {/* Video Element */}
+          <video
+            ref={videoRef}
+            className="w-full aspect-video object-contain"
+            preload="metadata"
+            onEnded={handleEnded}
+            onPause={() => setShowOverlay(true)}
+            onPlay={() => setShowOverlay(false)}
+            poster=""
+          >
+            <source src="/tokenmaster-intro.mp4" type="video/mp4" />
+          </video>
+
+          {/* Play Button Overlay */}
+          {showOverlay && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handlePlay()
+                }}
+                className="relative flex items-center justify-center transition-transform duration-300 hover:scale-110"
+                aria-label="Play video"
+              >
+                {/* Pulsing rings */}
+                <span className="absolute w-20 h-20 rounded-full animate-ping" style={{ backgroundColor: 'rgba(239, 68, 68, 0.3)' }} />
+                <span className="absolute w-16 h-16 rounded-full" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)' }} />
+                {/* Play button */}
+                <span
+                  className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-2xl"
+                  style={{
+                    backgroundColor: 'var(--m3-primary)',
+                    boxShadow: '0 0 30px rgba(239, 68, 68, 0.5)'
+                  }}
+                >
+                  <span className="material-symbols-outlined text-white text-[32px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    {isPlaying ? 'pause' : 'play_arrow'}
+                  </span>
+                </span>
+              </button>
+
+              {/* Bottom label */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
+                <div className="flex items-center gap-2 text-white/90">
+                  <span className="material-symbols-outlined text-[18px]">smart_display</span>
+                  <span className="text-sm font-semibold tracking-wider" style={{ fontFamily: 'Space Grotesk' }}>
+                    {t('TokenMaster Platform Overview')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Control bar when playing */}
+          {isPlaying && !showOverlay && (
+            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="flex items-center gap-2 text-white/80">
+                <span className="material-symbols-outlined text-[18px]">pause</span>
+                <span className="text-xs font-medium tracking-wider" style={{ fontFamily: 'Space Grotesk' }}>
+                  {t('Click to pause')}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Feature highlights below video */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
+              <span className="material-symbols-outlined text-primary text-[20px]">key</span>
+            </div>
+            <div>
+              <p className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Instant API Key')}</p>
+              <p className="text-xs" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Generate in seconds')}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
+              <span className="material-symbols-outlined text-primary text-[20px]">bolt</span>
+            </div>
+            <div>
+              <p className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('First Call in 2min')}</p>
+              <p className="text-xs" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Copy-paste ready')}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
+              <span className="material-symbols-outlined text-primary text-[20px]">devices</span>
+            </div>
+            <div>
+              <p className="text-sm font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Works Everywhere')}</p>
+              <p className="text-xs" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Any OpenAI-compatible client')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function HomePage() {
   return <Home />
 }
@@ -297,6 +471,9 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      {/* ─── Video Showcase ─── */}
+      <VideoShowcase t={t} />
 
       {/* ─── Bento Grid Features ─── */}
       <section className="py-10 relative" style={{ backgroundColor: 'var(--m3-surface-container-lowest)' }}>

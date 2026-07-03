@@ -176,6 +176,7 @@ func CreateNowPaymentsPayment(c *gin.Context) {
 	apiPayload := map[string]interface{}{
 		"price_amount":      float64(req.Amount),
 		"price_currency":    "usd",
+		"pay_currency":      "usdttrc20",
 		"order_id":          tradeNo,
 		"order_description": fmt.Sprintf("TokenMaster top-up for user %s (#%d)", username, userId),
 		"ipn_callback_url":  system_setting.ServerAddress + "/api/nowpayments/notify",
