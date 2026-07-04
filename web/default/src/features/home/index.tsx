@@ -263,31 +263,31 @@ function VideoShowcase({ t }: { t: (key: string) => string }) {
 
           {/* Feature highlights — evenly spaced to match video height */}
           <div className="flex flex-col justify-between h-full py-1">
-            <div className="flex items-start gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
-                <span className="material-symbols-outlined text-primary text-[18px]">key</span>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
+              <div className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
+                <span className="material-symbols-outlined text-primary text-[16px]">key</span>
               </div>
               <div>
-                <p className="text-[13px] font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Instant API Key')}</p>
-                <p className="text-[11px]" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Generate in seconds')}</p>
+                <p className="text-[12px] font-semibold leading-tight" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Instant API Key')}</p>
+                <p className="text-[10px]" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Generate in seconds')}</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
-                <span className="material-symbols-outlined text-primary text-[18px]">bolt</span>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
+              <div className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
+                <span className="material-symbols-outlined text-primary text-[16px]">bolt</span>
               </div>
               <div>
-                <p className="text-[13px] font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('First Call in 2min')}</p>
-                <p className="text-[11px]" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Copy-paste ready')}</p>
+                <p className="text-[12px] font-semibold leading-tight" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('First Call in 2min')}</p>
+                <p className="text-[10px]" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Copy-paste ready')}</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
-                <span className="material-symbols-outlined text-primary text-[18px]">devices</span>
+            <div className="flex items-center gap-2.5 p-2.5 rounded-lg" style={{ backgroundColor: 'var(--m3-surface-container)' }}>
+              <div className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'color-mix(in srgb, var(--m3-primary) 12%, transparent)' }}>
+                <span className="material-symbols-outlined text-primary text-[16px]">devices</span>
               </div>
               <div>
-                <p className="text-[13px] font-semibold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Works Everywhere')}</p>
-                <p className="text-[11px]" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Any OpenAI-compatible client')}</p>
+                <p className="text-[12px] font-semibold leading-tight" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>{t('Works Everywhere')}</p>
+                <p className="text-[10px]" style={{ color: 'var(--m3-on-surface-variant)' }}>{t('Any OpenAI-compatible client')}</p>
               </div>
             </div>
           </div>
