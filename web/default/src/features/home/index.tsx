@@ -202,11 +202,11 @@ function VideoShowcase({ t }: { t: (key: string) => string }) {
             <video
               ref={videoRef}
               className="w-full aspect-video object-contain"
-              preload="metadata"
+              preload="none"
+              poster="/tokenmaster-intro-poster.jpg"
               onEnded={handleEnded}
               onPause={() => setShowOverlay(true)}
               onPlay={() => setShowOverlay(false)}
-              poster=""
             >
               <source src="/tokenmaster-intro.mp4" type="video/mp4" />
             </video>
