@@ -224,10 +224,15 @@ function buildPricingTable(pricingModels: PricingModel[]): PricingTableGroup[] {
     row('qwen-long', 'Qwen Long'),
   ].filter(Boolean) as PricingTableRow[]
 
+  const kimi = [
+    row('moonshotai/Kimi-K3', 'Kimi K3'),
+  ].filter(Boolean) as PricingTableRow[]
+
   const groups: PricingTableGroup[] = []
   if (deepseek.length) groups.push({ group: 'DEEPSEEK ECOSYSTEM', groupZh: 'DeepSeek 生态', rows: deepseek })
   if (glm.length) groups.push({ group: 'GLM (ZHIPU AI)', groupZh: 'GLM（智谱）', rows: glm })
   if (qwen.length) groups.push({ group: 'QWEN (ALIBABA CLOUD)', groupZh: '千问（阿里云）', rows: qwen })
+  if (kimi.length) groups.push({ group: 'KIMI (MOONSHOT AI)', groupZh: 'Kimi（月之暗面）', rows: kimi })
   return groups
 }
 
