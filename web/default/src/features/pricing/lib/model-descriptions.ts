@@ -69,6 +69,10 @@ const DESCRIPTIONS: Record<string, string> = {
     'Anthropic Claude Opus 4 是 Claude 系列最强模型，在复杂推理、长文本理解方面表现顶尖。',
   'gemini-2.5-flash': 'Google Gemini 2.5 Flash 是 Google 快速推理模型，响应极快。',
   'gemini-2.5-pro': 'Google Gemini 2.5 Pro 是 Google 旗舰模型，支持超长上下文。',
+
+  // ===== 月之暗面 Kimi 系列 =====
+  'moonshotai/Kimi-K3':
+    '月之暗面 Kimi K3 是 Kimi 全新旗舰模型，2.8万亿参数级别，百万级 Token 上下文，在 Arena AI 前端代码评测中排名第一，代码生成与复杂推理能力媲美顶级闭源模型。',
 }
 
 export function getModelDescription(modelName: string): string | undefined {
