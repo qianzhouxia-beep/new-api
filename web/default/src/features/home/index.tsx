@@ -422,7 +422,7 @@ export function Home() {
             </div>
             <h1 className="text-[48px] leading-[56px] -tracking-[0.02em] font-bold" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface)' }}>
               {t('One line of code to access top AI models.')}<br />
-              <span style={{ color: 'var(--m3-primary)' }}>{t('DeepSeek \u00b7 GLM \u00b7 Qwen,')}</span>{' '}{t('one key for all.')}
+              <span style={{ color: 'var(--m3-primary)' }}>{t('DeepSeek \u00b7 GLM \u00b7 Qwen \u00b7 Kimi,')}</span>{' '}{t('one key for all.')}
             </h1>
             <p className="text-[18px] leading-7 max-w-2xl" style={{ color: 'var(--m3-on-surface-variant)' }}>
               {t('Seamlessly integrate leading LLMs through a single API. Professional-grade infrastructure built for high-precision engineering and data science workloads.')}
@@ -433,8 +433,7 @@ export function Home() {
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>DeepSeek:</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Flash</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Pro</span>
-                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>Chat</span>
-                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>Reasoner</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V3 Series</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>GLM:</span>
@@ -446,6 +445,12 @@ export function Home() {
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Max</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Plus</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.5 Series</span>
+              </div>
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>Kimi:</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>K3</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>K2.7-Code</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>K2.6</span>
               </div>
             </div>
             {/* ─── $2 Free Trial Banner ─── */}
@@ -636,7 +641,7 @@ export function Home() {
                 </div>
                 <div className="p-6 bg-surface-container-low min-h-[300px]" style={{ fontFamily: 'JetBrains Mono' }}>
                   {activeTab === 'python' ? (
-                    <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}><span className="text-primary">import</span> tokenmaster{'\n\n'}client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">&quot;tm_...&quot;</span>){'\n\n'}response = client.chat.completions.create({'\n'}    model=<span className="text-on-tertiary-fixed-variant">&quot;deepseek-reasoner&quot;</span>,{'\n'}    messages=[{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, content<span className="text-on-tertiary-fixed-variant">&quot;: &quot;Hello!&quot;</span>{'}'}]{'\n'}){'\n\n'}print(response.choices[<span className="text-secondary">0</span>].message.content)</code></pre>
+                    <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}><span className="text-primary">import</span> tokenmaster{'\n\n'}client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">&quot;tm_...&quot;</span>){'\n\n'}response = client.chat.completions.create({'\n'}    model=<span className="text-on-tertiary-fixed-variant">&quot;deepseek-v4-flash&quot;</span>,{'\n'}    messages=[{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, content<span className="text-on-tertiary-fixed-variant">&quot;: &quot;Hello!&quot;</span>{'}'}]{'\n'}){'\n\n'}print(response.choices[<span className="text-secondary">0</span>].message.content)</code></pre>
                   ) : (
                     <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}>curl https://api.tokenmaster.ai/v1/chat/completions \<br />  -H <span className="text-on-tertiary-fixed-variant">&quot;Content-Type: application/json&quot;</span> \<br />  -H <span className="text-on-tertiary-fixed-variant">&quot;Authorization: Bearer $TM_API_KEY&quot;</span> \<br />  -d <span className="text-on-tertiary-fixed-variant">&apos;{'{'}</span><br />    <span className="text-primary">&quot;model&quot;</span>: <span className="text-on-tertiary-fixed-variant">&quot;glm-4-flash&quot;</span>,<br />    <span className="text-primary">&quot;messages&quot;</span>: [{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, <span className="text-primary">&quot;content&quot;</span>: <span className="text-on-tertiary-fixed-variant">&quot;Hello!&quot;</span>{'}'}]<br />  {'}'}</code></pre>
                   )}
@@ -759,7 +764,7 @@ export function Home() {
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 <div><span style={{ color: 'var(--m3-primary)' }}>API Domain</span>: api-tokenmaster.com</div>
                 <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-reasoner</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-v4-flash</div>
               </div>
               <a href="https://chatbox.app" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>chatbox.app →</a>
             </div>
@@ -939,7 +944,7 @@ export function Home() {
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
               <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
-                {t('We currently support the full series of DeepSeek, GLM (Zhipu), and Qwen (Tongyi Qianwen) models. We integrate new models within 24 hours of their public beta release.')}
+                {t('We currently support the full series of DeepSeek, GLM (Zhipu), Qwen (Tongyi Qianwen), and Kimi (Moonshot AI) models. We integrate new models within 24 hours of their public beta release.')}
               </p>
             </details>
           </div>
