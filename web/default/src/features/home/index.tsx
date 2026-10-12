@@ -431,17 +431,19 @@ export function Home() {
             <div className="pt-2 space-y-4 flex flex-col items-center">
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>DeepSeek:</span>
-                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Flash</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4.1 Flash</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V4 Pro</span>
-                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>V3 Series</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>GLM:</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>4.7-Flash</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>4.5-Air</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>5.3-Flash</span>
               </div>
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-sm tracking-wider font-semibold min-w-[80px]" style={{ fontFamily: 'Space Grotesk', color: 'var(--m3-on-surface-variant)' }}>Qwen:</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.8-Max</span>
+                <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.8-Flash</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Max</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.7-Plus</span>
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>3.5 Series</span>
@@ -641,9 +643,9 @@ export function Home() {
                 </div>
                 <div className="p-6 bg-surface-container-low min-h-[300px]" style={{ fontFamily: 'JetBrains Mono' }}>
                   {activeTab === 'python' ? (
-                    <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}><span className="text-primary">import</span> tokenmaster{'\n\n'}client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">&quot;tm_...&quot;</span>){'\n\n'}response = client.chat.completions.create({'\n'}    model=<span className="text-on-tertiary-fixed-variant">&quot;deepseek-v4-flash&quot;</span>,{'\n'}    messages=[{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, content<span className="text-on-tertiary-fixed-variant">&quot;: &quot;Hello!&quot;</span>{'}'}]{'\n'}){'\n\n'}print(response.choices[<span className="text-secondary">0</span>].message.content)</code></pre>
+                    <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}><span className="text-primary">import</span> tokenmaster{'\n\n'}client = tokenmaster.Client(api_key=<span className="text-on-tertiary-fixed-variant">&quot;tm_...&quot;</span>){'\n\n'}response = client.chat.completions.create({'\n'}    model=<span className="text-on-tertiary-fixed-variant">&quot;deepseek-flash&quot;</span>,{'\n'}    messages=[{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, content<span className="text-on-tertiary-fixed-variant">&quot;: &quot;Hello!&quot;</span>{'}'}]{'\n'}){'\n\n'}print(response.choices[<span className="text-secondary">0</span>].message.content)</code></pre>
                   ) : (
-                    <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}>curl https://api.tokenmaster.ai/v1/chat/completions \<br />  -H <span className="text-on-tertiary-fixed-variant">&quot;Content-Type: application/json&quot;</span> \<br />  -H <span className="text-on-tertiary-fixed-variant">&quot;Authorization: Bearer $TM_API_KEY&quot;</span> \<br />  -d <span className="text-on-tertiary-fixed-variant">&apos;{'{'}</span><br />    <span className="text-primary">&quot;model&quot;</span>: <span className="text-on-tertiary-fixed-variant">&quot;glm-4-flash&quot;</span>,<br />    <span className="text-primary">&quot;messages&quot;</span>: [{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, <span className="text-primary">&quot;content&quot;</span>: <span className="text-on-tertiary-fixed-variant">&quot;Hello!&quot;</span>{'}'}]<br />  {'}'}</code></pre>
+                    <pre className="text-base"><code style={{ color: 'var(--m3-on-surface-variant)' }}>curl https://api.tokenmaster.ai/v1/chat/completions \<br />  -H <span className="text-on-tertiary-fixed-variant">&quot;Content-Type: application/json&quot;</span> \<br />  -H <span className="text-on-tertiary-fixed-variant">&quot;Authorization: Bearer $TM_API_KEY&quot;</span> \<br />  -d <span className="text-on-tertiary-fixed-variant">&apos;{'{'}</span><br />    <span className="text-primary">&quot;model&quot;</span>: <span className="text-on-tertiary-fixed-variant">&quot;glm-4.7-flash&quot;</span>,<br />    <span className="text-primary">&quot;messages&quot;</span>: [{'{'}role<span className="text-on-tertiary-fixed-variant">&quot;: &quot;user&quot;</span>, <span className="text-primary">&quot;content&quot;</span>: <span className="text-on-tertiary-fixed-variant">&quot;Hello!&quot;</span>{'}'}]<br />  {'}'}</code></pre>
                   )}
                 </div>
               </div>
@@ -748,7 +750,7 @@ export function Home() {
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 <div><span style={{ color: 'var(--m3-primary)' }}>Base URL</span>: api-tokenmaster.com/v1</div>
                 <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-v4-flash</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-flash</div>
               </div>
               <a href="https://lobehub.com" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>lobehub.com →</a>
             </div>
@@ -764,7 +766,7 @@ export function Home() {
               <div className="bg-surface-container-low rounded-lg p-3 text-xs font-mono leading-5 mb-3" style={{ color: 'var(--m3-on-surface-variant)' }}>
                 <div><span style={{ color: 'var(--m3-primary)' }}>API Domain</span>: api-tokenmaster.com</div>
                 <div><span style={{ color: 'var(--m3-primary)' }}>API Key</span>: Your API Key</div>
-                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-v4-flash</div>
+                <div><span style={{ color: 'var(--m3-primary)' }}>Model</span>: deepseek-flash</div>
               </div>
               <a href="https://chatbox.app" target="_blank" rel="noopener noreferrer" className="mt-auto text-xs" style={{ color: 'var(--m3-primary)' }}>chatbox.app →</a>
             </div>
