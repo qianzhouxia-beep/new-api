@@ -455,13 +455,6 @@ export function Home() {
                 <span className="px-2 py-1 bg-surface-container border rounded text-xs font-semibold" style={{ borderColor: 'var(--m3-surface-variant)', color: 'var(--m3-on-surface)', fontFamily: 'Space Grotesk' }}>K2.6</span>
               </div>
             </div>
-            {/* ─── $2 Free Trial Banner ─── */}
-            <div className="inline-flex items-center gap-2 bg-red-500/90 text-white px-4 py-2 rounded-full shadow-lg mt-2 animate-pulse">
-              <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>redeem</span>
-              <span className="text-sm font-bold tracking-wider" style={{ fontFamily: 'Space Grotesk' }}>
-                {t('$2 Free Trial — No credit card required. Start building today!')}
-              </span>
-            </div>
             <div className="flex gap-4 pt-4 justify-center">
               <button
                 onClick={() => navigate({ to: isAuthenticated ? '/dashboard' : '/sign-in' })}
@@ -919,7 +912,7 @@ export function Home() {
                 <span className="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
               <p className="mt-3 text-sm leading-5" style={{ color: 'var(--m3-on-surface-variant)' }}>
-                {t('No. Your paid balance never expires. Free trial credits expire after 30 days. Top up once and use it anytime.')}
+                {t('No. Your paid balance never expires. Top up once and use it anytime.')}
               </p>
             </details>
             <details className="group rounded-xl border p-3 cursor-pointer transition-colors hover:bg-surface-container-high" style={{ backgroundColor: 'var(--m3-surface-container-low)', borderColor: 'var(--m3-surface-variant)' }}>
